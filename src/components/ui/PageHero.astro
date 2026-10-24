@@ -1,0 +1,122 @@
+---
+/**
+ * İç sayfaların başlık alanı: içerik haritası (breadcrumb), üst başlık, başlık ve giriş.
+ * Breadcrumb aynı zamanda schema.org BreadcrumbList olarak işaretlenir.
+ */
+import { site } from '@/config/site';
+
+interface Crumb {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  lead?: string;
+  crumbs: Crumb[];
+}
+
+const { eyebrow, title, lead, crumbs } = Astro.props;
+const base = Astro.site ?? new URL(site.url);
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: crumbs.map((c, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: c.label,
+    ...(c.href ? { item: new URL(c.href, base).href } : {}),
+  })),
+};
+---
+
+<section class="page-hero">
+  <div class="page-hero__light" aria-hidden="true"></div>
+  <div class="container page-hero__inner">
+    <nav class="crumbs" aria-label="Breadcrumb" data-reveal="fade">
+      <ol role="list">
+        {
+          crumbs.map((c, i) => (
+            <li>
+              {c.href && i < crumbs.length - 1 ? <a href={c.href}>{c.label}</a> : <span aria-current="page">{c.label}</span>}
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+    <p class="eyebrow" data-reveal style="--d: 1">{eyebrow}</p>
+    <h1 class="page-hero__title" data-reveal style="--d: 2">{title}</h1>
+    {lead && <p class="lead page-hero__lead" data-reveal style="--d: 3">{lead}</p>}
+    <slot />
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+</section>
+
+<style>
+  .page-hero {
+    position: relative;
+    overflow: hidden;
+    padding-top: calc(var(--header-h) + clamp(3rem, 2rem + 5vw, 7rem));
+    padding-bottom: clamp(3rem, 2rem + 4vw, 6rem);
+  }
+
+  .page-hero__light {
+    position: absolute;
+    inset: -30% -20% auto auto;
+    width: min(80vw, 900px);
+    aspect-ratio: 1;
+    background:
+      radial-gradient(closest-side, rgba(76, 195, 224, 0.16), transparent 70%),
+      radial-gradient(closest-side at 30% 70%, rgba(217, 195, 163, 0.25), transparent 70%);
+    filter: blur(10px);
+    pointer-events: none;
+    animation: page-light 18s var(--ease-in-out) infinite alternate;
+  }
+
+  @keyframes page-light {
+    to {
+      transform: translate3d(-6%, 8%, 0) scale(1.08);
+    }
+  }
+
+  .page-hero__inner {
+    position: relative;
+    display: grid;
+    gap: var(--space-5);
+    justify-items: start;
+  }
+
+  .page-hero__title {
+    max-width: 16ch;
+    font-size: var(--text-4xl);
+  }
+
+  .page-hero__lead {
+    max-width: 60ch;
+  }
+
+  .crumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 0;
+    font-size: var(--text-xs);
+    letter-spacing: 0.04em;
+    color: var(--ink-mute);
+  }
+
+  .crumbs li + li::before {
+    content: '/';
+    margin-right: 0.4rem;
+    color: var(--line-strong);
+  }
+
+  .crumbs a {
+    transition: color var(--dur-fast);
+  }
+
+  .crumbs a:hover {
+    color: var(--brand-700);
+  }
+</style>

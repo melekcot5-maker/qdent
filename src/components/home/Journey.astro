@@ -1,0 +1,145 @@
+---
+/** Hasta yolculuğu — koyu zeminli, dört adımlı süreç. */
+import { getDictionary, type Locale } from '@/i18n';
+
+interface Props {
+  lang: Locale;
+  /** Tedavi detay sayfasında başlık farklı olabilir */
+  title?: string;
+}
+
+const t = getDictionary(Astro.props.lang);
+const c = t.home.journey;
+const title = Astro.props.title ?? c.title;
+---
+
+<section class="section journey">
+  <div class="journey__glow" aria-hidden="true"></div>
+  <div class="container">
+    <header class="section-head section-head--center">
+      <p class="eyebrow eyebrow--center journey__eyebrow" data-reveal>{c.eyebrow}</p>
+      <h2 class="journey__title" data-reveal style="--d: 1">{title}</h2>
+      <p class="journey__lead" data-reveal style="--d: 2">{c.lead}</p>
+    </header>
+
+    <ol class="journey__steps" role="list">
+      {
+        c.steps.map((step, i) => (
+          <li class="journey__step" data-reveal style={`--d: ${i + 1}`}>
+            <span class="journey__num">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{step.title}</h3>
+            <p>{step.body}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .journey {
+    overflow: hidden;
+    background: var(--brand-950);
+    color: var(--on-dark);
+  }
+
+  .journey__glow {
+    position: absolute;
+    left: 50%;
+    top: -35%;
+    width: min(120vw, 1300px);
+    aspect-ratio: 2 / 1;
+    translate: -50% 0;
+    background: radial-gradient(closest-side, rgba(76, 195, 224, 0.2), transparent);
+    pointer-events: none;
+  }
+
+  .journey__eyebrow {
+    color: var(--champagne-soft);
+  }
+
+  .journey__title {
+    color: #fff;
+  }
+
+  .journey__lead {
+    max-width: 56ch;
+    color: var(--on-dark-soft);
+  }
+
+  .journey__steps {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(1.5rem, 1rem + 2vw, 3rem);
+    margin: 0;
+  }
+
+  /* Adımları birleştiren ince çizgi */
+  .journey__steps::before {
+    content: '';
+    position: absolute;
+    top: 32px;
+    left: 32px;
+    right: 32px;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.05), rgba(217, 195, 163, 0.6), rgba(255, 255, 255, 0.05));
+  }
+
+  .journey__step {
+    position: relative;
+    display: grid;
+    gap: 0.9rem;
+    align-content: start;
+  }
+
+  .journey__num {
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 0.75rem;
+    border: 1px solid rgba(217, 195, 163, 0.5);
+    border-radius: 50%;
+    background: var(--brand-950);
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-style: italic;
+    color: var(--champagne-soft);
+  }
+
+  .journey__step h3 {
+    color: #fff;
+  }
+
+  .journey__step p {
+    font-size: var(--text-sm);
+    color: var(--on-dark-soft);
+  }
+
+  @media (max-width: 960px) {
+    .journey__steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .journey__steps::before {
+      display: none;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .journey__steps {
+      grid-template-columns: 1fr;
+    }
+
+    .journey__step {
+      grid-template-columns: auto 1fr;
+      column-gap: 1.25rem;
+    }
+
+    .journey__num {
+      grid-row: span 2;
+      margin-bottom: 0;
+    }
+  }
+</style>

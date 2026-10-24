@@ -1,0 +1,70 @@
+---
+/** Bulunamayan sayfa — dil bilinmediği için varsayılan dilde gösterilir, tüm dillere bağlantı verir. */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { defaultLocale, getDictionary, locales, localeMeta, localizePath } from '@/i18n';
+
+const lang = defaultLocale;
+const t = getDictionary(lang);
+---
+
+<BaseLayout lang={lang} title={t.notFound.meta.title} description={t.notFound.meta.description} noindex>
+  <section class="nf">
+    <div class="container nf__inner">
+      <span class="nf__code" aria-hidden="true">404</span>
+      <h1>{t.notFound.title}</h1>
+      <p class="lead">{t.notFound.body}</p>
+      <a href={localizePath(lang)} class="btn btn--primary">
+        {t.notFound.cta}
+        <Icon name="arrowRight" size={16} class="icon--arrow" />
+      </a>
+      <ul class="nf__langs" role="list">
+        {
+          locales.map((l) => (
+            <li>
+              <a href={localizePath(l)} lang={localeMeta[l].htmlLang} class="link">
+                {getDictionary(l).notFound.cta} · {localeMeta[l].short}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf {
+    min-height: 100svh;
+    display: grid;
+    align-items: center;
+    padding-block: calc(var(--header-h) + 3rem) 5rem;
+    background: radial-gradient(60% 50% at 50% 40%, rgba(76, 195, 224, 0.12), transparent 70%);
+  }
+
+  .nf__inner {
+    display: grid;
+    justify-items: center;
+    gap: 1.5rem;
+    text-align: center;
+  }
+
+  .nf__code {
+    font-family: var(--font-display);
+    font-size: clamp(7rem, 4rem + 14vw, 14rem);
+    font-style: italic;
+    line-height: 0.8;
+    background: linear-gradient(120deg, var(--brand-600), var(--champagne));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .nf__langs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem 1.5rem;
+    margin: 1.5rem 0 0;
+  }
+</style>

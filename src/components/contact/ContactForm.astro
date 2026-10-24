@@ -1,0 +1,273 @@
+---
+/**
+ * Ücretsiz değerlendirme formu.
+ * Veritabanı gerektirmez: Web3Forms servisi iletiyi doğrudan klinik e-postasına
+ * gönderir. Anahtar .env dosyasındaki PUBLIC_WEB3FORMS_KEY değişkeninden okunur;
+ * anahtar yoksa form ziyaretçiyi WhatsApp/e-postaya yönlendiren bir uyarı gösterir.
+ */
+import Icon from '@/components/ui/Icon.astro';
+import { treatments } from '@/data/treatments';
+import { site, links } from '@/config/site';
+import { getDictionary, localizePath, localeMeta, type Locale } from '@/i18n';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = getDictionary(lang);
+const f = t.contact.form;
+const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
+
+const messages = JSON.stringify({
+  sending: f.sending,
+  error: f.error,
+  notConfigured: f.notConfigured,
+});
+---
+
+<form class="cform" data-contact-form data-key={accessKey} data-messages={messages} novalidate>
+  <header class="cform__head">
+    <h2>{f.title}</h2>
+    <p class="muted">{f.lead}</p>
+  </header>
+
+  <input type="hidden" name="subject" value={`${f.subject} (${localeMeta[lang].short})`} />
+  <input type="hidden" name="from_name" value={site.legalName} />
+  <input type="hidden" name="language" value={localeMeta[lang].nativeName} />
+  <!-- Spam tuzağı: insanlar görmez, botlar doldurur -->
+  <input type="checkbox" name="botcheck" class="visually-hidden" tabindex="-1" autocomplete="off" />
+
+  <div class="cform__grid">
+    <div class="field">
+      <label for="cf-name">{f.name} *</label>
+      <input id="cf-name" name="name" class="input" type="text" autocomplete="name" required />
+    </div>
+    <div class="field">
+      <label for="cf-email">{f.email} *</label>
+      <input id="cf-email" name="email" class="input" type="email" autocomplete="email" required />
+    </div>
+    <div class="field">
+      <label for="cf-phone">{f.phone} *</label>
+      <input id="cf-phone" name="phone" class="input" type="tel" autocomplete="tel" placeholder={f.phoneHint} required />
+    </div>
+    <div class="field">
+      <label for="cf-country">{f.country}</label>
+      <input id="cf-country" name="country" class="input" type="text" autocomplete="country-name" />
+    </div>
+    <div class="field cform__full">
+      <label for="cf-treatment">{f.treatment}</label>
+      <select id="cf-treatment" name="treatment" class="input">
+        <option value="">{f.treatmentPlaceholder}</option>
+        {treatments.map((tr) => <option value={t.treatments.items[tr.slug].name}>{t.treatments.items[tr.slug].name}</option>)}
+        <option value={f.treatmentOther}>{f.treatmentOther}</option>
+      </select>
+    </div>
+    <div class="field cform__full">
+      <label for="cf-message">{f.message}</label>
+      <textarea id="cf-message" name="message" class="input" rows="5" placeholder={f.messagePlaceholder}></textarea>
+    </div>
+  </div>
+
+  <label class="cform__consent">
+    <input type="checkbox" name="consent" value="yes" required />
+    <span>
+      {f.consent}
+      <a href={localizePath(lang, 'privacy')} class="link" target="_blank">{f.consentLink}</a>
+    </span>
+  </label>
+
+  <button type="submit" class="btn btn--primary btn--block" data-submit>
+    <span data-submit-label>{f.submit}</span>
+    <Icon name="arrowRight" size={16} class="icon--arrow" />
+  </button>
+
+  <p class="cform__status" role="status" aria-live="polite" data-status></p>
+
+  <div class="cform__success" data-success tabindex="-1" hidden>
+    <span class="cform__success-icon"><Icon name="check" size={28} /></span>
+    <h3>{f.successTitle}</h3>
+    <p class="muted">{f.successBody}</p>
+    <a href={links.whatsapp(t.common.whatsappMessage)} class="btn btn--whatsapp" target="_blank" rel="noopener">
+      <Icon name="whatsapp" size={18} />
+      {t.common.whatsapp}
+    </a>
+  </div>
+</form>
+
+<script>
+  const ENDPOINT = 'https://api.web3forms.com/submit';
+
+  document.querySelectorAll<HTMLFormElement>('[data-contact-form]').forEach((form) => {
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    const submit = form.querySelector<HTMLButtonElement>('[data-submit]')!;
+    const label = form.querySelector<HTMLElement>('[data-submit-label]')!;
+    const success = form.querySelector<HTMLElement>('[data-success]')!;
+    const messages = JSON.parse(form.dataset.messages ?? '{}') as Record<'sending' | 'error' | 'notConfigured', string>;
+    const idleLabel = label.textContent ?? '';
+
+    const setStatus = (text: string, tone: 'info' | 'error' = 'info') => {
+      status.textContent = text;
+      status.dataset.tone = tone;
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      const key = form.dataset.key;
+      if (!key) {
+        setStatus(messages.notConfigured, 'error');
+        return;
+      }
+
+      const data = Object.fromEntries(new FormData(form).entries());
+      if (data.botcheck) return;
+
+      submit.disabled = true;
+      label.textContent = messages.sending;
+      setStatus('');
+
+      try {
+        const response = await fetch(ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ ...data, access_key: key }),
+        });
+        const result = (await response.json()) as { success?: boolean };
+        if (!response.ok || !result.success) throw new Error('send failed');
+
+        form.reset();
+        form.classList.add('is-sent');
+        success.hidden = false;
+        success.focus();
+      } catch {
+        setStatus(messages.error, 'error');
+      } finally {
+        submit.disabled = false;
+        label.textContent = idleLabel;
+      }
+    });
+  });
+</script>
+
+<style>
+  .cform {
+    position: relative;
+    display: grid;
+    gap: 1.5rem;
+    padding: clamp(1.75rem, 1.2rem + 2vw, 3rem);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-xl);
+    background: var(--pearl);
+    box-shadow: var(--shadow-md);
+  }
+
+  .cform__head {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .cform__head h2 {
+    font-size: var(--text-2xl);
+  }
+
+  .cform__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .cform__full {
+    grid-column: 1 / -1;
+  }
+
+  .cform__consent {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+
+  .cform__consent input {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    margin-top: 0.15rem;
+    accent-color: var(--brand-600);
+  }
+
+  .cform__consent .link {
+    margin-left: 0.25rem;
+  }
+
+  .cform button[disabled] {
+    opacity: 0.7;
+    cursor: progress;
+  }
+
+  .cform__status:empty {
+    display: none;
+  }
+
+  .cform__status {
+    padding: 0.9rem 1.1rem;
+    border-radius: var(--radius-sm);
+    background: var(--brand-50);
+    font-size: var(--text-sm);
+  }
+
+  .cform__status[data-tone='error'] {
+    background: #fdf0ee;
+    color: #9b2c1f;
+  }
+
+  .cform__success {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 1rem;
+    padding: 2rem;
+    border-radius: inherit;
+    background: var(--pearl);
+    text-align: center;
+    animation: cform-in var(--dur-slow) var(--ease-out);
+  }
+
+  .cform__success[hidden] {
+    display: none;
+  }
+
+  .cform__success-icon {
+    display: grid;
+    place-items: center;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--brand-600);
+    color: #fff;
+    box-shadow: var(--glow-brand);
+  }
+
+  @keyframes cform-in {
+    from {
+      opacity: 0;
+      transform: scale(0.98);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .cform__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

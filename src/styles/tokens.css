@@ -1,0 +1,102 @@
+/*
+ * Tasarım belirteçleri (design tokens).
+ * Renk, yazı, boşluk ve hareket değerleri yalnızca buradan değiştirilir;
+ * bileşenler bu değişkenleri kullanır.
+ */
+:root {
+  color-scheme: light;
+
+  /* Marka — logodan ölçülen mavi #1074A2 etrafında */
+  --brand-50: #eef6fa;
+  --brand-100: #d7eaf3;
+  --brand-200: #aed3e6;
+  --brand-300: #7db8d6;
+  --brand-500: #2a8cbb;
+  --brand-600: #1074a2;
+  --brand-700: #0d5f86;
+  --brand-800: #0b4a69;
+  --brand-900: #08334a;
+  --brand-950: #052232;
+
+  /* Akdeniz ışığı — zemin ve vurgu tonları */
+  --ivory: #faf8f4;
+  --pearl: #ffffff;
+  --sand-100: #f3eee6;
+  --sand-200: #e8dfd1;
+  --champagne: #b8976b;
+  --champagne-soft: #d9c3a3;
+  --lagoon: #4cc3e0;
+
+  /* Metin */
+  --ink: #0f2230;
+  --ink-soft: #334656;
+  --ink-mute: #5c6f7c;
+  --on-dark: #f4f8fb;
+  --on-dark-soft: rgba(244, 248, 251, 0.72);
+
+  /* Çizgi ve gölge */
+  --line: rgba(15, 34, 48, 0.1);
+  --line-strong: rgba(15, 34, 48, 0.18);
+  --line-on-dark: rgba(255, 255, 255, 0.14);
+  --shadow-sm: 0 1px 2px rgba(8, 51, 74, 0.06), 0 2px 8px rgba(8, 51, 74, 0.04);
+  --shadow-md: 0 10px 30px -12px rgba(8, 51, 74, 0.18), 0 4px 12px -6px rgba(8, 51, 74, 0.08);
+  --shadow-lg: 0 40px 80px -30px rgba(8, 51, 74, 0.35), 0 12px 28px -14px rgba(8, 51, 74, 0.16);
+  --glow-brand: 0 12px 32px -10px rgba(16, 116, 162, 0.55);
+
+  /* Yazı tipleri */
+  --font-display: 'Cormorant Garamond', 'Cormorant', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Manrope Variable', 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* Akışkan yazı ölçeği */
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-md: 1.125rem;
+  --text-lg: clamp(1.1875rem, 1.1rem + 0.35vw, 1.3125rem);
+  --text-xl: clamp(1.4375rem, 1.25rem + 0.75vw, 1.8125rem);
+  --text-2xl: clamp(1.8125rem, 1.45rem + 1.6vw, 2.5625rem);
+  --text-3xl: clamp(2.3125rem, 1.65rem + 2.9vw, 3.8125rem);
+  --text-4xl: clamp(2.8125rem, 1.65rem + 5.1vw, 5.8125rem);
+
+  /* Boşluk */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --section-y: clamp(4.5rem, 3rem + 6vw, 9rem);
+  --gutter: clamp(1rem, 0.5rem + 3vw, 3rem);
+  --container: 1240px;
+  --container-narrow: 820px;
+  --header-h: 84px;
+
+  /* Köşe */
+  --radius-sm: 10px;
+  --radius-md: 18px;
+  --radius-lg: 28px;
+  --radius-xl: 40px;
+  --radius-pill: 999px;
+
+  /* Hareket */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 180ms;
+  --dur: 320ms;
+  --dur-slow: 900ms;
+
+  /* Katmanlar */
+  --z-header: 50;
+  --z-float: 60;
+  --z-menu: 70;
+  --z-intro: 100;
+}
+
+@media (max-width: 860px) {
+  :root {
+    --header-h: 68px;
+  }
+}

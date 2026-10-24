@@ -1,0 +1,29 @@
+---
+import { flags } from './flags';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  code: Locale;
+  size?: number;
+  class?: string;
+}
+
+const { code, size = 18, class: className } = Astro.props;
+---
+
+<svg
+  class:list={['flag', className]}
+  width={size}
+  height={(size * 14) / 20}
+  viewBox="0 0 20 14"
+  aria-hidden="true"
+  set:html={flags[code]}
+/>
+
+<style>
+  .flag {
+    flex: none;
+    display: block;
+    border-radius: 2px;
+  }
+</style>

@@ -1,0 +1,134 @@
+---
+import { Image } from 'astro:assets';
+import care from '@/assets/images/treatment-care.jpg';
+import Icon from '@/components/ui/Icon.astro';
+import type { IconName } from '@/components/ui/icons';
+import { getDictionary, type Locale } from '@/i18n';
+
+interface Props {
+  lang: Locale;
+}
+
+const t = getDictionary(Astro.props.lang);
+const c = t.home.why;
+const itemIcons: IconName[] = ['sparkles', 'user', 'shield', 'globe'];
+---
+
+<section class="section section--sand why">
+  <div class="container why__grid">
+    <div class="why__intro">
+      <p class="eyebrow" data-reveal>{c.eyebrow}</p>
+      <h2 data-reveal style="--d: 1">{c.title}</h2>
+      <figure class="why__photo" data-reveal="curtain" style="--d: 2">
+        <Image src={care} alt="" widths={[480, 720, 960]} sizes="(max-width: 860px) 92vw, 40vw" />
+      </figure>
+    </div>
+
+    <ol class="why__list" role="list">
+      {
+        c.items.map((item, i) => (
+          <li class="why__item" data-reveal style={`--d: ${i}`}>
+            <span class="why__icon">
+              <Icon name={itemIcons[i] ?? 'check'} size={24} />
+            </span>
+            <div>
+              <h3>{item.title}</h3>
+              <p class="muted">{item.body}</p>
+            </div>
+            <span class="why__num" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .why__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(2.5rem, 1rem + 5vw, 6rem);
+    align-items: start;
+  }
+
+  .why__intro {
+    position: sticky;
+    top: calc(var(--header-h) + 2rem);
+    display: grid;
+    gap: var(--space-5);
+    justify-items: start;
+  }
+
+  .why__photo {
+    width: 100%;
+    overflow: hidden;
+    aspect-ratio: 5 / 4;
+    margin-top: var(--space-4);
+    border-radius: var(--radius-lg);
+  }
+
+  .why__photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .why__list {
+    display: grid;
+    margin: 0;
+  }
+
+  .why__item {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 1.5rem;
+    padding: 2.25rem 3.5rem 2.25rem 0;
+    border-bottom: 1px solid var(--line-strong);
+  }
+
+  .why__item:first-child {
+    border-top: 1px solid var(--line-strong);
+  }
+
+  .why__item h3 {
+    margin-bottom: 0.6rem;
+  }
+
+  .why__icon {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--pearl);
+    color: var(--brand-600);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .why__num {
+    position: absolute;
+    top: 2.25rem;
+    right: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-style: italic;
+    color: var(--champagne);
+  }
+
+  @media (max-width: 860px) {
+    .why__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .why__intro {
+      position: static;
+    }
+
+    .why__item {
+      padding-right: 2.5rem;
+    }
+  }
+</style>

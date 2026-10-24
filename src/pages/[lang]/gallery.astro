@@ -1,0 +1,308 @@
+---
+import { Image } from 'astro:assets';
+import suite from '@/assets/images/clinic-suite.jpg';
+import room from '@/assets/images/clinic-room.jpg';
+import bay from '@/assets/images/oludeniz-bay.jpg';
+import coast from '@/assets/images/oludeniz-coast.jpg';
+import veneersBefore from '@/assets/images/results/veneers-before.jpg';
+import veneersAfter from '@/assets/images/results/veneers-after.jpg';
+import gumBefore from '@/assets/images/results/gum-before.jpg';
+import gumAfter from '@/assets/images/results/gum-after.jpg';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+import BeforeAfter from '@/components/ui/BeforeAfter.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { treatments } from '@/data/treatments';
+import { getDictionary, localeStaticPaths, localizePath, type Locale } from '@/i18n';
+
+export const getStaticPaths = localeStaticPaths;
+
+const lang = Astro.params.lang as Locale;
+const t = getDictionary(lang);
+const g = t.gallery;
+
+const photos = [
+  { src: suite, caption: g.captions.suite, size: 'tall' },
+  { src: coast, caption: g.captions.coast, size: 'wide' },
+  { src: room, caption: g.captions.room, size: 'square' },
+  { src: bay, caption: g.captions.bay, size: 'square' },
+] as const;
+
+/**
+ * Her tedavi için bir kart. Temsili önce/sonra örneği (Wikimedia Commons) olanlar kaydırmalı
+ * karşılaştırma gösterir, diğerleri "yakında" yer tutucusu. Kliniğe ait gerçek, hasta onaylı
+ * fotoğraflar gelince ilgili tedavinin satırına eklenir.
+ */
+const examples = {
+  'porcelain-veneers': {
+    before: veneersBefore,
+    after: veneersAfter,
+    credit: { author: 'Yvul', license: 'CC BY-SA 4.0', href: 'https://commons.wikimedia.org/wiki/File:Faccette_estetiche_confronto_prima_e_dopo.jpg' },
+  },
+  'gum-treatment': {
+    before: gumBefore,
+    after: gumAfter,
+    credit: { author: 'Onetimeuseaccount', license: 'CC0', href: 'https://commons.wikimedia.org/wiki/File:Gingivitis-before-and-after-3.jpg' },
+  },
+} as const;
+
+const results = treatments.map((tr) => ({
+  ...tr,
+  name: t.treatments.items[tr.slug].name,
+  example: examples[tr.slug as keyof typeof examples],
+}));
+---
+
+<BaseLayout lang={lang} title={g.meta.title} description={g.meta.description} path="gallery">
+  <PageHero
+    eyebrow={g.hero.eyebrow}
+    title={g.hero.title}
+    lead={g.hero.lead}
+    crumbs={[{ label: t.common.breadcrumbHome, href: localizePath(lang) }, { label: t.nav.gallery }]}
+  />
+
+  <section class="section section--pearl">
+    <div class="container">
+      <header class="section-head">
+        <h2 data-reveal>{g.clinicTitle}</h2>
+      </header>
+      <ul class="mosaic" role="list">
+        {
+          photos.map((p, i) => (
+            <li class:list={['mosaic__item', `mosaic__item--${p.size}`]} data-reveal="curtain" style={`--d: ${i}`}>
+              <Image src={p.src} alt={p.caption} widths={[480, 720, 1080, 1440]} sizes="(max-width: 860px) 92vw, 50vw" />
+              <span class="mosaic__caption">{p.caption}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <header class="section-head">
+        <h2 data-reveal>{g.resultsTitle}</h2>
+        <p class="muted" data-reveal style="--d: 1">{g.resultsLead}</p>
+      </header>
+      <ul class="results" role="list">
+        {
+          results.map((r, i) => (
+            <li class="results__item" data-reveal style={`--d: ${i % 4}`}>
+              {r.example ? (
+                <BeforeAfter
+                  before={r.example.before}
+                  after={r.example.after}
+                  beforeLabel={g.before}
+                  afterLabel={g.after}
+                  label={g.sliderLabel}
+                  alt={r.name}
+                />
+              ) : (
+                <div class="results__frame" aria-hidden="true">
+                  <span class="results__half">
+                    <small>{g.before}</small>
+                  </span>
+                  <span class="results__half results__half--after">
+                    <small>{g.after}</small>
+                  </span>
+                  <span class="results__icon">
+                    <Icon name={r.icon} size={26} />
+                  </span>
+                </div>
+              )}
+              <div class="results__meta">
+                <span>{r.name}</span>
+                <span class:list={[r.example ? 'results__sample' : 'results__soon']}>{r.example ? g.sample : g.soon}</span>
+              </div>
+              {r.example && (
+                <p class="results__credit">
+                  {g.credit}: {r.example.credit.author} ·{' '}
+                  <a href={r.example.credit.href} target="_blank" rel="noopener noreferrer">
+                    {r.example.credit.license}
+                  </a>
+                </p>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand lang={lang} />
+</BaseLayout>
+
+<style>
+  .mosaic {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: clamp(180px, 14vw + 60px, 300px);
+    gap: 1.25rem;
+    margin: 0;
+  }
+
+  .mosaic__item {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+  }
+
+  .mosaic__item--tall {
+    grid-row: span 2;
+  }
+
+  .mosaic__item--wide {
+    grid-column: span 2;
+  }
+
+  .mosaic__item :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s var(--ease-out);
+  }
+
+  .mosaic__item:hover :global(img) {
+    transform: scale(1.04);
+  }
+
+  .mosaic__caption {
+    position: absolute;
+    left: 1rem;
+    bottom: 1rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  .results {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.5rem;
+    margin: 0;
+  }
+
+  .results__frame {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--line);
+  }
+
+  .results__half {
+    position: relative;
+    background: linear-gradient(160deg, var(--sand-100), var(--sand-200));
+  }
+
+  .results__half--after {
+    border-left: 1px solid rgba(255, 255, 255, 0.9);
+    background:
+      radial-gradient(80% 70% at 50% 40%, rgba(255, 255, 255, 0.9), transparent 70%),
+      linear-gradient(160deg, var(--brand-50), var(--brand-100));
+  }
+
+  .results__half small {
+    position: absolute;
+    top: 0.85rem;
+    left: 0.85rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+
+  .results__icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: grid;
+    place-items: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--pearl);
+    color: var(--brand-600);
+    box-shadow: var(--shadow-md);
+    translate: -50% -50%;
+  }
+
+  .results__soon {
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--ink-mute);
+  }
+
+  .results__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 0.25rem 0;
+    font-weight: 600;
+    font-size: var(--text-sm);
+  }
+
+  .results__sample {
+    padding: 0.2rem 0.65rem;
+    border-radius: var(--radius-pill);
+    background: var(--sand-100);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--ink-mute);
+  }
+
+  .results__credit {
+    margin-top: 0.35rem;
+    padding: 0 0.25rem;
+    font-size: 0.7rem;
+    color: var(--ink-mute);
+  }
+
+  .results__credit a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  @media (max-width: 860px) {
+    .mosaic {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .mosaic__item--tall {
+      grid-row: span 1;
+    }
+
+  }
+
+  @media (max-width: 1100px) {
+    .results {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 560px) {
+    .results {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .mosaic {
+      grid-template-columns: 1fr;
+    }
+
+    .mosaic__item--wide {
+      grid-column: span 1;
+    }
+  }
+</style>

@@ -1,0 +1,87 @@
+---
+/**
+ * <head> içindeki SEO etiketleri: başlık, açıklama, canonical, hreflang,
+ * Open Graph / Twitter ve yapılandırılmış veri (schema.org Dentist).
+ */
+import { site } from '@/config/site';
+import { alternatePaths, localeMeta, localizePath, defaultLocale, locales, type Locale } from '@/i18n';
+
+interface Props {
+  lang: Locale;
+  title: string;
+  description: string;
+  /** Dil öneki olmadan sayfa yolu, ör. "treatments/dental-implants" */
+  path: string;
+  image?: string;
+  noindex?: boolean;
+}
+
+const { lang, title, description, path, image = '/og-default.jpg', noindex = false } = Astro.props;
+
+const base = Astro.site ?? new URL(site.url);
+const canonical = new URL(localizePath(lang, path), base).href;
+const alternates = alternatePaths(path).map(({ locale, href }) => ({
+  hreflang: localeMeta[locale].htmlLang,
+  href: new URL(href, base).href,
+}));
+const xDefault = new URL(localizePath(defaultLocale, path), base).href;
+const ogImage = new URL(image, base).href;
+
+const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Dentist',
+  '@id': `${site.url}/#clinic`,
+  name: site.legalName,
+  alternateName: site.name,
+  url: site.url,
+  image: new URL('/og-default.jpg', base).href,
+  logo: new URL('/icon-512.png', base).href,
+  telephone: site.phone.e164,
+  email: site.email,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.address.street,
+    addressLocality: `${site.address.locality}, ${site.address.city}`,
+    addressRegion: site.address.region,
+    postalCode: site.address.postalCode,
+    addressCountry: site.address.countryCode,
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: site.geo.lat, longitude: site.geo.lng },
+  hasMap: `https://www.google.com/maps/place/?q=place_id:${site.google.placeId}`,
+  openingHoursSpecification: site.hours
+    .filter((h) => h.open && h.close)
+    .map((h) => ({
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: `https://schema.org/${dayNames[h.day - 1]}`,
+      opens: h.open,
+      closes: h.close,
+    })),
+  sameAs: Object.values(site.social),
+  knowsLanguage: locales,
+};
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex, follow" />}
+
+{alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
+<link rel="alternate" hreflang="x-default" href={xDefault} />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={site.legalName} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content={localeMeta[lang].ogLocale} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

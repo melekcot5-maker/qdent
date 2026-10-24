@@ -1,0 +1,446 @@
+---
+import { Image } from 'astro:assets';
+import smile from '@/assets/images/smile-portrait.jpg';
+import bay from '@/assets/images/oludeniz-bay.jpg';
+import Icon from '@/components/ui/Icon.astro';
+import { site, links } from '@/config/site';
+import { format, getDictionary, localizePath, type Locale } from '@/i18n';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = getDictionary(lang);
+const h = t.home.hero;
+const rating = site.google.rating.toLocaleString(lang, { minimumFractionDigits: 1 });
+---
+
+<section class="hero">
+  <div class="hero__light hero__light--a" aria-hidden="true"></div>
+  <div class="hero__light hero__light--b" aria-hidden="true"></div>
+
+  <div class="container hero__grid">
+    <div class="hero__copy">
+      <!-- Marka adı İngilizce işaretlenir; aksi halde Türkçe büyük harf dönüşümü "QUALİTY" yazar -->
+      <p class="eyebrow" data-hero style="--h: 0"><span><span lang="en">Quality Dental Center</span> · {h.eyebrow}</span></p>
+
+      <h1 class="hero__title">
+        <span class="hero__line"><span data-hero-line style="--h: 1">{h.titleTop}</span></span>
+        <span class="hero__line">
+          <span data-hero-line style="--h: 2"><em>{h.titleAccent}</em> {h.titleBottom}</span>
+        </span>
+      </h1>
+
+      <p class="lead hero__lead" data-hero style="--h: 4">{h.lead}</p>
+
+      <div class="hero__actions" data-hero style="--h: 5">
+        <a href={links.whatsapp(t.common.whatsappMessage)} class="btn btn--primary" target="_blank" rel="noopener">
+          <Icon name="whatsapp" size={18} />
+          {h.primaryCta}
+        </a>
+        <a href={localizePath(lang, 'treatments')} class="btn btn--ghost">
+          {h.secondaryCta}
+          <Icon name="arrowRight" size={16} class="icon--arrow" />
+        </a>
+      </div>
+
+      <a href={links.reviews} class="hero__rating" target="_blank" rel="noopener" data-hero style="--h: 6">
+        <span class="hero__stars" aria-hidden="true">
+          {Array.from({ length: 5 }, () => <Icon name="star" size={15} />)}
+        </span>
+        <strong>{rating}</strong>
+        <span>{format(t.common.googleReviews, { count: site.google.reviewCount })}</span>
+      </a>
+    </div>
+
+    <div class="hero__visual" aria-hidden="true">
+      <div class="hero__ring"></div>
+      <figure class="hero__arch" data-parallax="0.04">
+        <Image
+          src={smile}
+          alt=""
+          widths={[480, 720, 960, 1280]}
+          sizes="(max-width: 860px) 80vw, 40vw"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </figure>
+      <figure class="hero__orb" data-parallax="-0.06">
+        <Image src={bay} alt="" widths={[240, 400, 560]} sizes="220px" loading="eager" />
+      </figure>
+      <div class="hero__badge">
+        <strong>{site.experienceYears}+</strong>
+        <span>{h.experienceBadge}</span>
+      </div>
+    </div>
+  </div>
+
+  <a href="#discover" class="hero__scroll" data-hero style="--h: 8">
+    <span>{h.scroll}</span>
+    <i aria-hidden="true"></i>
+  </a>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    min-height: 100svh;
+    display: grid;
+    align-items: center;
+    padding-top: calc(var(--header-h) + 1.5rem);
+    padding-bottom: 3.5rem;
+  }
+
+  /* Akdeniz ışığı — yavaşça süzülen yumuşak ışık lekeleri */
+  .hero__light {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(20px);
+    pointer-events: none;
+  }
+
+  .hero__light--a {
+    top: -20%;
+    right: -12%;
+    width: min(90vw, 1000px);
+    aspect-ratio: 1;
+    background: radial-gradient(closest-side, rgba(76, 195, 224, 0.22), rgba(76, 195, 224, 0.05) 60%, transparent);
+    animation: hero-drift-a 22s var(--ease-in-out) infinite alternate;
+  }
+
+  .hero__light--b {
+    bottom: -30%;
+    left: -15%;
+    width: min(80vw, 800px);
+    aspect-ratio: 1;
+    background: radial-gradient(closest-side, rgba(217, 195, 163, 0.35), transparent);
+    animation: hero-drift-b 26s var(--ease-in-out) infinite alternate;
+  }
+
+  @keyframes hero-drift-a {
+    to {
+      transform: translate3d(-8%, 10%, 0) scale(1.1);
+    }
+  }
+
+  @keyframes hero-drift-b {
+    to {
+      transform: translate3d(10%, -8%, 0) scale(1.05);
+    }
+  }
+
+  .hero__grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+    align-items: center;
+    gap: clamp(2rem, 1rem + 4vw, 5rem);
+  }
+
+  .hero__copy {
+    display: grid;
+    gap: var(--space-4);
+    justify-items: start;
+  }
+
+  .hero__title {
+    font-size: clamp(2.1rem, 1.2rem + 4.6vw, 5.5rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .hero__line {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+  }
+
+  .hero__line > span {
+    display: block;
+  }
+
+  .hero__title em {
+    font-weight: 500;
+    background: linear-gradient(100deg, var(--brand-600), var(--brand-500) 50%, var(--champagne));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    padding-right: 0.05em;
+  }
+
+  .hero__lead {
+    max-width: 50ch;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: var(--space-2);
+  }
+
+  .hero__rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--ink-soft);
+    transition: color var(--dur-fast);
+  }
+
+  .hero__rating:hover {
+    color: var(--ink);
+  }
+
+  .hero__rating strong {
+    color: var(--ink);
+  }
+
+  .hero__stars {
+    display: inline-flex;
+    gap: 2px;
+    color: var(--champagne);
+  }
+
+  /* ---------- Görsel kompozisyon ---------- */
+  .hero__visual {
+    position: relative;
+    justify-self: end;
+    width: min(100%, 440px);
+    aspect-ratio: 4 / 5;
+  }
+
+  .hero__ring {
+    position: absolute;
+    inset: -6% -8% auto auto;
+    width: 78%;
+    aspect-ratio: 1;
+    border: 1px solid rgba(184, 151, 107, 0.45);
+    border-radius: 50%;
+  }
+
+  .hero__arch {
+    position: absolute;
+    inset: 0 0 0 12%;
+    overflow: hidden;
+    border-radius: 999px 999px var(--radius-lg) var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    background: var(--sand-100);
+  }
+
+  .hero__arch :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 52% 40%;
+    transform: scale(1.06);
+  }
+
+  /* Küçük görsel, portrenin yüzünü kapatmadan sol alt köşesine "asılı" durur;
+     ivory halka + ince şampanya çizgisi ile ana görselden ayrışır. */
+  .hero__orb {
+    position: absolute;
+    left: -8%;
+    bottom: -5%;
+    width: 31%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 50%;
+    box-shadow:
+      0 0 0 5px var(--ivory),
+      0 0 0 6px rgba(184, 151, 107, 0.55),
+      var(--shadow-md);
+  }
+
+  .hero__orb :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero__badge {
+    position: absolute;
+    top: 9%;
+    left: -2%;
+    display: grid;
+    gap: 0.1rem;
+    padding: 1rem 1.3rem;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: var(--shadow-md);
+    animation: hero-float 7s var(--ease-in-out) infinite alternate;
+  }
+
+  .hero__badge strong {
+    font-family: var(--font-sans);
+    font-size: 2.1rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    color: var(--brand-700);
+  }
+
+  .hero__badge span {
+    font-size: var(--text-xs);
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+  }
+
+  @keyframes hero-float {
+    to {
+      transform: translateY(-14px);
+    }
+  }
+
+  /* ---------- Kaydır göstergesi ---------- */
+  .hero__scroll {
+    position: absolute;
+    left: 50%;
+    bottom: 1.75rem;
+    display: grid;
+    justify-items: center;
+    gap: 0.6rem;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    translate: -50% 0;
+  }
+
+  .hero__scroll i {
+    position: relative;
+    width: 1px;
+    height: 44px;
+    overflow: hidden;
+    background: var(--line);
+  }
+
+  .hero__scroll i::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--brand-600);
+    animation: hero-scroll 2.2s var(--ease-in-out) infinite;
+  }
+
+  @keyframes hero-scroll {
+    0% {
+      transform: translateY(-100%);
+    }
+    60%,
+    100% {
+      transform: translateY(100%);
+    }
+  }
+
+  /* ---------- Giriş animasyonu (perde kalktıktan sonra) ---------- */
+  :global(html.js) [data-hero] {
+    animation: hero-rise 1.3s var(--ease-out) both;
+    animation-delay: calc(var(--intro-delay) + var(--h) * 110ms);
+  }
+
+  :global(html.js) [data-hero-line] {
+    animation: hero-line 1.4s var(--ease-out) both;
+    animation-delay: calc(var(--intro-delay) + var(--h) * 120ms);
+  }
+
+  :global(html.js) .hero__arch {
+    animation: hero-arch 1.8s var(--ease-out) both;
+    animation-delay: calc(var(--intro-delay) + 150ms);
+  }
+
+  :global(html.js) .hero__orb,
+  :global(html.js) .hero__ring {
+    animation: hero-pop 1.4s var(--ease-out) both;
+    animation-delay: calc(var(--intro-delay) + 700ms);
+  }
+
+  :global(html.js) .hero__badge {
+    animation:
+      hero-pop 1.2s var(--ease-out) both calc(var(--intro-delay) + 950ms),
+      hero-float 7s var(--ease-in-out) calc(var(--intro-delay) + 2.2s) infinite alternate;
+  }
+
+  @keyframes hero-rise {
+    from {
+      opacity: 0;
+      transform: translateY(32px);
+    }
+  }
+
+  @keyframes hero-line {
+    from {
+      transform: translateY(105%);
+    }
+  }
+
+  @keyframes hero-arch {
+    from {
+      clip-path: inset(100% 0 0 0 round 999px 999px 28px 28px);
+    }
+    to {
+      clip-path: inset(0 0 0 0 round 999px 999px 28px 28px);
+    }
+  }
+
+  @keyframes hero-pop {
+    from {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+  }
+
+  /* ---------- Duyarlı ---------- */
+  @media (max-width: 860px) {
+    .hero {
+      min-height: auto;
+      padding-bottom: 5rem;
+    }
+
+    .hero__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .hero__visual {
+      justify-self: center;
+      width: min(86%, 420px);
+      margin-top: 1rem;
+    }
+
+    .hero__scroll {
+      display: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero__copy > .eyebrow {
+      letter-spacing: 0.14em;
+    }
+
+    .hero__copy > .eyebrow::before {
+      display: none;
+    }
+
+    .hero__actions {
+      display: grid;
+      width: 100%;
+    }
+
+    .hero__badge {
+      left: -8%;
+      padding: 0.75rem 1rem;
+    }
+
+    .hero__badge strong {
+      font-size: 1.75rem;
+    }
+  }
+</style>

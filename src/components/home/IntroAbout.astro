@@ -1,0 +1,130 @@
+---
+import { Image } from 'astro:assets';
+import suite from '@/assets/images/clinic-suite.jpg';
+import mark from '@/assets/brand/logo-mark.png';
+import Icon from '@/components/ui/Icon.astro';
+import Stats from '@/components/ui/Stats.astro';
+import { getDictionary, localizePath, type Locale } from '@/i18n';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = getDictionary(lang);
+const c = t.home.intro;
+---
+
+<section class="section intro-about" id="discover">
+  <div class="container intro-about__grid">
+    <div class="intro-about__media">
+      <figure class="intro-about__photo" data-reveal="curtain">
+        <Image src={suite} alt={t.gallery.captions.suite} widths={[480, 720, 960, 1200]} sizes="(max-width: 860px) 92vw, 46vw" />
+      </figure>
+      <div class="intro-about__seal" data-reveal="scale" style="--d: 3" aria-hidden="true">
+        <Image src={mark} alt="" width={64} densities={[1, 2]} />
+      </div>
+    </div>
+
+    <div class="intro-about__copy">
+      <p class="eyebrow" data-reveal>{c.eyebrow}</p>
+      <h2 data-reveal style="--d: 1">{c.title}</h2>
+      {
+        c.body.map((p, i) => (
+          <p class="muted" data-reveal style={`--d: ${i + 2}`}>
+            {p}
+          </p>
+        ))
+      }
+      <a href={localizePath(lang, 'about')} class="link" data-reveal style="--d: 4">
+        {c.cta}
+        <Icon name="arrowRight" size={16} />
+      </a>
+      <Stats lang={lang} />
+    </div>
+  </div>
+</section>
+
+<style>
+  .intro-about__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    align-items: center;
+    gap: clamp(2.5rem, 1rem + 5vw, 6rem);
+  }
+
+  .intro-about__media {
+    position: relative;
+  }
+
+  .intro-about__photo {
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .intro-about__photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 40% center;
+  }
+
+  .intro-about__seal {
+    position: absolute;
+    right: -1.75rem;
+    bottom: 2.5rem;
+    display: grid;
+    place-items: center;
+    width: 132px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--ivory);
+    box-shadow: var(--shadow-md);
+  }
+
+  .intro-about__seal::before {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border: 1px solid rgba(184, 151, 107, 0.5);
+    border-radius: 50%;
+  }
+
+  .intro-about__seal :global(img) {
+    width: 64px;
+    height: auto;
+  }
+
+  .intro-about__copy {
+    display: grid;
+    gap: var(--space-5);
+    justify-items: start;
+  }
+
+  .intro-about__copy :global(.stats) {
+    width: 100%;
+    margin-top: var(--space-5);
+  }
+
+  @media (max-width: 860px) {
+    .intro-about__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .intro-about__photo {
+      aspect-ratio: 4 / 3;
+    }
+
+    .intro-about__seal {
+      right: 1rem;
+      bottom: -2rem;
+      width: 104px;
+    }
+
+    .intro-about__seal :global(img) {
+      width: 50px;
+    }
+  }
+</style>

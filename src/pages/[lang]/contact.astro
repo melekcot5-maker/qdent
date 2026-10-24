@@ -1,0 +1,246 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import Icon from '@/components/ui/Icon.astro';
+import OpeningHours from '@/components/ui/OpeningHours.astro';
+import ContactForm from '@/components/contact/ContactForm.astro';
+import { site, links, fullAddress } from '@/config/site';
+import { getDictionary, localeStaticPaths, localizePath, type Locale } from '@/i18n';
+
+export const getStaticPaths = localeStaticPaths;
+
+const lang = Astro.params.lang as Locale;
+const t = getDictionary(lang);
+const c = t.contact;
+---
+
+<BaseLayout lang={lang} title={c.meta.title} description={c.meta.description} path="contact">
+  <PageHero
+    eyebrow={c.hero.eyebrow}
+    title={c.hero.title}
+    lead={c.hero.lead}
+    crumbs={[{ label: t.common.breadcrumbHome, href: localizePath(lang) }, { label: t.nav.contact }]}
+  />
+
+  <section class="section section--tight contact">
+    <div class="container contact__grid">
+      <div data-reveal>
+        <ContactForm lang={lang} />
+      </div>
+
+      <aside class="info" data-reveal style="--d: 1">
+        <h2 class="info__title">{c.infoTitle}</h2>
+
+        <ul class="info__list" role="list">
+          <li>
+            <span class="info__icon"><Icon name="pin" size={20} /></span>
+            <div>
+              <span class="info__label">{t.common.address}</span>
+              <a href={links.directions} target="_blank" rel="noopener">{fullAddress}</a>
+            </div>
+          </li>
+          <li>
+            <span class="info__icon"><Icon name="phone" size={20} /></span>
+            <div>
+              <span class="info__label">{t.common.phone}</span>
+              <a href={links.tel}>{site.phone.display}</a>
+            </div>
+          </li>
+          <li>
+            <span class="info__icon"><Icon name="phone" size={20} /></span>
+            <div>
+              <span class="info__label">{t.common.landline}</span>
+              <a href={links.landline}>{site.landline.display}</a>
+            </div>
+          </li>
+          <li>
+            <span class="info__icon"><Icon name="mail" size={20} /></span>
+            <div>
+              <span class="info__label">{t.common.email}</span>
+              <a href={links.mailto}>{site.email}</a>
+            </div>
+          </li>
+        </ul>
+
+        <div class="info__actions">
+          <a href={links.whatsapp(t.common.whatsappMessage)} class="btn btn--whatsapp" target="_blank" rel="noopener">
+            <Icon name="whatsapp" size={18} />
+            {t.common.whatsapp}
+          </a>
+          <a href={links.tel} class="btn btn--ghost info__call">
+            <Icon name="phone" size={18} />
+            {t.common.call}
+          </a>
+        </div>
+
+        <div class="info__hours">
+          <span class="info__label">
+            <Icon name="clock" size={16} />
+            {t.common.hours}
+          </span>
+          <OpeningHours lang={lang} />
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section map-section" id="map">
+    <div class="container">
+      <header class="section-head section-head--split">
+        <h2 data-reveal>{c.mapTitle}</h2>
+        <div class="map-section__aside" data-reveal style="--d: 1">
+          <p class="muted">{fullAddress}</p>
+          <a href={links.directions} class="btn btn--primary" target="_blank" rel="noopener">
+            <Icon name="pin" size={18} />
+            {t.common.directions}
+          </a>
+        </div>
+      </header>
+      <div class="map" data-reveal="scale">
+        <iframe
+          src={links.mapEmbed(lang)}
+          title={`${site.legalName} — ${c.mapTitle}`}
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 1rem + 3vw, 4rem);
+    align-items: start;
+  }
+
+  .info {
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+    display: grid;
+    gap: 1.75rem;
+    padding: clamp(1.75rem, 1.2rem + 2vw, 2.75rem);
+    border-radius: var(--radius-xl);
+    background:
+      radial-gradient(80% 60% at 100% 0%, rgba(76, 195, 224, 0.12), transparent 70%),
+      var(--sand-100);
+  }
+
+  .info__title {
+    font-size: var(--text-2xl);
+  }
+
+  .info__list {
+    display: grid;
+    gap: 1.25rem;
+    margin: 0;
+  }
+
+  .info__list li {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .info__list li > div {
+    min-width: 0;
+  }
+
+  .info__list a {
+    overflow-wrap: anywhere;
+    font-weight: 500;
+    line-height: 1.5;
+    transition: color var(--dur-fast);
+  }
+
+  .info__list a:hover {
+    color: var(--brand-700);
+  }
+
+  .info__icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--pearl);
+    color: var(--brand-600);
+  }
+
+  .info__label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.15rem;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+
+  .info__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  /* "Ara" butonu yalnızca mobilde */
+  .info__call {
+    display: none;
+  }
+
+  .info__hours {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .map-section {
+    padding-top: calc(var(--section-y) * 0.5);
+  }
+
+  .map-section__aside {
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+  }
+
+  .map {
+    overflow: hidden;
+    aspect-ratio: 16 / 7;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-xl);
+    background: var(--sand-100);
+    box-shadow: var(--shadow-md);
+  }
+
+  .map iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    filter: saturate(0.85);
+  }
+
+  @media (max-width: 960px) {
+    .contact__grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .info {
+      position: static;
+    }
+  }
+
+  @media (max-width: 860px) {
+    .info__call {
+      display: inline-flex;
+    }
+
+    .map {
+      aspect-ratio: 4 / 5;
+    }
+  }
+</style>

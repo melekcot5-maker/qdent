@@ -1,0 +1,24 @@
+# build
+dist/
+.astro/
+
+# bağımlılıklar
+node_modules/
+
+# ortam değişkenleri
+.env
+.env.*
+!.env.example
+
+# kayıtlar
+npm-debug.log*
+
+# işletim sistemi / editör
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# yerel Claude Code ayarları
+.claude/

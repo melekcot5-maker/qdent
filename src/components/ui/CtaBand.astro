@@ -1,0 +1,107 @@
+---
+/** Sayfa sonlarındaki ücretsiz değerlendirme çağrısı. */
+import Icon from './Icon.astro';
+import { links } from '@/config/site';
+import { getDictionary, localizePath, type Locale } from '@/i18n';
+
+interface Props {
+  lang: Locale;
+  title?: string;
+  body?: string;
+}
+
+const { lang } = Astro.props;
+const t = getDictionary(lang);
+const title = Astro.props.title ?? t.home.cta.title;
+const body = Astro.props.body ?? t.home.cta.body;
+---
+
+<section class="section section--tight">
+  <div class="container">
+    <div class="cta" data-reveal="scale">
+      <div class="cta__light" aria-hidden="true"></div>
+      <div class="cta__copy">
+        <h2 class="cta__title">{title}</h2>
+        <p class="cta__body">{body}</p>
+      </div>
+      <div class="cta__actions">
+        <a href={links.whatsapp(t.common.whatsappMessage)} class="btn btn--light" target="_blank" rel="noopener">
+          <Icon name="whatsapp" size={18} />
+          {t.home.hero.primaryCta}
+        </a>
+        <a href={localizePath(lang, 'contact')} class="btn btn--outline-light">
+          {t.home.cta.form}
+          <Icon name="arrowRight" size={16} class="icon--arrow" />
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) auto;
+    align-items: center;
+    gap: var(--space-6);
+    padding: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+    border-radius: var(--radius-xl);
+    background:
+      radial-gradient(60% 120% at 100% 0%, rgba(76, 195, 224, 0.35), transparent 60%),
+      linear-gradient(135deg, var(--brand-700), var(--brand-900) 70%);
+    color: var(--on-dark);
+    isolation: isolate;
+  }
+
+  .cta__light {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.1) 50%, transparent 65%);
+    background-size: 250% 100%;
+    animation: cta-sheen 7s var(--ease-in-out) infinite;
+  }
+
+  @keyframes cta-sheen {
+    0% {
+      background-position: 130% 0;
+    }
+    60%,
+    100% {
+      background-position: -30% 0;
+    }
+  }
+
+  .cta__title {
+    max-width: 18ch;
+    font-size: var(--text-3xl);
+    color: #fff;
+  }
+
+  .cta__body {
+    max-width: 48ch;
+    margin-top: var(--space-4);
+    color: var(--on-dark-soft);
+  }
+
+  .cta__actions {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 860px) {
+    .cta {
+      grid-template-columns: 1fr;
+    }
+
+    .cta__actions {
+      grid-template-columns: 1fr;
+    }
+
+    .cta__actions .btn {
+      white-space: normal;
+    }
+  }
+</style>

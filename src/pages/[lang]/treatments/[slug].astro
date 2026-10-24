@@ -1,0 +1,528 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Icon from '@/components/ui/Icon.astro';
+import TreatmentCard from '@/components/ui/TreatmentCard.astro';
+import Journey from '@/components/home/Journey.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+import { treatments, type TreatmentMeta } from '@/data/treatments';
+import { site, links } from '@/config/site';
+import { getDictionary, locales, localizePath, type Locale } from '@/i18n';
+
+export function getStaticPaths() {
+  return locales.flatMap((lang) =>
+    treatments.map((treatment) => ({
+      params: { lang, slug: treatment.slug },
+      props: { treatment },
+    })),
+  );
+}
+
+interface Props {
+  treatment: TreatmentMeta;
+}
+
+const lang = Astro.params.lang as Locale;
+const { treatment } = Astro.props;
+const t = getDictionary(lang);
+const d = t.treatments.detail;
+const c = t.treatments.items[treatment.slug];
+const path = `treatments/${treatment.slug}`;
+
+// Aynı sıradaki sonraki üç tedavi (döngüsel) — "Diğer tedaviler"
+const index = treatments.findIndex((tr) => tr.slug === treatment.slug);
+const related = [1, 2, 3].map((n) => treatments[(index + n) % treatments.length]!);
+
+const facts = [
+  { icon: 'clock', label: d.duration, value: c.facts.duration },
+  { icon: 'calendar', label: d.visits, value: c.facts.visits },
+  { icon: 'pin', label: d.stay, value: c.facts.stay },
+] as const;
+
+const base = Astro.site ?? new URL(site.url);
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'MedicalProcedure',
+    name: c.name,
+    description: c.short,
+    url: new URL(localizePath(lang, path), base).href,
+    provider: { '@id': `${site.url}/#clinic` },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: c.faq.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { name: t.common.breadcrumbHome, href: localizePath(lang) },
+      { name: t.nav.treatments, href: localizePath(lang, 'treatments') },
+      { name: c.name, href: localizePath(lang, path) },
+    ].map((crumb, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: crumb.name,
+      item: new URL(crumb.href, base).href,
+    })),
+  },
+];
+---
+
+<BaseLayout lang={lang} title={`${c.name} | ${site.name} Ölüdeniz`} description={c.short} path={path}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+  <section class="t-hero">
+    <div class="t-hero__light" aria-hidden="true"></div>
+    <div class="container t-hero__grid">
+      <div class="t-hero__copy">
+        <nav class="t-crumbs" aria-label="Breadcrumb" data-reveal="fade">
+          <a href={localizePath(lang)}>{t.common.breadcrumbHome}</a>
+          <span aria-hidden="true">/</span>
+          <a href={localizePath(lang, 'treatments')}>{t.nav.treatments}</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">{c.name}</span>
+        </nav>
+        <span class="t-hero__icon" data-reveal style="--d: 1">
+          <Icon name={treatment.icon} size={30} />
+        </span>
+        <h1 data-reveal style="--d: 2">{c.name}</h1>
+        <p class="lead" data-reveal style="--d: 3">{c.short}</p>
+        <div class="t-hero__actions" data-reveal style="--d: 4">
+          <a href={links.whatsapp(`${t.common.whatsappMessage} (${c.name})`)} class="btn btn--primary" target="_blank" rel="noopener">
+            <Icon name="whatsapp" size={18} />
+            {t.home.hero.primaryCta}
+          </a>
+          <a href={localizePath(lang, 'contact')} class="btn btn--ghost">
+            {t.common.freeConsultation}
+            <Icon name="arrowRight" size={16} class="icon--arrow" />
+          </a>
+        </div>
+      </div>
+
+      <figure class="t-hero__media" data-reveal="curtain" style="--d: 2">
+        <Image
+          src={treatment.image}
+          alt={`${c.name} — ${t.common.placeholderImage}`}
+          widths={[480, 720, 960, 1200]}
+          sizes="(max-width: 860px) 92vw, 44vw"
+          loading="eager"
+        />
+      </figure>
+    </div>
+
+    <div class="container">
+      <dl class="facts" data-reveal style="--d: 3">
+        {
+          facts.map((f) => (
+            <div class="facts__item">
+              <span class="facts__icon">
+                <Icon name={f.icon} size={22} />
+              </span>
+              <div>
+                <dt>{f.label}</dt>
+                <dd>{f.value}</dd>
+              </div>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <section class="section section--pearl">
+    <div class="container t-body">
+      <div class="t-body__main">
+        {
+          c.intro.map((p, i) => (
+            <p class:list={['t-body__p', { 't-body__p--first': i === 0 }]} data-reveal style={`--d: ${i}`}>
+              {p}
+            </p>
+          ))
+        }
+
+        <h2 class="t-body__h" data-reveal>{d.benefitsTitle}</h2>
+        <ul class="benefits" role="list">
+          {
+            c.benefits.map((b, i) => (
+              <li data-reveal style={`--d: ${i}`}>
+                <span class="benefits__check">
+                  <Icon name="check" size={16} />
+                </span>
+                {b}
+              </li>
+            ))
+          }
+        </ul>
+
+        <h2 class="t-body__h" data-reveal>{d.faqTitle}</h2>
+        <div class="faq">
+          {
+            c.faq.map((f, i) => (
+              <details class="faq__item" data-reveal style={`--d: ${i}`} open={i === 0}>
+                <summary>
+                  {f.q}
+                  <span class="faq__toggle" aria-hidden="true">
+                    <Icon name="plus" size={18} />
+                  </span>
+                </summary>
+                <p>{f.a}</p>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+
+      <aside class="t-aside">
+        <div class="t-aside__card" data-reveal>
+          <h2 class="t-aside__title">{d.ctaTitle}</h2>
+          <p class="muted">{d.ctaBody}</p>
+          <a href={links.whatsapp(`${t.common.whatsappMessage} (${c.name})`)} class="btn btn--whatsapp btn--block" target="_blank" rel="noopener">
+            <Icon name="whatsapp" size={18} />
+            {t.common.whatsapp}
+          </a>
+          <a href={links.tel} class="btn btn--ghost btn--block">
+            <Icon name="phone" size={18} />
+            {site.phone.display}
+          </a>
+          <p class="t-aside__note">{d.disclaimer}</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <Journey lang={lang} title={d.processTitle} />
+
+  <section class="section">
+    <div class="container">
+      <header class="section-head">
+        <h2 data-reveal>{d.relatedTitle}</h2>
+      </header>
+      <ul class="related" role="list">
+        {
+          related.map((tr) => (
+            <li>
+              <TreatmentCard lang={lang} treatment={tr} index={treatments.indexOf(tr)} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand lang={lang} title={d.ctaTitle} body={d.ctaBody} />
+</BaseLayout>
+
+<style>
+  /* ---------- Başlık ---------- */
+  .t-hero {
+    position: relative;
+    overflow: hidden;
+    padding-top: calc(var(--header-h) + clamp(2.5rem, 1.5rem + 4vw, 5.5rem));
+    padding-bottom: clamp(3rem, 2rem + 3vw, 5rem);
+  }
+
+  .t-hero__light {
+    position: absolute;
+    inset: -30% auto auto -20%;
+    width: min(90vw, 1000px);
+    aspect-ratio: 1;
+    background: radial-gradient(closest-side, rgba(76, 195, 224, 0.15), transparent 70%);
+    pointer-events: none;
+  }
+
+  .t-hero__grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    align-items: center;
+    gap: clamp(2rem, 1rem + 4vw, 5rem);
+  }
+
+  .t-hero__copy {
+    display: grid;
+    gap: var(--space-5);
+    justify-items: start;
+  }
+
+  .t-crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    font-size: var(--text-xs);
+    letter-spacing: 0.04em;
+    color: var(--ink-mute);
+  }
+
+  .t-crumbs a:hover {
+    color: var(--brand-700);
+  }
+
+  .t-hero__icon {
+    display: grid;
+    place-items: center;
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: var(--pearl);
+    border: 1px solid var(--brand-100);
+    color: var(--brand-600);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .t-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .t-hero__media {
+    overflow: hidden;
+    aspect-ratio: 1;
+    border-radius: 999px 999px var(--radius-lg) var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .t-hero__media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: clamp(2.5rem, 2rem + 2vw, 4rem) 0 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+  }
+
+  .facts__item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem 1.75rem;
+  }
+
+  .facts__item + .facts__item {
+    border-left: 1px solid var(--line);
+  }
+
+  .facts__icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--brand-50);
+    border: 1px solid var(--brand-100);
+    color: var(--brand-600);
+  }
+
+  .facts dt {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .facts dd {
+    margin-top: 0.25rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.2;
+    letter-spacing: -0.005em;
+    color: var(--ink);
+  }
+
+  /* ---------- Gövde ---------- */
+  .t-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: clamp(2.5rem, 1rem + 5vw, 6rem);
+    align-items: start;
+  }
+
+  .t-body__main {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .t-body__p {
+    color: var(--ink-soft);
+  }
+
+  .t-body__p--first {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    line-height: 1.5;
+    color: var(--ink);
+  }
+
+  .t-body__h {
+    margin-top: var(--space-6);
+    font-size: var(--text-2xl);
+  }
+
+  .benefits {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 0;
+  }
+
+  .benefits li {
+    display: flex;
+    gap: 0.85rem;
+    align-items: flex-start;
+    padding: 1.25rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--ivory);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+  }
+
+  .benefits__check {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--brand-600);
+    color: #fff;
+  }
+
+  .faq {
+    display: grid;
+    border-top: 1px solid var(--line-strong);
+  }
+
+  .faq__item {
+    border-bottom: 1px solid var(--line-strong);
+  }
+
+  .faq__item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.4rem 0;
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .faq__item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq__toggle {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    color: var(--brand-600);
+    transition:
+      transform var(--dur) var(--ease-out),
+      background-color var(--dur) var(--ease-out);
+  }
+
+  .faq__item[open] .faq__toggle {
+    transform: rotate(45deg);
+    background: var(--brand-50);
+  }
+
+  .faq__item p {
+    max-width: 62ch;
+    padding-bottom: 1.5rem;
+    color: var(--ink-soft);
+  }
+
+  .t-aside {
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+  }
+
+  .t-aside__card {
+    display: grid;
+    gap: 1rem;
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+    background:
+      radial-gradient(80% 60% at 100% 0%, rgba(76, 195, 224, 0.14), transparent 70%),
+      var(--ivory);
+    border: 1px solid var(--line);
+  }
+
+  .t-aside__title {
+    font-size: var(--text-2xl);
+  }
+
+  .t-aside__note {
+    font-size: var(--text-xs);
+    line-height: 1.6;
+    color: var(--ink-mute);
+  }
+
+  .related {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+    margin: 0;
+  }
+
+  @media (max-width: 960px) {
+    .t-hero__grid,
+    .t-body {
+      grid-template-columns: 1fr;
+    }
+
+    .t-hero__media {
+      max-width: 520px;
+      aspect-ratio: 4 / 3;
+      border-radius: var(--radius-lg);
+    }
+
+    .t-aside {
+      position: static;
+    }
+
+    .related {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .facts {
+      grid-template-columns: 1fr;
+    }
+
+    .facts__item + .facts__item {
+      border-left: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .benefits {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

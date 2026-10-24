@@ -1,0 +1,73 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+import TreatmentCard from '@/components/ui/TreatmentCard.astro';
+import { treatments } from '@/data/treatments';
+import { getDictionary, localizePath, type Locale } from '@/i18n';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = getDictionary(lang);
+const c = t.home.treatments;
+---
+
+<section class="section section--pearl">
+  <div class="container">
+    <header class="section-head section-head--split">
+      <div class="treat-head">
+        <p class="eyebrow" data-reveal>{c.eyebrow}</p>
+        <h2 data-reveal style="--d: 1">{c.title}</h2>
+      </div>
+      <div class="treat-head treat-head--aside" data-reveal style="--d: 2">
+        <p class="muted">{c.lead}</p>
+        <a href={localizePath(lang, 'treatments')} class="link">
+          {t.common.allTreatments}
+          <Icon name="arrowRight" size={16} />
+        </a>
+      </div>
+    </header>
+
+    <ul class="treat-grid" role="list">
+      {
+        treatments.map((tr, i) => (
+          <li>
+            <TreatmentCard lang={lang} treatment={tr} index={i} />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .treat-head {
+    display: grid;
+    gap: var(--space-4);
+    justify-items: start;
+  }
+
+  .treat-head--aside {
+    padding-bottom: 0.4rem;
+  }
+
+  .treat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(1rem, 0.5rem + 1vw, 1.5rem);
+    margin: 0;
+  }
+
+  @media (max-width: 1100px) {
+    .treat-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 560px) {
+    .treat-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
