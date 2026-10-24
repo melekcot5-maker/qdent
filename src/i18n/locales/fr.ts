@@ -138,7 +138,7 @@ const fr: Dictionary = {
   about: {
     meta: {
       title: 'À propos | Q Dent Ölüdeniz',
-      description: 'Q Dent Quality Dental Center : dentisterie esthétique et restauratrice à Ölüdeniz. Nos dentistes, nos valeurs et notre approche.',
+      description: 'Q Dent Quality Dental Center : dentisterie esthétique et restauratrice à Ölüdeniz. Notre équipe, nos valeurs et notre approche.',
     },
     hero: {
       eyebrow: 'À propos',
@@ -162,18 +162,62 @@ const fr: Dictionary = {
         { title: 'Durabilité', body: 'Des solutions durables, avec des matériaux et des méthodes éprouvés.' },
         { title: 'Qualité', body: 'Des installations aux normes internationales et des protocoles cliniques rigoureux.' },
         { title: 'Confiance', body: 'Des tarifs transparents et des garanties écrites pour un traitement serein.' },
-        { title: 'Expérience', body: 'Une équipe expérimentée depuis plus de 10 ans et des milliers de cas réussis.' },
+        { title: 'Expérience', body: 'Une équipe installée à Fethiye depuis des années, et des patients qui nous font confiance depuis tout ce temps.' },
       ],
     },
     team: {
-      eyebrow: 'Nos dentistes',
+      eyebrow: 'Notre équipe',
       title: 'Votre sourire entre de bonnes mains',
       lead: 'Une équipe qui vous connaît tout au long de votre traitement et parle votre langue.',
-      dentist: 'Chirurgien-dentiste',
       photoSoon: 'Photo à venir',
-      bios: {
-        dilara:
-          'Diplômée de la faculté de médecine dentaire de l’université Van Yüzüncü Yıl. Après avoir acquis de l’expérience dans plusieurs cliniques, elle s’est installée à Fethiye et a ouvert son propre cabinet. Elle accorde une grande importance à la communication avec les patients et à la planification des soins, place la satisfaction des patients et l’éthique au cœur de sa pratique et accueille des patients de Fethiye comme de nombreux pays du monde.',
+      roles: { dentist: 'Chirurgie dentaire', manager: 'Direction', assistant: 'Assistance dentaire' },
+      soon: 'Profil à venir',
+      labels: { education: 'Formation', focus: 'Domaines de prédilection', certified: 'Certifications', journey: 'Parcours', credentials: 'Certificats et formations' },
+      profiles: {
+        dilara: {
+          intro: 'La dentisterie n’est pas seulement une spécialité technique, mais une responsabilité centrée sur l’humain.',
+          education: 'Université Van Yüzüncü Yıl · Faculté de médecine dentaire',
+          about: [
+            'Après le diplôme de la faculté de médecine dentaire de l’université Van Yüzüncü Yıl, plusieurs cliniques ont permis d’acquérir de l’expérience, surtout en communication avec les patients et en planification des soins.',
+            'Puis installation à Fethiye, une ville où aucun visage n’était familier, et ouverture d’un cabinet personnel. Depuis dix ans, des patients y sont accueillis ; des relations solides, fondées sur la confiance, se sont nouées avec des patients de Fethiye et de nombreux pays.',
+            'Une pratique reconnue pour l’amour du métier, l’attention portée à la satisfaction des patients et une communication sincère — toujours dans le respect de l’éthique et de la qualité.',
+          ],
+          journey: [
+            { title: 'Formation', text: 'Lycée scientifique de Hatay, puis faculté de médecine dentaire de l’université Van Yüzüncü Yıl' },
+            { title: 'Expérience', text: 'Plusieurs cliniques, avec un accent sur la communication avec les patients et la planification des soins' },
+            { title: 'Fethiye', text: 'Ouverture d’un cabinet personnel' },
+            { title: 'Aujourd’hui', text: 'Dix ans d’accueil de patients à Fethiye' },
+          ],
+          credentials: [
+            'Certificat en chirurgie implantaire',
+            'Certificat en botox',
+            'Certificat en dentisterie esthétique',
+          ],
+          tagsKind: 'certified',
+          tags: ['Chirurgie implantaire', 'Botox', 'Dentisterie esthétique'],
+        },
+        elif: {
+          intro: 'Chaque étape du traitement est menée avec une grande rigueur et beaucoup de précision.',
+          education: 'Université Zonguldak Bülent Ecevit · Faculté de médecine dentaire',
+          about: [
+            'Diplôme de la faculté de médecine dentaire de l’université Zonguldak Bülent Ecevit. La formation continue se poursuit sur des plateformes nationales et internationales ; un stage à Augsbourg, en Allemagne, a permis de découvrir d’autres approches cliniques et des protocoles modernes.',
+            'Une approche pluridisciplinaire permet de proposer des solutions globales. L’accent est mis sur la dentisterie esthétique — smile design, soins esthétiques, couronnes en céramique et en zircone — avec des techniques actuelles qui préservent le tissu dentaire.',
+            'Des formations avancées en traitement canalaire (endodontie), qui permet de conserver la dent à long terme, maintiennent les connaissances à jour. Chez Q Dent : dentisterie esthétique et préventive.',
+          ],
+          journey: [
+            { title: 'Formation', text: 'Faculté de médecine dentaire de l’université Zonguldak Bülent Ecevit' },
+            { title: 'Stage', text: 'Augsbourg, Allemagne : approches cliniques variées et protocoles modernes' },
+            { title: 'Perfectionnement', text: 'Formations continues sur des plateformes nationales et internationales' },
+            { title: 'Aujourd’hui', text: 'Dentisterie esthétique et préventive chez Q Dent' },
+          ],
+          credentials: [
+            'Formation avancée en endodontie (traitement canalaire)',
+            'Programmes de formation continue, nationaux et internationaux',
+            'Stage clinique à Augsbourg, Allemagne',
+          ],
+          tagsKind: 'focus',
+          tags: ['Smile design', 'Soins esthétiques', 'Céramique & zircone', 'Endodontie'],
+        },
       },
     },
   },

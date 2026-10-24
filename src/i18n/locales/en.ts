@@ -138,7 +138,7 @@ const en: Dictionary = {
   about: {
     meta: {
       title: 'About Us | Q Dent Ölüdeniz',
-      description: 'Q Dent Quality Dental Center: cosmetic and restorative dentistry in Ölüdeniz. Our dentists, our values and our approach.',
+      description: 'Q Dent Quality Dental Center: cosmetic and restorative dentistry in Ölüdeniz. Our team, our values and our approach.',
     },
     hero: {
       eyebrow: 'About us',
@@ -162,18 +162,62 @@ const en: Dictionary = {
         { title: 'Longevity', body: 'Long-lasting solutions with proven materials and methods.' },
         { title: 'Quality', body: 'Internationally equipped facilities and clinical protocols applied with care.' },
         { title: 'Trust', body: 'Transparent pricing and written guarantees, so you can relax during treatment.' },
-        { title: 'Experience', body: 'An experienced dental team with 10+ years and thousands of successful cases.' },
+        { title: 'Experience', body: 'A team working in Fethiye for years, and patients who have trusted us for just as long.' },
       ],
     },
     team: {
-      eyebrow: 'Our dentists',
+      eyebrow: 'Our team',
       title: 'Your smile is in safe hands',
       lead: 'A team that knows you throughout your treatment and speaks your language.',
-      dentist: 'Dentist',
       photoSoon: 'Photo coming soon',
-      bios: {
-        dilara:
-          'Graduate of the Faculty of Dentistry at Van Yüzüncü Yıl University. After gaining experience in several clinics, she settled in Fethiye and opened her own practice. She values clear patient communication and careful treatment planning, and places patient satisfaction and ethical practice at the centre of her work, caring for patients from Fethiye and many countries around the world.',
+      roles: { dentist: 'Dentist', manager: 'Manager', assistant: 'Dental Assistant' },
+      soon: 'Profile coming soon',
+      labels: { education: 'Education', focus: 'Focus areas', certified: 'Certified in', journey: 'Journey', credentials: 'Certificates & training' },
+      profiles: {
+        dilara: {
+          intro: 'Dentistry is seen not only as a technical specialty but as a human-centred responsibility.',
+          education: 'Van Yüzüncü Yıl University · Faculty of Dentistry',
+          about: [
+            'After graduating from the Faculty of Dentistry at Van Yüzüncü Yıl University, worked in several clinics, gaining experience in many areas, above all patient communication and treatment planning.',
+            'Then moved to Fethiye, a city with no familiar faces, and opened an independent practice. Patients have been welcomed there for ten years, and strong, trust-based relationships have grown with patients from Fethiye and many countries around the world.',
+            'Known for a love of the profession, care for patient satisfaction and sincere communication, always working with ethical values and a quality-first approach.',
+          ],
+          journey: [
+            { title: 'Education', text: 'Hatay Science High School, then the Faculty of Dentistry at Van Yüzüncü Yıl University' },
+            { title: 'Experience', text: 'Several clinics, with a focus on patient communication and treatment planning' },
+            { title: 'Fethiye', text: 'Opened an independent practice' },
+            { title: 'Today', text: 'Ten years of welcoming patients in Fethiye' },
+          ],
+          credentials: [
+            'Implant surgery certificate',
+            'Botox certificate',
+            'Aesthetic dentistry certificate',
+          ],
+          tagsKind: 'certified',
+          tags: ['Implant Surgery', 'Botox', 'Aesthetic Dentistry'],
+        },
+        elif: {
+          intro: 'Every treatment step is carried out with great care and precision.',
+          education: 'Zonguldak Bülent Ecevit University · Faculty of Dentistry',
+          about: [
+            'Graduate of the Faculty of Dentistry at Zonguldak Bülent Ecevit University. Professional development continues on national and international platforms; an internship in Augsburg, Germany, brought experience of different clinical approaches and modern treatment protocols.',
+            'Works with a multidisciplinary approach to offer complete solutions. Focuses on aesthetic dentistry — smile design, aesthetic fillings, porcelain and zirconia crowns — using up-to-date techniques that preserve tooth structure.',
+            'Advanced training in root canal treatment (endodontics), which keeps a tooth in the mouth for the long term, keeps knowledge current. At Q Dent, provides aesthetic and preventive dentistry.',
+          ],
+          journey: [
+            { title: 'Education', text: 'Faculty of Dentistry, Zonguldak Bülent Ecevit University' },
+            { title: 'Internship', text: 'Augsburg, Germany: different clinical approaches and modern treatment protocols' },
+            { title: 'Development', text: 'Continuing education on national and international platforms' },
+            { title: 'Today', text: 'Aesthetic and preventive dentistry at Q Dent' },
+          ],
+          credentials: [
+            'Advanced training in endodontics (root canal treatment)',
+            'Continuing education programmes, national and international',
+            'Clinical internship in Augsburg, Germany',
+          ],
+          tagsKind: 'focus',
+          tags: ['Smile Design', 'Aesthetic Fillings', 'Porcelain & Zirconia', 'Endodontics'],
+        },
       },
     },
   },

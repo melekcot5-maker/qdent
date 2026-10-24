@@ -138,7 +138,7 @@ const tr: Dictionary = {
   about: {
     meta: {
       title: 'Hakkımızda | Q Dent Ölüdeniz',
-      description: 'Q Dent Quality Dental Center: Ölüdeniz’de estetik ve restoratif diş hekimliği. Hekimlerimiz, değerlerimiz ve klinik anlayışımız.',
+      description: 'Q Dent Quality Dental Center: Ölüdeniz’de estetik ve restoratif diş hekimliği. Ekibimiz, değerlerimiz ve klinik anlayışımız.',
     },
     hero: {
       eyebrow: 'Hakkımızda',
@@ -167,14 +167,58 @@ const tr: Dictionary = {
       ],
     },
     team: {
-      eyebrow: 'Hekimlerimiz',
+      eyebrow: 'Ekibimiz',
       title: 'Gülüşünüz emin ellerde',
       lead: 'Tedaviniz boyunca sizi tanıyan, sizinle aynı dili konuşan bir ekip.',
-      dentist: 'Diş Hekimi',
       photoSoon: 'Fotoğraf yakında',
-      bios: {
-        dilara:
-          'Van Yüzüncü Yıl Üniversitesi Diş Hekimliği Fakültesi mezunu. Çeşitli kliniklerde edindiği deneyimin ardından Fethiye’ye yerleşerek kendi kliniğini kurdu. Hasta iletişimine ve tedavi planlamasına önem veriyor; hasta memnuniyetini ve etik değerleri merkeze alarak Fethiye’den ve dünyanın farklı ülkelerinden gelen hastalara hizmet veriyor.',
+      roles: { dentist: 'Diş Hekimi', manager: 'Yönetici', assistant: 'Dental Asistan' },
+      soon: 'Biyografi yakında',
+      labels: { education: 'Eğitim', focus: 'Odak alanları', certified: 'Belgeli alanlar', journey: 'Yolculuk', credentials: 'Belgeler ve eğitimler' },
+      profiles: {
+        dilara: {
+          intro: 'Diş hekimliğini yalnızca teknik bir uzmanlık değil, insan odaklı bir sorumluluk olarak görüyor.',
+          education: 'Van Yüzüncü Yıl Üniversitesi · Diş Hekimliği Fakültesi',
+          about: [
+            'Van Yüzüncü Yıl Üniversitesi Diş Hekimliği Fakültesi’nden mezun olduktan sonra çeşitli kliniklerde çalışarak hasta iletişimi ve tedavi planlaması başta olmak üzere birçok alanda deneyim kazandı.',
+            'Ardından kimseyi tanımadığı bir şehir olan Fethiye’ye yerleşerek kendi kliniğini açtı. On yıldır burada hasta kabul ediyor; Fethiye’den ve dünyanın farklı ülkelerinden hastalarla güçlü, güvene dayalı bir ilişki kurdu.',
+            'Mesleğine duyduğu sevgi, hasta memnuniyetine verdiği önem ve içten iletişimiyle tanınıyor; her zaman etik değerlere bağlı kalarak kaliteli hizmet sunuyor.',
+          ],
+          journey: [
+            { title: 'Eğitim', text: 'Hatay Fen Lisesi, ardından Van Yüzüncü Yıl Üniversitesi Diş Hekimliği Fakültesi' },
+            { title: 'Deneyim', text: 'Çeşitli kliniklerde hasta iletişimi ve tedavi planlaması deneyimi' },
+            { title: 'Fethiye', text: 'Kendi kliniğini açtı' },
+            { title: 'Bugün', text: 'On yıldır Fethiye’de hasta kabul ediyor' },
+          ],
+          credentials: [
+            'İmplant cerrahisi belgesi',
+            'Botoks uygulama belgesi',
+            'Estetik diş hekimliği belgesi',
+          ],
+          tagsKind: 'certified',
+          tags: ['İmplant Cerrahisi', 'Botoks', 'Estetik Diş Hekimliği'],
+        },
+        elif: {
+          intro: 'Her tedavi adımını büyük bir titizlik ve hassasiyetle yürütmeyi ilke ediniyor.',
+          education: 'Zonguldak Bülent Ecevit Üniversitesi · Diş Hekimliği Fakültesi',
+          about: [
+            'Zonguldak Bülent Ecevit Üniversitesi Diş Hekimliği Fakültesi mezunu. Mesleki gelişimini ulusal ve uluslararası platformlarda sürdürüyor; Almanya’nın Augsburg kentindeki stajında farklı klinik yaklaşımlar ve modern tedavi protokolleri konusunda deneyim kazandı.',
+            'Hastalarına bütüncül çözümler sunabilmek için multidisipliner bir yaklaşımla çalışıyor. Gülüş tasarımı, estetik dolgu ve porselen/zirkonyum kaplama gibi estetik diş hekimliği alanlarına odaklanırken, güncel tekniklerle diş dokusunu koruyan tedaviler uyguluyor.',
+            'Dişin ağızda uzun ömürlü kalmasını sağlayan kanal tedavisi (endodonti) alanında ileri düzey eğitimler alarak bilgisini güncel tutuyor. Q Dent’te estetik ve koruyucu diş hekimliği alanlarında hizmet veriyor.',
+          ],
+          journey: [
+            { title: 'Eğitim', text: 'Zonguldak Bülent Ecevit Üniversitesi Diş Hekimliği Fakültesi' },
+            { title: 'Staj', text: 'Augsburg, Almanya: farklı klinik yaklaşımlar ve modern tedavi protokolleri' },
+            { title: 'Gelişim', text: 'Ulusal ve uluslararası platformlarda mesleki eğitimler' },
+            { title: 'Bugün', text: 'Q Dent’te estetik ve koruyucu diş hekimliği' },
+          ],
+          credentials: [
+            'Endodonti (kanal tedavisi) ileri düzey eğitimleri',
+            'Ulusal ve uluslararası mesleki gelişim eğitimleri',
+            'Augsburg (Almanya) klinik stajı',
+          ],
+          tagsKind: 'focus',
+          tags: ['Gülüş Tasarımı', 'Estetik Dolgu', 'Porselen & Zirkonyum', 'Endodonti'],
+        },
       },
     },
   },

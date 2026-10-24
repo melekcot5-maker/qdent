@@ -20,11 +20,12 @@ export interface OpeningHours {
   close: string | null;
 }
 
-export interface Doctor {
+export interface TeamMember {
   /** Sözlükteki `about.team.bios` anahtarı */
-  id: 'dilara' | 'tunay';
+  id: string;
   name: string;
-  title: 'dentist';
+  /** Sözlükteki `about.team.roles` anahtarı */
+  role: 'dentist' | 'manager' | 'assistant';
 }
 
 export const site = {
@@ -68,10 +69,15 @@ export const site = {
   timeZone: 'Europe/Istanbul',
   experienceYears: 10,
 
-  doctors: [
-    { id: 'dilara', name: 'Dt. Dilara Nur Kılınç', title: 'dentist' },
-    { id: 'tunay', name: 'Dt. Tunay Emre Çaycı', title: 'dentist' },
-  ] satisfies Doctor[],
+  /** Hakkımızda sayfasında bu sırayla gösterilir: önce hekimler, sonra klinik ekibi. */
+  team: [
+    { id: 'dilara', name: 'Dt. Dilara Nur Kılınç', role: 'dentist' },
+    { id: 'elif', name: 'Dt. Elif Demirtaş', role: 'dentist' },
+    { id: 'tunay', name: 'Dt. Tunay Emre Çaycı', role: 'dentist' },
+    { id: 'recep', name: 'Recep Aykut', role: 'manager' },
+    { id: 'merve', name: 'Merve Eylüm Çakın', role: 'assistant' },
+    { id: 'melek', name: 'Melek Çot', role: 'assistant' },
+  ] satisfies TeamMember[],
 
   social: {
     instagram: 'https://www.instagram.com/qclinicturkey/',

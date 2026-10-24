@@ -143,7 +143,33 @@ export interface Dictionary {
     hero: { eyebrow: string; title: string; lead: string };
     story: { eyebrow: string; title: string; body: string[] };
     values: { eyebrow: string; title: string; items: TitledText[] };
-    team: { eyebrow: string; title: string; lead: string; dentist: string; photoSoon: string; bios: { dilara?: string; tunay?: string } };
+    team: {
+      eyebrow: string;
+      title: string;
+      lead: string;
+      photoSoon: string;
+      roles: { dentist: string; manager: string; assistant: string };
+      soon: string;
+      labels: { education: string; focus: string; certified: string; journey: string; credentials: string };
+      profiles: {
+        [id: string]:
+          | {
+              /** Kartın başındaki tek cümlelik alıntı */
+              intro: string;
+              education: string;
+              /** Tam biyografi paragrafları */
+              about: string[];
+              /** Yolculuk çizgisi adımları */
+              journey: { title: string; text: string }[];
+              /** Sahip olunan belgeler ve alınan eğitimler */
+              credentials: string[];
+              /** Etiketlerin başlığı: odak alanları ya da belgeli alanlar */
+              tagsKind: 'focus' | 'certified';
+              tags: string[];
+            }
+          | undefined;
+      };
+    };
   };
 
   treatments: {

@@ -138,7 +138,7 @@ const de: Dictionary = {
   about: {
     meta: {
       title: 'Über uns | Q Dent Ölüdeniz',
-      description: 'Q Dent Quality Dental Center: ästhetische und restaurative Zahnmedizin in Ölüdeniz. Unsere Zahnärzte, Werte und Philosophie.',
+      description: 'Q Dent Quality Dental Center: ästhetische und restaurative Zahnmedizin in Ölüdeniz. Unser Team, unsere Werte und Philosophie.',
     },
     hero: {
       eyebrow: 'Über uns',
@@ -162,18 +162,62 @@ const de: Dictionary = {
         { title: 'Beständigkeit', body: 'Langlebige Lösungen mit bewährten Materialien und Methoden.' },
         { title: 'Qualität', body: 'International ausgestattete Räumlichkeiten und sorgfältig angewandte klinische Protokolle.' },
         { title: 'Vertrauen', body: 'Transparente Preise und schriftliche Garantien für ein beruhigtes Behandlungsgefühl.' },
-        { title: 'Erfahrung', body: 'Ein erfahrenes Behandlerteam mit über 10 Jahren und tausenden erfolgreichen Fällen.' },
+        { title: 'Erfahrung', body: 'Ein Team, das seit Jahren in Fethiye arbeitet, und Patienten, die uns ebenso lange vertrauen.' },
       ],
     },
     team: {
-      eyebrow: 'Unsere Zahnärzte',
+      eyebrow: 'Unser Team',
       title: 'Ihr Lächeln in sicheren Händen',
       lead: 'Ein Team, das Sie während der gesamten Behandlung kennt und Ihre Sprache spricht.',
-      dentist: 'Zahnarzt',
       photoSoon: 'Foto folgt',
-      bios: {
-        dilara:
-          'Absolventin der Zahnmedizinischen Fakultät der Van Yüzüncü Yıl Universität. Nach Berufserfahrung in mehreren Kliniken ließ sie sich in Fethiye nieder und gründete ihre eigene Praxis. Sie legt Wert auf eine klare Kommunikation mit den Patienten und sorgfältige Behandlungsplanung, stellt Patientenzufriedenheit und ethisches Handeln in den Mittelpunkt und betreut Patienten aus Fethiye und vielen Ländern der Welt.',
+      roles: { dentist: 'Zahnarzt / Zahnärztin', manager: 'Klinikleitung', assistant: 'Dentalassistenz' },
+      soon: 'Profil folgt',
+      labels: { education: 'Ausbildung', focus: 'Schwerpunkte', certified: 'Zertifiziert in', journey: 'Werdegang', credentials: 'Zertifikate & Weiterbildungen' },
+      profiles: {
+        dilara: {
+          intro: 'Zahnmedizin gilt nicht nur als technische Fachrichtung, sondern als menschenorientierte Verantwortung.',
+          education: 'Van Yüzüncü Yıl Universität · Zahnmedizinische Fakultät',
+          about: [
+            'Nach dem Abschluss an der Zahnmedizinischen Fakultät der Van Yüzüncü Yıl Universität folgte die Arbeit in mehreren Kliniken, mit Erfahrung vor allem in Patientenkommunikation und Behandlungsplanung.',
+            'Danach der Umzug nach Fethiye, in eine Stadt ohne persönliche Kontakte, und die Gründung einer eigenen Praxis. Seit zehn Jahren werden dort Patienten betreut; mit Patienten aus Fethiye und vielen Ländern der Welt sind enge, vertrauensvolle Beziehungen entstanden.',
+            'Bekannt für die Liebe zum Beruf, den hohen Stellenwert der Patientenzufriedenheit und eine aufrichtige Kommunikation – stets mit ethischen Werten und hohem Qualitätsanspruch.',
+          ],
+          journey: [
+            { title: 'Ausbildung', text: 'Hatay Fen Lisesi, danach Zahnmedizinische Fakultät der Van Yüzüncü Yıl Universität' },
+            { title: 'Erfahrung', text: 'Mehrere Kliniken mit Schwerpunkt Patientenkommunikation und Behandlungsplanung' },
+            { title: 'Fethiye', text: 'Gründung einer eigenen Praxis' },
+            { title: 'Heute', text: 'Seit zehn Jahren Patientenbetreuung in Fethiye' },
+          ],
+          credentials: [
+            'Zertifikat Implantatchirurgie',
+            'Zertifikat Botox',
+            'Zertifikat Ästhetische Zahnmedizin',
+          ],
+          tagsKind: 'certified',
+          tags: ['Implantatchirurgie', 'Botox', 'Ästhetische Zahnmedizin'],
+        },
+        elif: {
+          intro: 'Jeder Behandlungsschritt wird mit großer Sorgfalt und Feingefühl ausgeführt.',
+          education: 'Zonguldak Bülent Ecevit Universität · Zahnmedizinische Fakultät',
+          about: [
+            'Abschluss an der Zahnmedizinischen Fakultät der Zonguldak Bülent Ecevit Universität. Die fachliche Weiterbildung läuft auf nationalen und internationalen Plattformen; ein Praktikum im deutschen Augsburg vermittelte Erfahrung mit unterschiedlichen klinischen Ansätzen und modernen Behandlungsprotokollen.',
+            'Für ganzheitliche Lösungen wird interdisziplinär gearbeitet. Der Schwerpunkt liegt auf ästhetischer Zahnmedizin – Smile Design, ästhetische Füllungen, Porzellan- und Zirkonkronen – mit aktuellen, zahnsubstanzschonenden Techniken.',
+            'Fortgeschrittene Weiterbildungen in der Wurzelkanalbehandlung (Endodontie), die den Zahn langfristig erhält, halten das Wissen aktuell. Bei Q Dent umfasst das Angebot ästhetische und präventive Zahnmedizin.',
+          ],
+          journey: [
+            { title: 'Ausbildung', text: 'Zahnmedizinische Fakultät der Zonguldak Bülent Ecevit Universität' },
+            { title: 'Praktikum', text: 'Augsburg, Deutschland: unterschiedliche klinische Ansätze und moderne Behandlungsprotokolle' },
+            { title: 'Weiterbildung', text: 'Fortbildungen auf nationalen und internationalen Plattformen' },
+            { title: 'Heute', text: 'Ästhetische und präventive Zahnmedizin bei Q Dent' },
+          ],
+          credentials: [
+            'Fortgeschrittene Weiterbildung in Endodontie (Wurzelkanalbehandlung)',
+            'Fortbildungsprogramme, national und international',
+            'Klinisches Praktikum in Augsburg, Deutschland',
+          ],
+          tagsKind: 'focus',
+          tags: ['Smile Design', 'Ästhetische Füllungen', 'Porzellan & Zirkon', 'Endodontie'],
+        },
       },
     },
   },
