@@ -73,7 +73,6 @@ export const site = {
   team: [
     { id: 'dilara', name: 'Dt. Dilara Nur Kılınç', role: 'dentist' },
     { id: 'elif', name: 'Dt. Elif Demirtaş', role: 'dentist' },
-    { id: 'tunay', name: 'Dt. Tunay Emre Çaycı', role: 'dentist' },
     { id: 'recep', name: 'Recep Aykut', role: 'manager' },
     { id: 'merve', name: 'Merve Eylüm Çakın', role: 'assistant' },
     { id: 'melek', name: 'Melek Çot', role: 'assistant' },

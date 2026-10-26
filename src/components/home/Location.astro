@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import coast from '@/assets/images/oludeniz-coast.jpg';
+import coast from '@/assets/images/oludeniz-panorama.jpg';
 import Icon from '@/components/ui/Icon.astro';
 import { links } from '@/config/site';
 import { getDictionary, localizePath, type Locale } from '@/i18n';
@@ -15,8 +15,9 @@ const c = t.home.location;
 ---
 
 <section class="location">
+  <div class="location__frame">
   <div class="location__media" aria-hidden="true">
-    <div class="location__img" data-parallax="0.12">
+    <div class="location__img" data-parallax="0.05">
       <Image src={coast} alt="" widths={[800, 1200, 1600, 2400]} sizes="100vw" />
     </div>
   </div>
@@ -48,13 +49,14 @@ const c = t.home.location;
       </div>
     </div>
   </div>
+  </div>
 </section>
 
 <style>
-  .location {
+  .location__frame {
     position: relative;
     overflow: hidden;
-    padding-block: clamp(6rem, 4rem + 10vw, 14rem);
+    padding-block: clamp(2.5rem, 1.5rem + 3vw, 5rem);
   }
 
   .location__media {
@@ -64,14 +66,14 @@ const c = t.home.location;
 
   .location__img {
     position: absolute;
-    inset: -12% 0;
+    inset: -6% 0;
   }
 
   .location__img :global(img) {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 60%;
+    object-position: center 85%;
   }
 
   .location__media::after {
@@ -87,10 +89,10 @@ const c = t.home.location;
 
   .location__card {
     display: grid;
-    gap: var(--space-5);
+    gap: var(--space-4);
     justify-items: start;
-    max-width: 560px;
-    padding: clamp(2rem, 1.5rem + 2vw, 3.25rem);
+    max-width: 520px;
+    padding: clamp(1.5rem, 1.1rem + 1.6vw, 2.5rem);
     border: 1px solid rgba(255, 255, 255, 0.6);
     border-radius: var(--radius-xl);
     background: rgba(250, 248, 244, 0.86);

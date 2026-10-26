@@ -35,7 +35,6 @@ const related = [1, 2, 3].map((n) => treatments[(index + n) % treatments.length]
 
 const facts = [
   { icon: 'clock', label: d.duration, value: c.facts.duration },
-  { icon: 'calendar', label: d.visits, value: c.facts.visits },
   { icon: 'pin', label: d.stay, value: c.facts.stay },
 ] as const;
 
@@ -293,11 +292,12 @@ const schema = [
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: 50% 25%;
   }
 
   .facts {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     margin: clamp(2.5rem, 2rem + 2vw, 4rem) 0 0;
     border: 1px solid var(--line);
     border-radius: var(--radius-lg);
