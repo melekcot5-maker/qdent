@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import care from '@/assets/images/treatment-care.jpg';
+import treatmentUnit from '@/assets/images/clinic/treatment-unit.jpg';
 import Icon from '@/components/ui/Icon.astro';
 import type { IconName } from '@/components/ui/icons';
 import { getDictionary, type Locale } from '@/i18n';
@@ -20,7 +20,7 @@ const itemIcons: IconName[] = ['sparkles', 'user', 'shield', 'globe'];
       <p class="eyebrow" data-reveal>{c.eyebrow}</p>
       <h2 data-reveal style="--d: 1">{c.title}</h2>
       <figure class="why__photo" data-reveal="curtain" style="--d: 2">
-        <Image src={care} alt="" widths={[480, 720, 960]} sizes="(max-width: 860px) 92vw, 40vw" />
+        <Image src={treatmentUnit} alt={t.gallery.captions.treatmentRoom} widths={[480, 720, 960]} sizes="(max-width: 860px) 92vw, 40vw" />
       </figure>
     </div>
 

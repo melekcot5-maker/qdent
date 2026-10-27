@@ -1,0 +1,96 @@
+---
+/** Önce/sonra görseli henüz olmayan tedaviler için BeforeAfter ile aynı çerçevede yer tutucu */
+import Icon from './Icon.astro';
+import type { IconName } from './icons';
+
+interface Props {
+  icon: IconName;
+  beforeLabel: string;
+  afterLabel: string;
+  /** İkonun altında gösterilen kısa not, ör. "Yakında" */
+  note?: string;
+}
+
+const { icon, beforeLabel, afterLabel, note } = Astro.props;
+---
+
+<div class="ba-soon">
+  <span class="ba-soon__half" aria-hidden="true">
+    <small>{beforeLabel}</small>
+  </span>
+  <span class="ba-soon__half ba-soon__half--after" aria-hidden="true">
+    <small>{afterLabel}</small>
+  </span>
+  <span class="ba-soon__center">
+    <span class="ba-soon__icon" aria-hidden="true">
+      <Icon name={icon} size={24} />
+    </span>
+    {note && <span class="ba-soon__note">{note}</span>}
+  </span>
+</div>
+
+<style>
+  .ba-soon {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--line);
+  }
+
+  .ba-soon__half {
+    position: relative;
+    background: linear-gradient(160deg, var(--sand-100), var(--sand-200));
+  }
+
+  .ba-soon__half--after {
+    border-left: 1px solid rgba(255, 255, 255, 0.9);
+    background:
+      radial-gradient(80% 70% at 50% 40%, rgba(255, 255, 255, 0.9), transparent 70%),
+      linear-gradient(160deg, var(--brand-50), var(--brand-100));
+  }
+
+  .ba-soon__half small {
+    position: absolute;
+    top: 0.85rem;
+    left: 0.85rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+
+  .ba-soon__center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: grid;
+    justify-items: center;
+    gap: 0.7rem;
+    translate: -50% -50%;
+  }
+
+  .ba-soon__icon {
+    display: grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: var(--pearl);
+    color: var(--brand-600);
+    box-shadow: var(--shadow-md);
+  }
+
+  .ba-soon__note {
+    padding: 0.3rem 0.8rem;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.85);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    white-space: nowrap;
+    color: var(--ink-soft);
+  }
+</style>

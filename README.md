@@ -81,7 +81,7 @@ alanında tanımlıdır (`https://www.qclinicturkey.com`); değişirse orayı ve
 
 ## Yayından önce tamamlanacaklar
 
-- [ ] **Fotoğraflar**: `src/assets/images/` altındakiler Unsplash'ten alınmış geçici görsellerdir (aşağıda kaynaklar). Klinik, hekim ve önce/sonra fotoğraflarıyla değiştirilmeli.
+- [ ] **Fotoğraflar**: Klinik fotoğrafları `src/assets/images/clinic/` altında (kliniğin kendi çekimleri). Kalan geçici görseller: ana sayfanın konum bölümündeki `oludeniz-panorama.jpg` ile ana sayfa girişindeki `smile-portrait.jpg` (kaynağı aşağıda). Tedavi sayfaları, `src/data/treatments.ts` içindeki önce/sonra vakalarını gösterir.
 - [ ] **Hekim fotoğrafları**: Hakkımızda sayfasında baş harfli yer tutucular var.
 - [ ] **Önce / sonra galerisi**: Galeri sayfasında "Yakında" kutuları var; hasta onaylı görseller eklenecek.
 - [ ] **Tedavi metinleri ve süreler**: Genel bilgi olarak yazıldı; hekim tarafından gözden geçirilmeli.
@@ -95,9 +95,4 @@ alanında tanımlıdır (`https://www.qclinicturkey.com`); değişirse orayı ve
 
 | Dosya                 | Fotoğrafçı                  | Bağlantı |
 | --------------------- | --------------------------- | -------- |
-| `oludeniz-bay.jpg`    | My Creative Ajans           | https://unsplash.com/photos/ugOeqo4TKZg |
-| `oludeniz-coast.jpg`  | My Creative Ajans           | https://unsplash.com/photos/aR69xO6IwbY |
-| `clinic-suite.jpg`    | Ozkan Guner                 | https://unsplash.com/photos/aFqSRokmw2E |
-| `clinic-room.jpg`     | Ozkan Guner                 | https://unsplash.com/photos/AQG6C_xYEpA |
-| `treatment-care.jpg`  | Shedrack Salami             | https://unsplash.com/photos/7lBJaJpS3z4 |
 | `smile-portrait.jpg`  | Katsiaryna Endruszkiewicz   | https://unsplash.com/photos/TiGLivtBrF4 |

@@ -9,14 +9,24 @@ interface Props {
   /** Kaydırıcı için ekran okuyucu etiketi */
   label: string;
   alt: string;
+  /** Varsayılan, galerideki üç sütunlu ızgaraya göre */
+  sizes?: string;
 }
 
-const { before, after, beforeLabel, afterLabel, label, alt } = Astro.props;
+const {
+  before,
+  after,
+  beforeLabel,
+  afterLabel,
+  label,
+  alt,
+  sizes = '(max-width: 600px) 92vw, (max-width: 1000px) 46vw, (max-width: 1300px) 31vw, 400px',
+} = Astro.props;
 ---
 
 <div class="ba" data-ba style="--pos: 50%">
-  <Image src={before} alt={`${alt} — ${beforeLabel}`} class="ba__img" widths={[480, 720, 960]} sizes="(max-width: 860px) 92vw, 46vw" />
-  <Image src={after} alt={`${alt} — ${afterLabel}`} class="ba__img ba__img--after" widths={[480, 720, 960]} sizes="(max-width: 860px) 92vw, 46vw" />
+  <Image src={before} alt={`${alt} — ${beforeLabel}`} class="ba__img" widths={[480, 720, 960]} sizes={sizes} />
+  <Image src={after} alt={`${alt} — ${afterLabel}`} class="ba__img ba__img--after" widths={[480, 720, 960]} sizes={sizes} />
 
   <span class="ba__tag ba__tag--before">{beforeLabel}</span>
   <span class="ba__tag ba__tag--after">{afterLabel}</span>
@@ -34,7 +44,7 @@ const { before, after, beforeLabel, afterLabel, label, alt } = Astro.props;
   .ba {
     position: relative;
     overflow: hidden;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 16 / 9;
     border-radius: var(--radius-lg);
     border: 1px solid var(--line);
     box-shadow: var(--shadow-sm);
@@ -50,6 +60,8 @@ const { before, after, beforeLabel, afterLabel, label, alt } = Astro.props;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    /* Kaynaklar 4:3; ağız karenin üst-ortasında olduğundan geniş kadrajda biraz yukarıdan kırp */
+    object-position: 50% 25%;
     pointer-events: none;
   }
 

@@ -4,6 +4,10 @@
  *
  * Kaynak: Google İşletme kaydı (Ölüdeniz Dental) ve qclinicturkey.com — 2026-10-23.
  */
+import type { ImageMetadata } from 'astro';
+import dilaraPhoto from '@/assets/images/team/dilara-nur-kilinc.jpg';
+import mervePhoto from '@/assets/images/team/merve-eylum-cakin.jpg';
+import melekPhoto from '@/assets/images/team/melek-cot.jpg';
 
 export interface Phone {
   /** Ekranda görünen biçim */
@@ -26,6 +30,8 @@ export interface TeamMember {
   name: string;
   /** Sözlükteki `about.team.roles` anahtarı */
   role: 'dentist' | 'manager' | 'assistant';
+  /** Portre (hekimlerde 4:5, ekipte kare); yoksa baş harfler / ikonlu yer tutucu gösterilir */
+  photo?: ImageMetadata;
 }
 
 export const site = {
@@ -71,11 +77,11 @@ export const site = {
 
   /** Hakkımızda sayfasında bu sırayla gösterilir: önce hekimler, sonra klinik ekibi. */
   team: [
-    { id: 'dilara', name: 'Dt. Dilara Nur Kılınç', role: 'dentist' },
+    { id: 'dilara', name: 'Dt. Dilara Nur Kılınç', role: 'dentist', photo: dilaraPhoto },
     { id: 'elif', name: 'Dt. Elif Demirtaş', role: 'dentist' },
     { id: 'recep', name: 'Recep Aykut', role: 'manager' },
-    { id: 'merve', name: 'Merve Eylüm Çakın', role: 'assistant' },
-    { id: 'melek', name: 'Melek Çot', role: 'assistant' },
+    { id: 'merve', name: 'Merve Eylüm Çakın', role: 'assistant', photo: mervePhoto },
+    { id: 'melek', name: 'Melek Çot', role: 'assistant', photo: melekPhoto },
   ] satisfies TeamMember[],
 
   social: {

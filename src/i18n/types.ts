@@ -71,7 +71,6 @@ export interface Dictionary {
     /** "{count}" yer tutucusu yorum sayısıyla değiştirilir */
     googleReviews: string;
     breadcrumbHome: string;
-    placeholderImage: string;
   };
 
   home: {
@@ -200,9 +199,21 @@ export interface Dictionary {
     after: string;
     soon: string;
     sample: string;
+    clinicCase: string;
+    /** Ayrı tedavi sayfası olmayan galeri vakalarının adları */
+    extraCases: { bonding: string };
     sliderLabel: string;
-    credit: string;
-    captions: { suite: string; room: string; bay: string; coast: string };
+    /** Klinik fotoğraflarının altyazıları; galeri dışında görsellerin alt metni olarak da kullanılır */
+    captions: {
+      facade: string;
+      entrance: string;
+      reception: string;
+      lounge: string;
+      refreshments: string;
+      treatmentRoom: string;
+      digitalScan: string;
+      xray: string;
+    };
   };
 
   contact: {
