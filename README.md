@@ -110,6 +110,6 @@ alanında tanımlıdır (`https://www.qdent.com.tr`); değişirse orayı ve `pub
 - [ ] **Tedavi metinleri ve süreler**: Genel bilgi olarak yazıldı; hekim tarafından gözden geçirilmeli.
 - [ ] **Çeviriler**: DE / FR / RU metinleri ana dili bu olan biri tarafından okunmalı.
 - [ ] **Yasal metinler**: KVKK Aydınlatma Metni, Çerez Politikası ve Hasta Hakları (`src/i18n/legal/`) hukuk danışmanına onaylatılmalı; veri sorumlusunun resmî unvanı (şahıs/şirket) `site.ts` → `legalName` ile aynı olmalı. Yeni bir harici hizmet (analitik, video, harita vb.) eklenirse çerez politikası ve `src/scripts/consent.ts` güncellenmeli.
-- [ ] **Çalışma saatleri**: Google kaydındaki saatler kullanıldı (Pzt 09:00, Sal–Cum 09:30, Cmt 10:00 açılış, 18:00 kapanış; Pazar kapalı). Eski sitede "her gün 08:30–21:00" yazıyor — doğrusu teyit edilmeli.
+- [ ] **Çalışma saatleri**: Sayfalarda gösterilmiyor; yalnızca Google için yapılandırılmış veride (`site.ts` → `hours`, `Seo.astro`) duruyor. Google kaydındaki saatler kullanıldı (Pzt 09:00, Sal–Cum 09:30, Cmt 10:00 açılış, 18:00 kapanış; Pazar kapalı); doğrusu teyit edilmeli.
 - [ ] **Vektör logo**: SVG/AI dosyası gelirse `brand/source/` altına konup doğrudan kullanılmalı.
 - [ ] **Web3Forms anahtarı** (yukarıya bakın).

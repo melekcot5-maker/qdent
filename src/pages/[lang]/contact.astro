@@ -4,7 +4,6 @@ import facade from '@/assets/images/clinic/facade.jpg';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHero from '@/components/ui/PageHero.astro';
 import Icon from '@/components/ui/Icon.astro';
-import OpeningHours from '@/components/ui/OpeningHours.astro';
 import ContactForm from '@/components/contact/ContactForm.astro';
 import { site, links, fullAddress } from '@/config/site';
 import { getDictionary, localeStaticPaths, localizePath, type Locale } from '@/i18n';
@@ -73,14 +72,6 @@ const c = t.contact;
             <Icon name="phone" size={18} />
             {t.common.call}
           </a>
-        </div>
-
-        <div class="info__hours">
-          <span class="info__label">
-            <Icon name="clock" size={16} />
-            {t.common.hours}
-          </span>
-          <OpeningHours lang={lang} />
         </div>
       </aside>
     </div>
@@ -214,11 +205,6 @@ const c = t.contact;
   /* "Ara" butonu yalnızca mobilde */
   .info__call {
     display: none;
-  }
-
-  .info__hours {
-    display: grid;
-    gap: 0.5rem;
   }
 
   .map-section {

@@ -62,9 +62,6 @@ export interface Dictionary {
     address: string;
     phone: string;
     landline: string;
-    hours: string;
-    closed: string;
-    today: string;
     followUs: string;
     breadcrumbHome: string;
   };

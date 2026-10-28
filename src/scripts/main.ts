@@ -128,21 +128,10 @@ function initGlow() {
   });
 }
 
-/** Çalışma saatlerinde bugünü işaretle (klinik saat dilimine göre). */
-function initOpeningHours() {
-  document.querySelectorAll<HTMLElement>('[data-hours]').forEach((list) => {
-    const tz = list.dataset.tz || 'Europe/Istanbul';
-    const weekday = new Intl.DateTimeFormat('en-US', { weekday: 'short', timeZone: tz }).format(new Date());
-    const iso = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].indexOf(weekday) + 1;
-    list.querySelector(`[data-day="${iso}"]`)?.classList.add('is-today');
-  });
-}
-
 initHeader();
 initMobileMenu();
 initLanguage();
 initReveal();
 initParallax();
 initGlow();
-initOpeningHours();
 initConsent();
