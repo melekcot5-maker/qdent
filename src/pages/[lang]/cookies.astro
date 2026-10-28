@@ -1,0 +1,177 @@
+---
+import lounge from '@/assets/images/clinic/lounge.jpg';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import LegalSections from '@/components/ui/LegalSections.astro';
+import { getDictionary, localeMeta, localeStaticPaths, localizePath, type Locale } from '@/i18n';
+import { getLegal } from '@/i18n/legal';
+
+export const getStaticPaths = localeStaticPaths;
+
+const lang = Astro.params.lang as Locale;
+const t = getDictionary(lang);
+const p = getLegal(lang).cookies;
+const cols = p.table.columns;
+
+/** Metin veya kullanılan çerezler değiştiğinde bu tarih de güncellenmeli. */
+const updatedAt = new Date('2026-10-28');
+const updated = new Intl.DateTimeFormat(localeMeta[lang].htmlLang, { dateStyle: 'long' }).format(updatedAt);
+---
+
+<BaseLayout lang={lang} title={p.meta.title} description={p.meta.description} path="cookies" darkHero>
+  <PageHero
+    eyebrow={p.eyebrow}
+    title={p.title}
+    lead={p.lead}
+    crumbs={[{ label: t.common.breadcrumbHome, href: localizePath(lang) }, { label: p.title }]}
+    image={lounge}
+    imagePosition="68% 55%"
+  />
+
+  <section class="section section--tight">
+    <div class="container container--narrow cookie-page">
+      <div class="cookie-page__top">
+        <p class="cookie-page__updated">
+          {p.updated}: <time datetime={updatedAt.toISOString().slice(0, 10)}>{updated}</time>
+        </p>
+        <button type="button" class="btn btn--sm btn--primary" data-consent-open>{p.manage}</button>
+      </div>
+
+      <LegalSections sections={p.sections} />
+
+      <div class="cookie-table" data-reveal>
+        <table>
+          <caption>{p.table.caption}</caption>
+          <thead>
+            <tr>
+              <th scope="col">{cols.name}</th>
+              <th scope="col">{cols.provider}</th>
+              <th scope="col">{cols.purpose}</th>
+              <th scope="col">{cols.duration}</th>
+              <th scope="col">{cols.category}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              p.table.rows.map((row) => (
+                <tr>
+                  <th scope="row">
+                    <code>{row.name}</code>
+                  </th>
+                  <td data-label={cols.provider}>{row.provider}</td>
+                  <td data-label={cols.purpose}>{row.purpose}</td>
+                  <td data-label={cols.duration}>{row.duration}</td>
+                  <td data-label={cols.category}>{row.category}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .cookie-page {
+    display: grid;
+    gap: clamp(2rem, 1.5rem + 1.5vw, 3rem);
+  }
+
+  .cookie-page__top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .cookie-page__updated {
+    font-size: var(--text-sm);
+    color: var(--ink-mute);
+  }
+
+  /* Tablo da bölüm kartlarıyla aynı çerçevede */
+  .cookie-table {
+    padding: clamp(1.5rem, 1.1rem + 1.6vw, 2.75rem);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--pearl);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .cookie-table table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+  }
+
+  .cookie-table caption {
+    margin-bottom: 1rem;
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    text-align: left;
+  }
+
+  .cookie-table th,
+  .cookie-table td {
+    padding: 0.85rem 0.75rem;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .cookie-table thead th {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+
+  .cookie-table tbody th {
+    font-weight: 600;
+  }
+
+  .cookie-table code {
+    font-family: ui-monospace, 'SFMono-Regular', Consolas, monospace;
+    font-size: 0.92em;
+    overflow-wrap: anywhere;
+  }
+
+  .cookie-table td {
+    color: var(--ink-soft);
+  }
+
+  /* Dar ekranda her satır bir kart olur; sayfa yatay kaymaz */
+  @media (max-width: 720px) {
+    .cookie-table thead {
+      display: none;
+    }
+
+    .cookie-table table,
+    .cookie-table tbody,
+    .cookie-table tr,
+    .cookie-table th,
+    .cookie-table td {
+      display: block;
+    }
+
+    .cookie-table tr {
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .cookie-table tbody th,
+    .cookie-table td {
+      padding: 0.2rem 0;
+      border: 0;
+    }
+
+    .cookie-table td::before {
+      content: attr(data-label) ': ';
+      font-weight: 600;
+      color: var(--ink);
+    }
+  }
+</style>

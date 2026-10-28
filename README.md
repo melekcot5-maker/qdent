@@ -63,11 +63,32 @@ Tedavi sayfalarının görselleri `src/data/treatments.ts` içinde eşleştirili
 **Yeni dil** — `src/i18n/config.ts` içine ekleyin, `locales/` altına sözlük açın, `src/i18n/index.ts`
 içinde bağlayın, `astro.config.mjs` içindeki site haritası dil listesine ekleyin.
 
+## Sağlık tanıtım mevzuatı
+
+Metinler ve görseller, Sağlık Hizmetlerinde Tanıtım ve Bilgilendirme Faaliyetleri Hakkında Yönetmelik'e
+(RG 12.11.2025, sayı 33075) göre hazırlandı. Yeni metin eklerken `src/i18n/locales/tr.ts` başındaki kurallara uyun.
+Özetle sitede şunlar yer almaz:
+- ücret, "ücretsiz", indirim ve kampanya bilgisi,
+- Google puanı ya da hasta yorumu,
+- üstünlük ya da kesin sonuç ifadesi,
+- uzman olmayan hekim için uzmanlık dalı adı.
+
+**Önce/sonra vakası eklemek** — `src/data/treatments.ts` içinde vakaya `consent: true`, `publishedOn`, `dentist`
+ve `treatedOn` girin. `consent` ve `publishedOn` olmadan vaka görünmez; hekim veya işlem tarihi eksikse derleme
+uyarı yazdırır (yönetmelik ikisini de istiyor). Yayımlamadan önce şunlardan emin olun:
+- hastanın Ek-1 onam formu imzalı ve klinikte hasta dosyasında (form siteye yüklenmez; Resmî Gazete: https://www.resmigazete.gov.tr/eskiler/2025/11/20251112-2-1.pdf),
+- iki fotoğraf aynı ortam ve ışıkta çekilmiş,
+- fotoğraflarda rötuş yok.
+
+**Sağlık turizmi** — Uluslararası sağlık turizmi yetki belgesi olmadan yurt dışına yönelik tanıtım yapılamaz
+(konaklama/transfer, "tedavi + tatil", hasta yorumu vb.). Belge alınırsa belge sitede yayımlanmalı ve tüm
+mecralarda HealthTürkiye logosu kullanılmalıdır.
+
 ## İletişim formu
 
 Form veritabanı kullanmaz; [Web3Forms](https://web3forms.com) iletiyi doğrudan e-postaya gönderir.
 
-1. web3forms.com → `info@qclinicturkey.com` ile ücretsiz erişim anahtarı alın.
+1. web3forms.com → `info@qdent.com.tr` ile ücretsiz erişim anahtarı alın.
 2. Proje kökünde `.env.example` dosyasını `.env` adıyla kopyalayın, anahtarı `PUBLIC_WEB3FORMS_KEY=` satırına yazın.
 3. `npm run build` ile yeniden üretin. Barındırma servisinde (Netlify/Vercel) aynı değişkeni ortam değişkeni olarak tanımlayın.
 
@@ -77,22 +98,18 @@ Anahtar tanımlı değilken form, ziyaretçiye WhatsApp/e-posta ile ulaşmasın�
 
 `npm run build` sonrası oluşan `dist/` klasörü herhangi bir statik barındırmaya yüklenebilir
 (Netlify, Vercel, Cloudflare Pages ya da klasik hosting). Alan adı `astro.config.mjs` → `site`
-alanında tanımlıdır (`https://www.qclinicturkey.com`); değişirse orayı ve `public/robots.txt` dosyasını güncelleyin.
+alanında tanımlıdır (`https://www.qdent.com.tr`); değişirse orayı ve `public/robots.txt` dosyasını güncelleyin.
 
 ## Yayından önce tamamlanacaklar
 
-- [ ] **Fotoğraflar**: Klinik fotoğrafları `src/assets/images/clinic/` altında (kliniğin kendi çekimleri). Kalan geçici görseller: ana sayfanın konum bölümündeki `oludeniz-panorama.jpg` ile ana sayfa girişindeki `smile-portrait.jpg` (kaynağı aşağıda). Tedavi sayfaları, `src/data/treatments.ts` içindeki önce/sonra vakalarını gösterir.
+- [ ] **Fotoğraflar**: Klinik fotoğrafları `src/assets/images/clinic/` altında (kliniğin kendi çekimleri). Kalan geçici görsel: ana sayfanın konum bölümündeki `oludeniz-panorama.jpg` (kaynağı ve lisansı teyit edilmeli).
 - [ ] **Hekim fotoğrafları**: Hakkımızda sayfasında baş harfli yer tutucular var.
-- [ ] **Önce / sonra galerisi**: Galeri sayfasında "Yakında" kutuları var; hasta onaylı görseller eklenecek.
+- [ ] **Önce / sonra vakaları**: İmplant, porselen, zirkonyum ve bonding vakaları yayında (onam formları dosyada); her birine işlemi yapan hekim ve işlem tarihi eklenmeli (`npm run build` eksikleri listeler).
+- [ ] **Ruhsattaki ad**: Sitedeki kurum adı (`site.ts` → `legalName`) Bakanlık ruhsatındaki ad ve türle birebir aynı olmalı.
+- [ ] **Sağlık turizmi yetki belgesi**: Varsa belge ve HealthTürkiye logosu siteye eklenmeli.
 - [ ] **Tedavi metinleri ve süreler**: Genel bilgi olarak yazıldı; hekim tarafından gözden geçirilmeli.
 - [ ] **Çeviriler**: DE / FR / RU metinleri ana dili bu olan biri tarafından okunmalı.
-- [ ] **Gizlilik Politikası**: Taslaktır; KVKK/GDPR için hukuk danışmanına onaylatılmalı.
+- [ ] **Yasal metinler**: KVKK Aydınlatma Metni, Çerez Politikası ve Hasta Hakları (`src/i18n/legal/`) hukuk danışmanına onaylatılmalı; veri sorumlusunun resmî unvanı (şahıs/şirket) `site.ts` → `legalName` ile aynı olmalı. Yeni bir harici hizmet (analitik, video, harita vb.) eklenirse çerez politikası ve `src/scripts/consent.ts` güncellenmeli.
 - [ ] **Çalışma saatleri**: Google kaydındaki saatler kullanıldı (Pzt 09:00, Sal–Cum 09:30, Cmt 10:00 açılış, 18:00 kapanış; Pazar kapalı). Eski sitede "her gün 08:30–21:00" yazıyor — doğrusu teyit edilmeli.
 - [ ] **Vektör logo**: SVG/AI dosyası gelirse `brand/source/` altına konup doğrudan kullanılmalı.
 - [ ] **Web3Forms anahtarı** (yukarıya bakın).
-
-## Geçici görsel kaynakları (Unsplash Lisansı)
-
-| Dosya                 | Fotoğrafçı                  | Bağlantı |
-| --------------------- | --------------------------- | -------- |
-| `smile-portrait.jpg`  | Katsiaryna Endruszkiewicz   | https://unsplash.com/photos/TiGLivtBrF4 |

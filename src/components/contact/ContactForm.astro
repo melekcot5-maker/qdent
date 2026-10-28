@@ -1,6 +1,6 @@
 ---
 /**
- * Ücretsiz değerlendirme formu.
+ * Randevu ve bilgi talebi formu.
  * Veritabanı gerektirmez: Web3Forms servisi iletiyi doğrudan klinik e-postasına
  * gönderir. Anahtar .env dosyasındaki PUBLIC_WEB3FORMS_KEY değişkeninden okunur;
  * anahtar yoksa form ziyaretçiyi WhatsApp/e-postaya yönlendiren bir uyarı gösterir.
@@ -73,7 +73,7 @@ const messages = JSON.stringify({
     <input type="checkbox" name="consent" value="yes" required />
     <span>
       {f.consent}
-      <a href={localizePath(lang, 'privacy')} class="link" target="_blank">{f.consentLink}</a>
+      <a href={localizePath(lang, 'kvkk')} class="link" target="_blank">{f.consentLink}</a>
     </span>
   </label>
 

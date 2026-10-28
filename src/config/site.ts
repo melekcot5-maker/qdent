@@ -37,8 +37,8 @@ export interface TeamMember {
 export const site = {
   name: 'Q Dent',
   legalName: 'Q Dent Quality Dental Center',
-  url: 'https://www.qclinicturkey.com',
-  email: 'info@qclinicturkey.com',
+  url: 'https://www.qdent.com.tr',
+  email: 'info@qdent.com.tr',
 
   phone: { display: '+90 552 332 07 19', e164: '+905523320719' } satisfies Phone,
   landline: { display: '+90 252 616 65 61', e164: '+902526166561' } satisfies Phone,
@@ -55,11 +55,13 @@ export const site = {
   },
   geo: { lat: 36.5708201, lng: 29.1418913 },
 
+  /**
+   * Yalnızca harita ve yol tarifi için. Google puanı/yorum sayısı sitede gösterilmez:
+   * yönetmelik hasta memnuniyeti üzerinden tanıtımı yasaklıyor.
+   */
   google: {
     placeId: 'ChIJ2xF1y3dHwBQRNVqScHuB1iM',
     cid: '2582393803513158197',
-    rating: 4.9,
-    reviewCount: 49,
   },
 
   hours: [
@@ -85,8 +87,7 @@ export const site = {
   ] satisfies TeamMember[],
 
   social: {
-    instagram: 'https://www.instagram.com/qclinicturkey/',
-    facebook: 'https://www.facebook.com/qclinicturkey/',
+    instagram: 'https://www.instagram.com/qdentturkey/',
   },
 } as const;
 
@@ -101,8 +102,6 @@ export const links = {
   directions: `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
     `${site.legalName}, ${site.address.street}, ${site.address.locality}`,
   )}&destination_place_id=${site.google.placeId}`,
-  reviews: `https://search.google.com/local/reviews?placeid=${site.google.placeId}`,
-  writeReview: `https://search.google.com/local/writereview?placeid=${site.google.placeId}`,
 };
 
 export const fullAddress = `${site.address.street}, ${site.address.locality}, ${site.address.postalCode} ${site.address.city}/${site.address.region}`;

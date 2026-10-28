@@ -2,9 +2,13 @@
 /**
  * Sabit üst menü. Sayfa kaydırılınca buzlu cam zemine geçer (main.ts → .is-scrolled).
  * Masaüstünde "Tedaviler" üzerine gelince açılan geniş menü; mobilde tam ekran menü.
+ *
+ * `onDark`: sayfa koyu, tam genişlik fotoğraflı bir başlıkla açılıyorsa menü en üstteyken
+ * beyaz logo ve beyaz yazıyla görünür; kaydırınca ya da mobil menü açılınca normale döner.
  */
 import { Image } from 'astro:assets';
 import logo from '@/assets/brand/logo.png';
+import logoWhite from '@/assets/brand/logo-white.png';
 import Icon from '@/components/ui/Icon.astro';
 import LanguageSwitcher from './LanguageSwitcher.astro';
 import { treatments } from '@/data/treatments';
@@ -14,9 +18,10 @@ import { getDictionary, localizePath, type Locale } from '@/i18n';
 interface Props {
   lang: Locale;
   path: string;
+  onDark?: boolean;
 }
 
-const { lang, path } = Astro.props;
+const { lang, path, onDark = false } = Astro.props;
 const t = getDictionary(lang);
 const to = (p = '') => localizePath(lang, p);
 const section = path.split('/')[0] ?? '';
@@ -30,10 +35,11 @@ const nav = [
 ];
 ---
 
-<header class="header" data-header>
+<header class:list={['header', onDark && 'header--on-dark']} data-header>
   <div class="header__bar container">
     <a href={to()} class="header__logo" aria-label={`${site.legalName} — ${t.nav.home}`}>
-      <Image src={logo} alt="" width={150} densities={[1, 2]} loading="eager" />
+      <Image src={logo} alt="" width={150} densities={[1, 2]} loading="eager" class="header__logo-color" />
+      {onDark && <Image src={logoWhite} alt="" width={150} densities={[1, 2]} loading="eager" class="header__logo-white" />}
     </a>
 
     <nav class="nav" aria-label={t.nav.menu}>
@@ -166,6 +172,52 @@ const nav = [
   .header__logo :global(img) {
     width: clamp(118px, 10vw, 150px);
     height: auto;
+  }
+
+  .header__logo :global(.header__logo-white) {
+    display: none;
+  }
+
+  /* ---------- Koyu fotoğraflı başlığın üzerindeyken (en üstte, mobil menü kapalı) ---------- */
+  :global(html:not(.menu-open)) .header--on-dark:not(.is-scrolled) :global(.header__logo-color) {
+    display: none;
+  }
+
+  :global(html:not(.menu-open)) .header--on-dark:not(.is-scrolled) :global(.header__logo-white) {
+    display: block;
+  }
+
+  :global(html:not(.menu-open)) .header--on-dark:not(.is-scrolled) .nav__link {
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  :global(html:not(.menu-open)) .header--on-dark:not(.is-scrolled) .nav__link:hover,
+  :global(html:not(.menu-open)) .header--on-dark:not(.is-scrolled) .nav__link[aria-current='page'] {
+    color: #fff;
+  }
+
+  :global(html:not(.menu-open)) .header--on-dark:not(.is-scrolled) .nav__link::after {
+    background: var(--champagne-soft);
+  }
+
+  :global(html:not(.menu-open)) .header--on-dark:not(.is-scrolled) :global(.lang__toggle) {
+    border-color: rgba(255, 255, 255, 0.35);
+    color: #fff;
+  }
+
+  :global(html:not(.menu-open)) .header--on-dark:not(.is-scrolled) :global(.lang__toggle:hover),
+  :global(html:not(.menu-open)) .header--on-dark:not(.is-scrolled) :global(.lang[open] .lang__toggle) {
+    border-color: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  :global(html:not(.menu-open)) .header--on-dark:not(.is-scrolled) .header__burger {
+    border-color: rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  :global(html:not(.menu-open)) .header--on-dark:not(.is-scrolled) .header__burger span {
+    background: #fff;
   }
 
   /* ---------- Masaüstü menü ---------- */

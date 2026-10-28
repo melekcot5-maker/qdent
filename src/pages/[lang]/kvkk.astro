@@ -1,0 +1,69 @@
+---
+import reception from '@/assets/images/clinic/reception.jpg';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import LegalSections from '@/components/ui/LegalSections.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { getDictionary, localeMeta, localeStaticPaths, localizePath, type Locale } from '@/i18n';
+import { getLegal } from '@/i18n/legal';
+
+export const getStaticPaths = localeStaticPaths;
+
+const lang = Astro.params.lang as Locale;
+const t = getDictionary(lang);
+const p = getLegal(lang).kvkk;
+
+/** Metin her güncellendiğinde bu tarih de güncellenmeli. */
+const updatedAt = new Date('2026-10-28');
+const updated = new Intl.DateTimeFormat(localeMeta[lang].htmlLang, { dateStyle: 'long' }).format(updatedAt);
+---
+
+<BaseLayout lang={lang} title={p.meta.title} description={p.meta.description} path="kvkk" darkHero>
+  <PageHero
+    eyebrow={p.eyebrow}
+    title={p.title}
+    lead={p.lead}
+    crumbs={[{ label: t.common.breadcrumbHome, href: localizePath(lang) }, { label: p.title }]}
+    image={reception}
+    imagePosition="72% 50%"
+  />
+
+  <section class="section section--tight">
+    <div class="container container--narrow legal-page">
+      <p class="legal-page__updated">
+        {p.updated}: <time datetime={updatedAt.toISOString().slice(0, 10)}>{updated}</time>
+      </p>
+      <LegalSections sections={p.sections} />
+      <p class="legal-page__note">
+        {p.cookiesNote}
+        <a href={localizePath(lang, 'cookies')} class="link">
+          {t.footer.cookies}
+          <Icon name="arrowRight" size={16} />
+        </a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal-page {
+    display: grid;
+    gap: clamp(2rem, 1.5rem + 1.5vw, 3rem);
+  }
+
+  .legal-page__updated {
+    font-size: var(--text-sm);
+    color: var(--ink-mute);
+  }
+
+  .legal-page__note {
+    display: grid;
+    gap: 0.75rem;
+    justify-items: start;
+    padding: 1.25rem 1.5rem;
+    border-left: 3px solid var(--champagne);
+    border-radius: var(--radius-sm);
+    background: var(--sand-100);
+    font-size: var(--text-sm);
+  }
+</style>

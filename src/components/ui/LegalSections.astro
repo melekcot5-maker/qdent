@@ -1,0 +1,96 @@
+---
+/**
+ * KVKK aydınlatma metni ve çerez politikası gibi yasal metinlerin numaralı bölüm kartları.
+ * Metinlerdeki {name}, {address}, {email}, {phone} yer tutucuları site.ts'ten doldurulur.
+ */
+import { site, fullAddress } from '@/config/site';
+import { format } from '@/i18n';
+import type { LegalSection } from '@/i18n/legal';
+
+interface Props {
+  sections: LegalSection[];
+}
+
+const { sections } = Astro.props;
+const values = { name: site.legalName, address: fullAddress, email: site.email, phone: site.landline.display };
+const fill = (text: string) => format(text, values);
+---
+
+<div class="legal">
+  {
+    sections.map((s, i) => (
+      <section class="legal__card" data-reveal style={`--d: ${i % 2}`}>
+        <span class="legal__num" aria-hidden="true">
+          {String(i + 1).padStart(2, '0')}
+        </span>
+        <h2>{s.title}</h2>
+        {s.body?.map((p) => <p>{fill(p)}</p>)}
+        {s.items && (
+          <ul class="legal__list">
+            {s.items.map((item) => (
+              <li>{fill(item)}</li>
+            ))}
+          </ul>
+        )}
+      </section>
+    ))
+  }
+</div>
+
+<style>
+  .legal {
+    display: grid;
+    gap: clamp(1rem, 0.75rem + 0.8vw, 1.5rem);
+  }
+
+  .legal__card {
+    display: grid;
+    gap: 0.85rem;
+    padding: clamp(1.5rem, 1.1rem + 1.6vw, 2.75rem);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--pearl);
+    box-shadow: var(--shadow-sm);
+    transition:
+      box-shadow var(--dur) var(--ease-out),
+      border-color var(--dur) var(--ease-out);
+  }
+
+  .legal__card:hover {
+    border-color: rgba(184, 151, 107, 0.45);
+    box-shadow: var(--shadow-md);
+  }
+
+  /* Örnek tasarımdaki gibi: küçük numara ve altında kısa şampanya çizgi */
+  .legal__num {
+    justify-self: start;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--champagne);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    line-height: 1;
+    color: var(--champagne);
+  }
+
+  .legal__card h2 {
+    margin-top: 0.35rem;
+    font-size: var(--text-2xl);
+  }
+
+  .legal__card p {
+    color: var(--ink-soft);
+  }
+
+  .legal__list {
+    display: grid;
+    gap: 0.5rem;
+    margin: 0;
+    padding-left: 1.25rem;
+    color: var(--ink-soft);
+  }
+
+  .legal__list li::marker {
+    color: var(--brand-600);
+  }
+</style>

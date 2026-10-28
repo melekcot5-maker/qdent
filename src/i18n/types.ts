@@ -31,7 +31,6 @@ export interface TreatmentContent {
   facts: {
     duration: string;
     visits: string;
-    stay: string;
   };
   faq: Faq[];
 }
@@ -60,7 +59,6 @@ export interface Dictionary {
     directions: string;
     learnMore: string;
     allTreatments: string;
-    freeConsultation: string;
     address: string;
     phone: string;
     landline: string;
@@ -68,8 +66,6 @@ export interface Dictionary {
     closed: string;
     today: string;
     followUs: string;
-    /** "{count}" yer tutucusu yorum sayısıyla değiştirilir */
-    googleReviews: string;
     breadcrumbHome: string;
   };
 
@@ -84,7 +80,6 @@ export interface Dictionary {
       primaryCta: string;
       secondaryCta: string;
       experienceBadge: string;
-      scroll: string;
     };
     marquee: string[];
     intro: {
@@ -95,10 +90,9 @@ export interface Dictionary {
     };
     stats: {
       experience: string;
-      rating: string;
+      dentists: string;
       languages: string;
-      consultation: string;
-      consultationValue: string;
+      treatments: string;
     };
     treatments: {
       eyebrow: string;
@@ -123,13 +117,6 @@ export interface Dictionary {
       points: string[];
       cta: string;
     };
-    reviews: {
-      eyebrow: string;
-      title: string;
-      body: string;
-      cta: string;
-      write: string;
-    };
     cta: {
       title: string;
       body: string;
@@ -149,7 +136,7 @@ export interface Dictionary {
       photoSoon: string;
       roles: { dentist: string; manager: string; assistant: string };
       soon: string;
-      labels: { education: string; focus: string; certified: string; journey: string; credentials: string };
+      labels: { education: string; journey: string; credentials: string };
       profiles: {
         [id: string]:
           | {
@@ -160,11 +147,11 @@ export interface Dictionary {
               about: string[];
               /** Yolculuk çizgisi adımları */
               journey: { title: string; text: string }[];
-              /** Sahip olunan belgeler ve alınan eğitimler */
+              /**
+               * Sahip olunan belgeler ve alınan eğitimler. Yönetmelik gereği uzmanlık dalı gibi
+               * görünmemeli: "… eğitimi" biçiminde yazılır, ayrı etiket/rozet olarak gösterilmez.
+               */
               credentials: string[];
-              /** Etiketlerin başlığı: odak alanları ya da belgeli alanlar */
-              tagsKind: 'focus' | 'certified';
-              tags: string[];
             }
           | undefined;
       };
@@ -177,7 +164,6 @@ export interface Dictionary {
     detail: {
       duration: string;
       visits: string;
-      stay: string;
       benefitsTitle: string;
       processTitle: string;
       faqTitle: string;
@@ -195,11 +181,13 @@ export interface Dictionary {
     clinicTitle: string;
     resultsTitle: string;
     resultsLead: string;
+    /** Yönetmeliğin önce/sonra görsellerinde zorunlu tuttuğu uyarı cümlesi */
+    resultsNote: string;
     before: string;
     after: string;
-    soon: string;
-    sample: string;
-    clinicCase: string;
+    caseDentist: string;
+    caseTreated: string;
+    casePublished: string;
     /** Ayrı tedavi sayfası olmayan galeri vakalarının adları */
     extraCases: { bonding: string };
     sliderLabel: string;
@@ -246,12 +234,23 @@ export interface Dictionary {
     };
   };
 
-  privacy: {
-    meta: Meta;
-    title: string;
-    updated: string;
-    draftNotice: string;
-    sections: TitledText[];
+  /** Çerez bildirimi, tercih paneli ve izne bağlı harici içerik yer tutucusu */
+  consent: {
+    banner: { title: string; text: string; accept: string; reject: string; settings: string; policy: string };
+    dialog: {
+      title: string;
+      intro: string;
+      necessaryTitle: string;
+      necessaryBody: string;
+      alwaysOn: string;
+      externalTitle: string;
+      externalBody: string;
+      save: string;
+      acceptAll: string;
+      rejectAll: string;
+      close: string;
+    };
+    embed: { title: string; body: string; load: string; open: string };
   };
 
   notFound: {
@@ -267,6 +266,13 @@ export interface Dictionary {
     treatments: string;
     contact: string;
     rights: string;
-    privacy: string;
+    kvkk: string;
+    patientRights: string;
+    cookies: string;
+    /** Tercih panelini yeniden açan bağlantı */
+    cookiePrefs: string;
+    /** Yönetmelik: sitede son güncelleme tarihi ve editör iletişim bilgisi bulunmalı */
+    updated: string;
+    editor: string;
   };
 }

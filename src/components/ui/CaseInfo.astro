@@ -1,0 +1,74 @@
+---
+/**
+ * Önce/sonra vakasının altındaki zorunlu bilgiler: işlemi yapan hekim, işlem tarihi,
+ * sitede paylaşım tarihi ve "sonuçlar kişiden kişiye değişebilir" uyarısı (yönetmelik m. 7).
+ */
+import { site } from '@/config/site';
+import type { PublishableCase } from '@/data/treatments';
+import { getDictionary, localeMeta, type Locale } from '@/i18n';
+
+interface Props {
+  lang: Locale;
+  result: PublishableCase;
+}
+
+const { lang, result } = Astro.props;
+const g = getDictionary(lang).gallery;
+// Hekim ve işlem tarihi henüz girilmediyse o satır gösterilmez (eksikler derlemede uyarı olarak yazdırılır)
+const dentist = result.dentist && (site.team.find((m) => m.id === result.dentist)?.name ?? result.dentist);
+const date = (iso: string) =>
+  new Intl.DateTimeFormat(localeMeta[lang].htmlLang, { dateStyle: 'long', timeZone: site.timeZone }).format(new Date(iso));
+---
+
+<div class="case-info">
+  <dl>
+    {dentist && <div><dt>{g.caseDentist}</dt><dd>{dentist}</dd></div>}
+    {
+      result.treatedOn && (
+        <div><dt>{g.caseTreated}</dt><dd><time datetime={result.treatedOn}>{date(result.treatedOn)}</time></dd></div>
+      )
+    }
+    <div><dt>{g.casePublished}</dt><dd><time datetime={result.publishedOn}>{date(result.publishedOn)}</time></dd></div>
+  </dl>
+  <p>{g.resultsNote}</p>
+</div>
+
+<style>
+  .case-info {
+    display: grid;
+    gap: 0.5rem;
+    font-size: var(--text-xs);
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+
+  .case-info dl {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
+    margin: 0;
+  }
+
+  .case-info dl div {
+    display: flex;
+    gap: 0.35rem;
+  }
+
+  .case-info dt {
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .case-info dt::after {
+    content: ':';
+  }
+
+  .case-info dd {
+    margin: 0;
+  }
+
+  .case-info p {
+    font-weight: 600;
+    color: var(--ink);
+  }
+</style>

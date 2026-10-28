@@ -11,6 +11,7 @@ import IntroLoader from '@/components/layout/IntroLoader.astro';
 import Header from '@/components/layout/Header.astro';
 import Footer from '@/components/layout/Footer.astro';
 import FloatingActions from '@/components/layout/FloatingActions.astro';
+import CookieConsent from '@/components/layout/CookieConsent.astro';
 import { getDictionary, localeMeta, type Locale } from '@/i18n';
 
 interface Props {
@@ -21,9 +22,11 @@ interface Props {
   path?: string;
   image?: string;
   noindex?: boolean;
+  /** Sayfa koyu, tam genişlik fotoğraflı bir başlıkla açılıyor: üst menü en üstte beyaz görünür */
+  darkHero?: boolean;
 }
 
-const { lang, title, description, path = '', image, noindex } = Astro.props;
+const { lang, title, description, path = '', image, noindex, darkHero = false } = Astro.props;
 const t = getDictionary(lang);
 ---
 
@@ -61,7 +64,7 @@ const t = getDictionary(lang);
   <body>
     <a href="#main" class="skip-link">{t.nav.skipToContent}</a>
     <IntroLoader />
-    <Header lang={lang} path={path} />
+    <Header lang={lang} path={path} onDark={darkHero} />
 
     <main id="main">
       <slot />
@@ -69,6 +72,7 @@ const t = getDictionary(lang);
 
     <Footer lang={lang} path={path} />
     <FloatingActions lang={lang} />
+    <CookieConsent lang={lang} />
 
     <script>
       import '@/scripts/main';

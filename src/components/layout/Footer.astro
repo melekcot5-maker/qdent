@@ -2,11 +2,10 @@
 import { Image } from 'astro:assets';
 import logoWhite from '@/assets/brand/logo-white.png';
 import Icon from '@/components/ui/Icon.astro';
-import OpeningHours from '@/components/ui/OpeningHours.astro';
 import LanguageSwitcher from './LanguageSwitcher.astro';
 import { treatments } from '@/data/treatments';
 import { site, links, fullAddress } from '@/config/site';
-import { getDictionary, localizePath, type Locale } from '@/i18n';
+import { getDictionary, localeMeta, localizePath, type Locale } from '@/i18n';
 
 interface Props {
   lang: Locale;
@@ -16,7 +15,12 @@ interface Props {
 const { lang, path } = Astro.props;
 const t = getDictionary(lang);
 const to = (p = '') => localizePath(lang, p);
-const year = new Date().getFullYear();
+
+// Yönetmelik sitede son güncelleme tarihini istiyor. Site her içerik değişikliğinde yeniden
+// derlendiği için derleme tarihi kullanılır; elle tutulan bir tarih gibi unutulup eskimez.
+const builtAt = new Date();
+const year = builtAt.getFullYear();
+const updated = new Intl.DateTimeFormat(localeMeta[lang].htmlLang, { dateStyle: 'long', timeZone: site.timeZone }).format(builtAt);
 
 const explore = [
   { href: to(), label: t.nav.home },
@@ -39,9 +43,6 @@ const explore = [
       <div class="footer__social" aria-label={t.common.followUs}>
         <a href={site.social.instagram} target="_blank" rel="noopener" aria-label="Instagram">
           <Icon name="instagram" size={20} />
-        </a>
-        <a href={site.social.facebook} target="_blank" rel="noopener" aria-label="Facebook">
-          <Icon name="facebook" size={20} />
         </a>
         <a href={links.whatsapp(t.common.whatsappMessage)} target="_blank" rel="noopener" aria-label="WhatsApp">
           <Icon name="whatsapp" size={18} />
@@ -88,14 +89,24 @@ const explore = [
           <a href={links.mailto}>{site.email}</a>
         </li>
       </ul>
-      <OpeningHours lang={lang} tone="dark" />
     </div>
   </div>
 
   <div class="container footer__bottom">
-    <p>© {year} {site.legalName}. {t.footer.rights}</p>
+    <div class="footer__legal">
+      <p>© {year} {site.legalName}. {t.footer.rights}</p>
+      <p>
+        {t.footer.updated}: <time datetime={builtAt.toISOString().slice(0, 10)}>{updated}</time> · {t.footer.editor}:{' '}
+        <a href={links.mailto}>{site.email}</a>
+      </p>
+    </div>
     <div class="footer__bottom-links">
-      <a href={to('privacy')}>{t.footer.privacy}</a>
+      <ul class="footer__legal-links" role="list">
+        <li><a href={to('kvkk')}>{t.footer.kvkk}</a></li>
+        <li><a href={to('patient-rights')}>{t.footer.patientRights}</a></li>
+        <li><a href={to('cookies')}>{t.footer.cookies}</a></li>
+        <li><button type="button" data-consent-open>{t.footer.cookiePrefs}</button></li>
+      </ul>
       <LanguageSwitcher lang={lang} path={path} variant="pills" />
     </div>
   </div>
@@ -195,7 +206,6 @@ const explore = [
 
   .footer__contact ul {
     gap: 1rem;
-    margin-bottom: 1.5rem;
   }
 
   .footer__contact li {
@@ -223,6 +233,15 @@ const explore = [
     color: var(--on-dark-soft);
   }
 
+  .footer__legal {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .footer__legal a:hover {
+    color: #fff;
+  }
+
   .footer__bottom-links {
     display: flex;
     flex-wrap: wrap;
@@ -230,7 +249,23 @@ const explore = [
     gap: 1rem 1.5rem;
   }
 
-  .footer__bottom-links > a:hover {
+  .footer__legal-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    margin: 0;
+  }
+
+  .footer__legal-links button {
+    padding: 0;
+    border: 0;
+    background: none;
+    font-size: inherit;
+    color: inherit;
+  }
+
+  .footer__legal-links a:hover,
+  .footer__legal-links button:hover {
     color: #fff;
   }
 

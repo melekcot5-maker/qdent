@@ -1,0 +1,358 @@
+---
+import { Image } from 'astro:assets';
+import reception from '@/assets/images/clinic/reception.jpg';
+import treatmentRoom from '@/assets/images/clinic/treatment-room.jpg';
+import treatmentRoom2 from '@/assets/images/clinic/treatment-room-2.jpg';
+import digitalScan from '@/assets/images/clinic/digital-scan.jpg';
+import treatmentUnit from '@/assets/images/clinic/treatment-unit.jpg';
+import lounge from '@/assets/images/clinic/lounge.jpg';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import Icon from '@/components/ui/Icon.astro';
+import type { IconName } from '@/components/ui/icons';
+import { site, fullAddress } from '@/config/site';
+import { format, getDictionary, localeStaticPaths, localizePath, type Locale } from '@/i18n';
+import { getLegal } from '@/i18n/legal';
+
+export const getStaticPaths = localeStaticPaths;
+
+const lang = Astro.params.lang as Locale;
+const t = getDictionary(lang);
+const p = getLegal(lang).patientRights;
+const fill = (text: string) =>
+  format(text, { name: site.legalName, address: fullAddress, email: site.email, phone: site.landline.display });
+
+/** Grupların yanındaki klinik fotoğrafları ve alt metinleri; sıra sözlükteki gruplarla aynı */
+const groupPhotos = [
+  { src: treatmentRoom2, alt: t.gallery.captions.treatmentRoom },
+  { src: digitalScan, alt: t.gallery.captions.digitalScan },
+  { src: treatmentUnit, alt: t.gallery.captions.treatmentRoom },
+  { src: lounge, alt: t.gallery.captions.lounge },
+];
+const applyIcons: IconName[] = ['phone', 'shield', 'globe'];
+
+// Kart numaraları gruplar boyunca kesintisiz: 01–16
+const offsets = p.groups.map((_, i) => p.groups.slice(0, i).reduce((n, g) => n + g.items.length, 0));
+---
+
+<BaseLayout lang={lang} title={p.meta.title} description={p.meta.description} path="patient-rights" darkHero>
+  <PageHero
+    eyebrow={p.hero.eyebrow}
+    title={p.hero.title}
+    lead={p.hero.lead}
+    crumbs={[{ label: t.common.breadcrumbHome, href: localizePath(lang) }, { label: p.hero.eyebrow }]}
+    image={treatmentRoom}
+    imagePosition="62% 60%"
+  />
+
+  <section class="section section--pearl">
+    <div class="container pr-commit">
+      <figure class="pr-photo" data-reveal="curtain">
+        <Image src={reception} alt={t.gallery.captions.reception} widths={[480, 720, 960, 1200]} sizes="(max-width: 860px) 92vw, 46vw" />
+      </figure>
+      <div class="pr-commit__copy">
+        <p class="eyebrow" data-reveal>{p.commitment.eyebrow}</p>
+        <h2 data-reveal style="--d: 1">{p.commitment.title}</h2>
+        {
+          p.commitment.body.map((para, i) => (
+            <p class="muted" data-reveal style={`--d: ${i + 2}`}>
+              {para}
+            </p>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {
+    p.groups.map((group, gi) => (
+      <section class:list={['section', gi % 2 === 0 ? 'section--sand' : 'section--pearl']}>
+        <div class="container">
+          <header class="section-head">
+            <p class="eyebrow" data-reveal>{group.eyebrow}</p>
+            <h2 data-reveal style="--d: 1">{group.title}</h2>
+            <p class="lead" data-reveal style="--d: 2">{group.lead}</p>
+          </header>
+          <div class:list={['pr-group', gi % 2 === 1 && 'pr-group--flip']}>
+            {groupPhotos[gi] && (
+              <figure class="pr-photo pr-group__photo" data-reveal="curtain">
+                <Image src={groupPhotos[gi].src} alt={groupPhotos[gi].alt} widths={[480, 720, 960]} sizes="(max-width: 960px) 92vw, 34vw" />
+              </figure>
+            )}
+            <ol class="pr-cards" role="list">
+              {group.items.map((item, i) => (
+                <li class="pr-card" data-reveal style={`--d: ${i % 2}`}>
+                  <span class="pr-card__num">{String(offsets[gi]! + i + 1).padStart(2, '0')}</span>
+                  <h3>{item.title}</h3>
+                  <p>{item.body}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </section>
+    ))
+  }
+
+  <section class="section">
+    <div class="container pr-end">
+      <div class="pr-resp" data-reveal>
+        <p class="eyebrow">{p.responsibilities.eyebrow}</p>
+        <h2>{p.responsibilities.title}</h2>
+        <p class="muted">{p.responsibilities.lead}</p>
+        <ul class="pr-resp__list" role="list">
+          {
+            p.responsibilities.items.map((item) => (
+              <li>
+                <span class="pr-resp__icon" aria-hidden="true">
+                  <Icon name="check" size={14} />
+                </span>
+                {item}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="pr-apply" data-reveal style="--d: 1">
+        <p class="eyebrow">{p.apply.eyebrow}</p>
+        <h2>{p.apply.title}</h2>
+        <p class="muted">{p.apply.body}</p>
+        <ul class="pr-apply__list" role="list">
+          {
+            p.apply.items.map((item, i) => (
+              <li>
+                <span class="pr-apply__icon" aria-hidden="true">
+                  <Icon name={applyIcons[i] ?? 'document'} size={20} />
+                </span>
+                <div>
+                  <h3>{item.title}</h3>
+                  <p>{fill(item.body)}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+
+    <p class="container pr-source">{p.source}</p>
+  </section>
+</BaseLayout>
+
+<style>
+  .pr-photo {
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .pr-photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* ---------- Taahhüt ---------- */
+  .pr-commit {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2.5rem, 1rem + 5vw, 6rem);
+    align-items: center;
+  }
+
+  .pr-commit .pr-photo {
+    aspect-ratio: 4 / 3;
+  }
+
+  .pr-commit__copy {
+    display: grid;
+    gap: var(--space-5);
+    justify-items: start;
+  }
+
+  /* ---------- Hak grupları ---------- */
+  .pr-group {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(1.5rem, 1rem + 2vw, 3rem);
+    align-items: stretch;
+  }
+
+  .pr-group--flip .pr-group__photo {
+    order: 2;
+  }
+
+  .pr-group__photo {
+    min-height: 320px;
+  }
+
+  .pr-cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 0;
+  }
+
+  .pr-card {
+    display: grid;
+    gap: 0.6rem;
+    align-content: start;
+    padding: clamp(1.25rem, 1rem + 0.8vw, 1.75rem);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--pearl);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .section--pearl .pr-card {
+    background: var(--ivory);
+  }
+
+  .pr-card__num {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-style: italic;
+    line-height: 1;
+    color: var(--champagne);
+  }
+
+  .pr-card h3 {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 1.3;
+  }
+
+  .pr-card p {
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- Sorumluluklar ve başvuru ---------- */
+  .pr-end {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 1rem + 2vw, 3rem);
+    align-items: start;
+  }
+
+  .pr-resp,
+  .pr-apply {
+    display: grid;
+    gap: var(--space-4);
+    padding: clamp(1.75rem, 1.2rem + 2vw, 2.75rem);
+    border-radius: var(--radius-xl);
+  }
+
+  .pr-resp {
+    background: var(--sand-100);
+  }
+
+  .pr-apply {
+    border: 1px solid var(--line);
+    background: var(--pearl);
+  }
+
+  .pr-resp h2,
+  .pr-apply h2 {
+    font-size: var(--text-2xl);
+  }
+
+  .pr-resp__list,
+  .pr-apply__list {
+    display: grid;
+    gap: 0.85rem;
+    margin: var(--space-2) 0 0;
+  }
+
+  .pr-resp__list li {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    font-size: var(--text-sm);
+    color: var(--ink-soft);
+  }
+
+  .pr-resp__icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    margin-top: 0.15rem;
+    border-radius: 50%;
+    background: var(--brand-600);
+    color: #fff;
+  }
+
+  .pr-apply__list li {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .pr-apply__icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--brand-50);
+    color: var(--brand-600);
+  }
+
+  .pr-apply__list h3 {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 1.3;
+  }
+
+  .pr-apply__list p {
+    margin-top: 0.2rem;
+    font-size: var(--text-sm);
+    color: var(--ink-soft);
+  }
+
+  .pr-source {
+    margin-top: clamp(2rem, 1.5rem + 1.5vw, 3rem);
+    font-size: var(--text-xs);
+    color: var(--ink-mute);
+  }
+
+  @media (max-width: 960px) {
+    .pr-group {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .pr-group--flip .pr-group__photo {
+      order: 0;
+    }
+
+    .pr-group__photo {
+      min-height: 0;
+      aspect-ratio: 16 / 9;
+    }
+
+    .pr-end {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 860px) {
+    .pr-commit {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .pr-cards {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

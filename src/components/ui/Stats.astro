@@ -1,5 +1,10 @@
 ---
+/**
+ * Yalnızca doğrulanabilir, olgusal sayılar. Google puanı ve "ücretsiz muayene" gibi ifadeler
+ * yönetmelik gereği (memnuniyet ve ücret/promosyon bilgisi yasağı) burada yer almaz.
+ */
 import { site } from '@/config/site';
+import { treatments } from '@/data/treatments';
 import { locales, getDictionary, type Locale } from '@/i18n';
 
 interface Props {
@@ -7,13 +12,12 @@ interface Props {
 }
 
 const t = getDictionary(Astro.props.lang);
-const rating = site.google.rating.toLocaleString(Astro.props.lang, { minimumFractionDigits: 1 });
 
 const stats = [
   { value: `${site.experienceYears}+`, label: t.home.stats.experience },
-  { value: rating, label: t.home.stats.rating },
+  { value: String(site.team.filter((m) => m.role === 'dentist').length), label: t.home.stats.dentists },
   { value: String(locales.length), label: t.home.stats.languages },
-  { value: t.home.stats.consultationValue, label: t.home.stats.consultation },
+  { value: String(treatments.length), label: t.home.stats.treatments },
 ];
 ---
 
@@ -35,7 +39,7 @@ const stats = [
     border-top: 1px solid var(--line);
   }
 
-  /* Kolonun genişliğine göre 2 ya da 4 sütun: "Ücretsiz / Kostenlos / Бесплатно" 4 sütuna sığmıyordu */
+  /* Kolonun genişliğine göre 2 ya da 4 sütun; dar kolonda uzun etiketler 4 sütuna sığmıyor */
   .stats__grid {
     container-type: inline-size;
     display: grid;

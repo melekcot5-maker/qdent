@@ -116,15 +116,6 @@ const crew = site.team.filter((m) => m.role !== 'dentist');
                   <div class="pro__body">
                     <blockquote class="pro__quote">{pr.intro}</blockquote>
 
-                    <div class="pro__tags">
-                      <p>{a.team.labels[pr.tagsKind]}</p>
-                      <ul role="list">
-                        {pr.tags.map((tag) => (
-                          <li>{tag}</li>
-                        ))}
-                      </ul>
-                    </div>
-
                     <div class="pro__about">
                       {pr.about.map((para) => (
                         <p>{para}</p>
@@ -443,38 +434,12 @@ const crew = site.team.filter((m) => m.role !== 'dentist');
     color: var(--ink);
   }
 
-  .pro__tags {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.5rem 0.4rem;
-  }
-
-  .pro__tags p,
   .pro__label {
     font-size: 0.64rem;
     font-weight: 700;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--ink-mute);
-  }
-
-  .pro__tags p {
-    margin-right: 0.35rem;
-  }
-
-  .pro__tags ul {
-    display: contents;
-  }
-
-  .pro__tags li {
-    padding: 0.26rem 0.7rem;
-    border: 1px solid rgba(184, 151, 107, 0.5);
-    border-radius: var(--radius-pill);
-    background: var(--ivory);
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: var(--ink-soft);
   }
 
   .pro__body--soon {

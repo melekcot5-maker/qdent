@@ -2,6 +2,7 @@
  * Sitenin tüm istemci davranışları. Her biri bağımsız küçük bir işlevdir;
  * ilgili öğe sayfada yoksa sessizce atlanır.
  */
+import { initConsent } from './consent';
 
 const root = document.documentElement;
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -144,3 +145,4 @@ initReveal();
 initParallax();
 initGlow();
 initOpeningHours();
+initConsent();

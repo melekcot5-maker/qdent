@@ -104,13 +104,27 @@ const c = t.contact;
           <Image src={facade} alt={t.gallery.captions.facade} widths={[360, 540, 720, 960]} sizes="(max-width: 860px) 92vw, 30vw" />
           <figcaption class="storefront__caption">{t.gallery.captions.facade}</figcaption>
         </figure>
-        <div class="map" data-reveal="scale">
+        <!-- Google Haritalar çerez bıraktığı için yalnızca rızayla yüklenir (src/scripts/consent.ts) -->
+        <div class="map" data-reveal="scale" data-embed>
           <iframe
-            src={links.mapEmbed(lang)}
+            data-embed-src={links.mapEmbed(lang)}
             title={`${site.legalName} — ${c.mapTitle}`}
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
-            allowfullscreen></iframe>
+            allowfullscreen
+            hidden></iframe>
+          <div class="map__consent" data-embed-placeholder>
+            <span class="map__consent-icon"><Icon name="pin" size={26} /></span>
+            <h3>{t.consent.embed.title}</h3>
+            <p>{t.consent.embed.body}</p>
+            <div class="map__consent-actions">
+              <button type="button" class="btn btn--sm btn--primary" data-embed-allow>{t.consent.embed.load}</button>
+              <a href={links.directions} class="btn btn--sm btn--ghost" target="_blank" rel="noopener">
+                {t.consent.embed.open}
+                <Icon name="arrowUpRight" size={16} />
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -268,6 +282,53 @@ const c = t.contact;
     height: 100%;
     border: 0;
     filter: saturate(0.85);
+  }
+
+  .map iframe[hidden],
+  .map__consent[hidden] {
+    display: none;
+  }
+
+  .map__consent {
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 0.75rem;
+    height: 100%;
+    padding: clamp(1.5rem, 1rem + 2vw, 3rem);
+    text-align: center;
+    background:
+      radial-gradient(70% 60% at 50% 30%, rgba(76, 195, 224, 0.14), transparent 70%),
+      var(--sand-100);
+  }
+
+  .map__consent-icon {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--pearl);
+    color: var(--brand-600);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .map__consent h3 {
+    font-size: var(--text-xl);
+  }
+
+  .map__consent p {
+    max-width: 46ch;
+    font-size: var(--text-sm);
+    color: var(--ink-soft);
+  }
+
+  .map__consent-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-top: 0.5rem;
   }
 
   @media (max-width: 960px) {
