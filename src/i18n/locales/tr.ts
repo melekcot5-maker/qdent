@@ -425,7 +425,7 @@ const tr: Dictionary = {
     mapTitle: 'Bizi ziyaret edin',
     form: {
       title: 'Randevu ve bilgi talebi',
-      lead: 'Formu doldurun, size seçtiğiniz dilde dönüş yapalım.',
+      lead: 'Formu doldurun; bilgileriniz WhatsApp’ta hazır bir mesaj olarak açılır. Göndermek için WhatsApp’ta “Gönder”e basmanız yeterli.',
       name: 'Ad Soyad',
       email: 'E-posta',
       phone: 'Telefon / WhatsApp',
@@ -439,13 +439,9 @@ const tr: Dictionary = {
       consent:
         'Mesajımda paylaşabileceğim sağlık bilgileri dahil kişisel verilerimin, talebime dönüş yapılması amacıyla işlenmesine açık rıza veriyorum.',
       consentLink: 'KVKK Aydınlatma Metni',
-      submit: 'Talebi Gönder',
-      sending: 'Gönderiliyor…',
-      successTitle: 'Teşekkür ederiz!',
-      successBody: 'Talebiniz bize ulaştı. Ekibimiz en kısa sürede sizinle iletişime geçecek.',
-      error: 'Bir sorun oluştu. Lütfen tekrar deneyin ya da bize WhatsApp’tan yazın.',
-      notConfigured: 'Form henüz etkinleştirilmedi. Şimdilik bize WhatsApp veya e-posta ile ulaşabilirsiniz.',
-      subject: 'Web sitesi — yeni randevu/bilgi talebi',
+      submit: 'WhatsApp ile Gönder',
+      successTitle: 'Mesajınız hazır!',
+      successBody: 'WhatsApp açıldı. Talebiniz bize ulaşsın diye açılan ekranda “Gönder”e basmayı unutmayın. Açılmadıysa aşağıdaki düğmeyi kullanın.',
     },
   },
 

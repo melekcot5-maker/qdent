@@ -222,12 +222,8 @@ export interface Dictionary {
       consent: string;
       consentLink: string;
       submit: string;
-      sending: string;
       successTitle: string;
       successBody: string;
-      error: string;
-      notConfigured: string;
-      subject: string;
     };
   };
 

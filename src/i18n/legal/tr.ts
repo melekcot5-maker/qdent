@@ -52,7 +52,7 @@ const tr: LegalDictionary = {
         title: 'Kişisel verilerin aktarılması',
         body: [
           'Kişisel verileriniz yukarıdaki amaçlarla sınırlı olarak; mevzuatın gerektirdiği hallerde Sağlık Bakanlığı ve bağlı kuruluşları, yargı mercileri ve diğer yetkili kamu kurumlarına; tedaviniz için gerekli olduğunda diş protez laboratuvarı ve görüntüleme merkezi gibi birlikte çalıştığımız sağlık hizmeti sağlayıcılarına; hukuki ve mali danışmanlarımıza aktarılabilir.',
-          'Web sitesindeki form iletileri bir e-posta iletim hizmeti aracılığıyla, WhatsApp yazışmaları ise Meta Platforms altyapısı üzerinden iletilir; bu hizmetlerin sunucuları yurt dışında bulunabilir. Bu kanalları kullanmayı tercih etmeniz halinde verileriniz KVKK’nın 9. maddesine uygun olarak aktarılır. Bu kanalları kullanmak zorunda değilsiniz; bize telefonla veya klinikte doğrudan ulaşabilirsiniz.',
+          'Web sitesindeki form, bilgilerinizi WhatsApp’ta hazır bir mesaj olarak açar; mesajı siz gönderirsiniz. WhatsApp yazışmaları Meta Platforms altyapısı üzerinden iletilir; bu hizmetin sunucuları yurt dışında bulunabilir. Bu kanalı kullanmayı tercih etmeniz halinde verileriniz KVKK’nın 9. maddesine uygun olarak aktarılır. Bu kanalı kullanmak zorunda değilsiniz; bize telefonla veya klinikte doğrudan ulaşabilirsiniz.',
         ],
       },
       {

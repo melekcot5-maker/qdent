@@ -417,7 +417,7 @@ const de: Dictionary = {
     mapTitle: 'Besuchen Sie uns',
     form: {
       title: 'Termin- und Informationsanfrage',
-      lead: 'Füllen Sie das Formular aus – wir antworten Ihnen in Ihrer gewählten Sprache.',
+      lead: 'Füllen Sie das Formular aus – Ihre Angaben öffnen sich in WhatsApp als fertige Nachricht. Tippen Sie dort einfach auf „Senden“.',
       name: 'Vor- und Nachname',
       email: 'E-Mail',
       phone: 'Telefon / WhatsApp',
@@ -431,13 +431,9 @@ const de: Dictionary = {
       consent:
         'Ich willige ausdrücklich ein, dass meine personenbezogenen Daten einschließlich etwaiger Gesundheitsangaben in meiner Nachricht zur Bearbeitung meiner Anfrage verarbeitet werden.',
       consentLink: 'Datenschutzhinweise',
-      submit: 'Anfrage senden',
-      sending: 'Wird gesendet …',
-      successTitle: 'Vielen Dank!',
-      successBody: 'Ihre Anfrage ist bei uns eingegangen. Unser Team meldet sich in Kürze bei Ihnen.',
-      error: 'Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut oder schreiben Sie uns per WhatsApp.',
-      notConfigured: 'Das Formular ist noch nicht aktiv. Bitte erreichen Sie uns bis dahin per WhatsApp oder E-Mail.',
-      subject: 'Website — neue Termin-/Informationsanfrage',
+      submit: 'Per WhatsApp senden',
+      successTitle: 'Ihre Nachricht ist bereit!',
+      successBody: 'WhatsApp sollte sich geöffnet haben. Bitte tippen Sie dort auf „Senden“, damit Ihre Anfrage bei uns ankommt. Falls sich nichts geöffnet hat, nutzen Sie die Schaltfläche unten.',
     },
   },
 

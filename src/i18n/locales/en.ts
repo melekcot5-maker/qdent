@@ -417,7 +417,7 @@ const en: Dictionary = {
     mapTitle: 'Visit us',
     form: {
       title: 'Appointment and information request',
-      lead: 'Complete the form and we will reply in your chosen language.',
+      lead: 'Complete the form and your details open in WhatsApp as a ready-made message. Just press “Send” there to reach us.',
       name: 'Full name',
       email: 'Email',
       phone: 'Phone / WhatsApp',
@@ -431,13 +431,9 @@ const en: Dictionary = {
       consent:
         'I give my explicit consent to the processing of my personal data, including any health information I share in my message, in order to respond to my request.',
       consentLink: 'Privacy Notice',
-      submit: 'Send Request',
-      sending: 'Sending…',
-      successTitle: 'Thank you!',
-      successBody: 'Your request has reached us. Our team will be in touch shortly.',
-      error: 'Something went wrong. Please try again or message us on WhatsApp.',
-      notConfigured: 'The form is not active yet. In the meantime, please reach us on WhatsApp or by email.',
-      subject: 'Website — new appointment/information request',
+      submit: 'Send via WhatsApp',
+      successTitle: 'Your message is ready!',
+      successBody: 'WhatsApp should have opened. Please press “Send” there so your request reaches us. If it did not open, use the button below.',
     },
   },
 

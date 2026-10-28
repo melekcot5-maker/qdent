@@ -52,7 +52,7 @@ const fr: LegalDictionary = {
         title: 'Transfert des données',
         body: [
           'Dans la limite des finalités ci-dessus, vos données peuvent être transmises, lorsque la loi l’exige, au ministère de la Santé et à ses organismes, aux juridictions et autres autorités compétentes ; lorsque vos soins le nécessitent, aux prestataires de santé avec lesquels nous travaillons, comme les laboratoires de prothèse et centres d’imagerie ; ainsi qu’à nos conseillers juridiques et financiers.',
-          'Les messages du formulaire transitent par un service d’envoi d’e-mails et les messages WhatsApp par l’infrastructure de Meta Platforms ; les serveurs de ces services peuvent se trouver à l’étranger. Si vous choisissez ces canaux, vos données sont transférées conformément à l’article 9 de la KVKK. Vous n’êtes pas obligé de les utiliser : vous pouvez nous joindre par téléphone ou directement à la clinique.',
+          'Le formulaire du site ouvre vos informations dans WhatsApp sous forme de message prêt à envoyer, que vous envoyez vous-même. Les messages WhatsApp transitent par l’infrastructure de Meta Platforms ; ses serveurs peuvent se trouver à l’étranger. Si vous choisissez ce canal, vos données sont transférées conformément à l’article 9 de la KVKK. Vous n’êtes pas obligé de l’utiliser : vous pouvez nous joindre par téléphone ou directement à la clinique.',
         ],
       },
       {

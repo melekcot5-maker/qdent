@@ -52,7 +52,7 @@ const de: LegalDictionary = {
         title: 'Weitergabe von Daten',
         body: [
           'Im Rahmen der oben genannten Zwecke können Ihre Daten, soweit gesetzlich erforderlich, an das Gesundheitsministerium und nachgeordnete Stellen, Gerichte und andere zuständige Behörden; soweit für Ihre Behandlung erforderlich, an mit uns zusammenarbeitende Gesundheitsdienstleister wie Dentallabore und Röntgenzentren; sowie an unsere Rechts- und Steuerberater übermittelt werden.',
-          'Nachrichten über das Webformular werden über einen E-Mail-Versanddienst, WhatsApp-Nachrichten über die Infrastruktur von Meta Platforms übermittelt; die Server dieser Dienste können sich im Ausland befinden. Wenn Sie diese Kanäle nutzen, werden Ihre Daten gemäß Artikel 9 KVKK übermittelt. Sie müssen diese Kanäle nicht nutzen; Sie erreichen uns auch telefonisch oder direkt in der Klinik.',
+          'Das Webformular öffnet Ihre Angaben in WhatsApp als vorbereitete Nachricht, die Sie selbst absenden. WhatsApp-Nachrichten werden über die Infrastruktur von Meta Platforms übermittelt; deren Server können sich im Ausland befinden. Wenn Sie diesen Kanal nutzen, werden Ihre Daten gemäß Artikel 9 KVKK übermittelt. Sie müssen ihn nicht nutzen; Sie erreichen uns auch telefonisch oder direkt in der Klinik.',
         ],
       },
       {

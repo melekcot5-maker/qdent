@@ -1,13 +1,13 @@
 ---
 /**
  * Randevu ve bilgi talebi formu.
- * Veritabanı gerektirmez: Web3Forms servisi iletiyi doğrudan klinik e-postasına
- * gönderir. Anahtar .env dosyasındaki PUBLIC_WEB3FORMS_KEY değişkeninden okunur;
- * anahtar yoksa form ziyaretçiyi WhatsApp/e-postaya yönlendiren bir uyarı gösterir.
+ * Sunucu ya da e-posta servisi gerekmez: gönderince alanlar hazır bir WhatsApp mesajına çevrilir ve
+ * klinik numarasıyla sohbet açılır; ziyaretçi WhatsApp'ta "Gönder"e basınca mesaj klinik telefonuna düşer.
+ * Numara src/config/site.ts → formWhatsapp (test için .env'deki PUBLIC_FORM_WHATSAPP).
  */
 import Icon from '@/components/ui/Icon.astro';
 import { treatments } from '@/data/treatments';
-import { site, links } from '@/config/site';
+import { formWhatsapp } from '@/config/site';
 import { getDictionary, localizePath, localeMeta, type Locale } from '@/i18n';
 
 interface Props {
@@ -17,55 +17,63 @@ interface Props {
 const { lang } = Astro.props;
 const t = getDictionary(lang);
 const f = t.contact.form;
-const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
+// Klinik ekibi Türkçe okur: tedavi adının Türkçesi de mesaja eklenir
+const trDict = getDictionary('tr');
 
-const messages = JSON.stringify({
-  sending: f.sending,
-  error: f.error,
-  notConfigured: f.notConfigured,
+/** Mesaj şablonu: etiketler ziyaretçinin dilinde, kaynak satırı klinik için Türkçe */
+const labels = JSON.stringify({
+  intro: t.common.whatsappMessage,
+  source: `Web sitesi formu · ${localeMeta[lang].nativeName}`,
+  name: f.name,
+  phone: f.phone,
+  email: f.email,
+  country: f.country,
+  treatment: f.treatment,
+  message: f.message,
 });
+const waBase = `https://wa.me/${formWhatsapp}`;
 ---
 
-<form class="cform" data-contact-form data-key={accessKey} data-messages={messages} novalidate>
+<form class="cform" data-contact-form data-wa={waBase} data-labels={labels} novalidate>
   <header class="cform__head">
     <h2>{f.title}</h2>
     <p class="muted">{f.lead}</p>
   </header>
 
-  <input type="hidden" name="subject" value={`${f.subject} (${localeMeta[lang].short})`} />
-  <input type="hidden" name="from_name" value={site.legalName} />
-  <input type="hidden" name="language" value={localeMeta[lang].nativeName} />
-  <!-- Spam tuzağı: insanlar görmez, botlar doldurur -->
-  <input type="checkbox" name="botcheck" class="visually-hidden" tabindex="-1" autocomplete="off" />
-
   <div class="cform__grid">
     <div class="field">
       <label for="cf-name">{f.name} *</label>
-      <input id="cf-name" name="name" class="input" type="text" autocomplete="name" required />
+      <input id="cf-name" name="name" class="input" type="text" autocomplete="name" maxlength="100" required />
     </div>
     <div class="field">
-      <label for="cf-email">{f.email} *</label>
-      <input id="cf-email" name="email" class="input" type="email" autocomplete="email" required />
+      <label for="cf-email">{f.email}</label>
+      <input id="cf-email" name="email" class="input" type="email" autocomplete="email" maxlength="120" />
     </div>
     <div class="field">
       <label for="cf-phone">{f.phone} *</label>
-      <input id="cf-phone" name="phone" class="input" type="tel" autocomplete="tel" placeholder={f.phoneHint} required />
+      <input id="cf-phone" name="phone" class="input" type="tel" autocomplete="tel" placeholder={f.phoneHint} maxlength="30" required />
     </div>
     <div class="field">
       <label for="cf-country">{f.country}</label>
-      <input id="cf-country" name="country" class="input" type="text" autocomplete="country-name" />
+      <input id="cf-country" name="country" class="input" type="text" autocomplete="country-name" maxlength="60" />
     </div>
     <div class="field cform__full">
       <label for="cf-treatment">{f.treatment}</label>
       <select id="cf-treatment" name="treatment" class="input">
         <option value="">{f.treatmentPlaceholder}</option>
-        {treatments.map((tr) => <option value={t.treatments.items[tr.slug].name}>{t.treatments.items[tr.slug].name}</option>)}
-        <option value={f.treatmentOther}>{f.treatmentOther}</option>
+        {
+          treatments.map((tr) => (
+            <option value={t.treatments.items[tr.slug].name} data-tr={trDict.treatments.items[tr.slug].name}>
+              {t.treatments.items[tr.slug].name}
+            </option>
+          ))
+        }
+        <option value={f.treatmentOther} data-tr={trDict.contact.form.treatmentOther}>{f.treatmentOther}</option>
       </select>
     </div>
     <div class="field cform__full">
       <label for="cf-message">{f.message}</label>
-      <textarea id="cf-message" name="message" class="input" rows="5" placeholder={f.messagePlaceholder}></textarea>
+      <textarea id="cf-message" name="message" class="input" rows="5" maxlength="1000" placeholder={f.messagePlaceholder}></textarea>
     </div>
   </div>
 
@@ -77,18 +85,17 @@ const messages = JSON.stringify({
     </span>
   </label>
 
-  <button type="submit" class="btn btn--primary btn--block" data-submit>
-    <span data-submit-label>{f.submit}</span>
-    <Icon name="arrowRight" size={16} class="icon--arrow" />
+  <button type="submit" class="btn btn--whatsapp btn--block">
+    <Icon name="whatsapp" size={18} />
+    {f.submit}
   </button>
-
-  <p class="cform__status" role="status" aria-live="polite" data-status></p>
 
   <div class="cform__success" data-success tabindex="-1" hidden>
     <span class="cform__success-icon"><Icon name="check" size={28} /></span>
     <h3>{f.successTitle}</h3>
     <p class="muted">{f.successBody}</p>
-    <a href={links.whatsapp(t.common.whatsappMessage)} class="btn btn--whatsapp" target="_blank" rel="noopener">
+    <!-- Sohbet kendiliğinden açılmadıysa (açılır pencere engeli): href, gönderilen mesajla güncellenir -->
+    <a href={waBase} class="btn btn--whatsapp" target="_blank" rel="noopener" data-wa-open>
       <Icon name="whatsapp" size={18} />
       {t.common.whatsapp}
     </a>
@@ -96,22 +103,19 @@ const messages = JSON.stringify({
 </form>
 
 <script>
-  const ENDPOINT = 'https://api.web3forms.com/submit';
-
   document.querySelectorAll<HTMLFormElement>('[data-contact-form]').forEach((form) => {
-    const status = form.querySelector<HTMLElement>('[data-status]')!;
-    const submit = form.querySelector<HTMLButtonElement>('[data-submit]')!;
-    const label = form.querySelector<HTMLElement>('[data-submit-label]')!;
     const success = form.querySelector<HTMLElement>('[data-success]')!;
-    const messages = JSON.parse(form.dataset.messages ?? '{}') as Record<'sending' | 'error' | 'notConfigured', string>;
-    const idleLabel = label.textContent ?? '';
+    const openLink = form.querySelector<HTMLAnchorElement>('[data-wa-open]')!;
+    const base = form.dataset.wa ?? '';
+    const labels = JSON.parse(form.dataset.labels ?? '{}') as Record<
+      'intro' | 'source' | 'name' | 'phone' | 'email' | 'country' | 'treatment' | 'message',
+      string
+    >;
 
-    const setStatus = (text: string, tone: 'info' | 'error' = 'info') => {
-      status.textContent = text;
-      status.dataset.tone = tone;
-    };
+    /** Boş alan için satır eklenmez */
+    const line = (label: string, value: string) => (value ? `${label}: ${value}` : '');
 
-    form.addEventListener('submit', async (event) => {
+    form.addEventListener('submit', (event) => {
       event.preventDefault();
 
       if (!form.checkValidity()) {
@@ -119,38 +123,33 @@ const messages = JSON.stringify({
         return;
       }
 
-      const key = form.dataset.key;
-      if (!key) {
-        setStatus(messages.notConfigured, 'error');
-        return;
-      }
+      const data = new FormData(form);
+      const get = (name: string) => String(data.get(name) ?? '').trim();
 
-      const data = Object.fromEntries(new FormData(form).entries());
-      if (data.botcheck) return;
+      // Tedavi adı ziyaretçinin dilinde gelir; klinik ekibi için Türkçesi de yanına yazılır
+      const select = form.elements.namedItem('treatment') as HTMLSelectElement;
+      const turkish = select.selectedOptions[0]?.dataset.tr ?? '';
+      const treatment = get('treatment');
+      const treatmentText = treatment && turkish && turkish !== treatment ? `${treatment} (${turkish})` : treatment;
 
-      submit.disabled = true;
-      label.textContent = messages.sending;
-      setStatus('');
+      const fields = [
+        line(labels.name, get('name')),
+        line(labels.phone, get('phone')),
+        line(labels.email, get('email')),
+        line(labels.country, get('country')),
+        line(labels.treatment, treatmentText),
+        line(labels.message, get('message')),
+      ].filter(Boolean);
 
-      try {
-        const response = await fetch(ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify({ ...data, access_key: key }),
-        });
-        const result = (await response.json()) as { success?: boolean };
-        if (!response.ok || !result.success) throw new Error('send failed');
+      const url = `${base}?text=${encodeURIComponent([labels.intro, '', labels.source, ...fields].join('\n'))}`;
+      openLink.href = url;
+      window.open(url, '_blank', 'noopener');
 
-        form.reset();
-        form.classList.add('is-sent');
-        success.hidden = false;
-        success.focus();
-      } catch {
-        setStatus(messages.error, 'error');
-      } finally {
-        submit.disabled = false;
-        label.textContent = idleLabel;
-      }
+      // Kişisel bilgiler ortak bilgisayarda formda kalmasın
+      form.reset();
+      form.classList.add('is-sent');
+      success.hidden = false;
+      success.focus();
     });
   });
 </script>
@@ -206,27 +205,6 @@ const messages = JSON.stringify({
 
   .cform__consent .link {
     margin-left: 0.25rem;
-  }
-
-  .cform button[disabled] {
-    opacity: 0.7;
-    cursor: progress;
-  }
-
-  .cform__status:empty {
-    display: none;
-  }
-
-  .cform__status {
-    padding: 0.9rem 1.1rem;
-    border-radius: var(--radius-sm);
-    background: var(--brand-50);
-    font-size: var(--text-sm);
-  }
-
-  .cform__status[data-tone='error'] {
-    background: #fdf0ee;
-    color: #9b2c1f;
   }
 
   .cform__success {

@@ -105,4 +105,16 @@ export const links = {
   )}&destination_place_id=${site.google.placeId}`,
 };
 
+/**
+ * İletişim formunun mesajı gideceği WhatsApp numarası: normalde klinik numarası. Test için .env dosyasına
+ * PUBLIC_FORM_WHATSAPP=90xxxxxxxxxx yazılır; numara böylece koda ve GitHub'a girmez. Canlıya çıkmadan
+ * önce o satırı silip yeniden derleyin (farklı numara varken derleme uyarır).
+ */
+export const formWhatsapp = (import.meta.env.PUBLIC_FORM_WHATSAPP ?? '').replace(/\D/g, '') || site.whatsapp;
+if (formWhatsapp !== site.whatsapp) {
+  console.warn(
+    `[iletişim formu] WhatsApp numarası klinik numarasından farklı (test): ${formWhatsapp} → canlıya çıkmadan .env içindeki PUBLIC_FORM_WHATSAPP satırını silin`,
+  );
+}
+
 export const fullAddress = `${site.address.street}, ${site.address.locality}, ${site.address.postalCode} ${site.address.city}/${site.address.region}`;

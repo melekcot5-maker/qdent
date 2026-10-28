@@ -417,7 +417,7 @@ const fr: Dictionary = {
     mapTitle: 'Venez nous voir',
     form: {
       title: 'Demande de rendez-vous ou d’information',
-      lead: 'Remplissez le formulaire et nous vous répondrons dans la langue de votre choix.',
+      lead: 'Remplissez le formulaire : vos informations s’ouvrent dans WhatsApp sous forme de message prêt à envoyer. Il suffit d’y appuyer sur « Envoyer ».',
       name: 'Nom et prénom',
       email: 'E-mail',
       phone: 'Téléphone / WhatsApp',
@@ -431,13 +431,9 @@ const fr: Dictionary = {
       consent:
         'Je consens expressément au traitement de mes données personnelles, y compris les informations de santé que je pourrais partager dans mon message, afin de répondre à ma demande.',
       consentLink: 'Avis de confidentialité',
-      submit: 'Envoyer la demande',
-      sending: 'Envoi en cours…',
-      successTitle: 'Merci !',
-      successBody: 'Votre demande nous est bien parvenue. Notre équipe vous contactera très prochainement.',
-      error: 'Une erreur est survenue. Veuillez réessayer ou nous écrire sur WhatsApp.',
-      notConfigured: 'Le formulaire n’est pas encore actif. En attendant, contactez-nous par WhatsApp ou par e-mail.',
-      subject: 'Site web — nouvelle demande de rendez-vous/d’information',
+      submit: 'Envoyer par WhatsApp',
+      successTitle: 'Votre message est prêt !',
+      successBody: 'WhatsApp devrait s’être ouvert. Appuyez sur « Envoyer » pour que votre demande nous parvienne. S’il ne s’est pas ouvert, utilisez le bouton ci-dessous.',
     },
   },
 

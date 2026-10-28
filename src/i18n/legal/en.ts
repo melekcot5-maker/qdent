@@ -52,7 +52,7 @@ const en: LegalDictionary = {
         title: 'Transfer of personal data',
         body: [
           'Limited to the purposes above, your personal data may be transferred to the Ministry of Health and its affiliated bodies, courts and other competent public authorities where required by law; to healthcare providers we work with, such as dental laboratories and imaging centres, where necessary for your treatment; and to our legal and financial advisers.',
-          'Messages sent via the website form are delivered through an email delivery service, and WhatsApp messages through the infrastructure of Meta Platforms; the servers of these services may be located abroad. If you choose to use these channels, your data is transferred in accordance with Article 9 of the KVKK. You are not required to use them; you can reach us directly by phone or at the clinic.',
+          'The website form opens your details in WhatsApp as a ready-made message, which you send yourself. WhatsApp messages are transmitted through the infrastructure of Meta Platforms; its servers may be located abroad. If you choose to use this channel, your data is transferred in accordance with Article 9 of the KVKK. You are not required to use it; you can reach us directly by phone or at the clinic.',
         ],
       },
       {

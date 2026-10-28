@@ -1,6 +1,6 @@
 interface ImportMetaEnv {
-  /** Web3Forms erişim anahtarı — iletişim formu için (bkz. .env.example) */
-  readonly PUBLIC_WEB3FORMS_KEY?: string;
+  /** İletişim formunun WhatsApp numarası; yalnızca test için (bkz. .env.example, src/config/site.ts) */
+  readonly PUBLIC_FORM_WHATSAPP?: string;
 }
 
 interface ImportMeta {
