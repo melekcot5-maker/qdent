@@ -53,7 +53,7 @@ const en: Dictionary = {
       secondaryCta: 'Explore Treatments',
       experienceBadge: 'years of experience',
     },
-    marquee: ['Dental Implants', 'Smile Design', 'Porcelain Veneers', 'Zirconia Crowns', 'Teeth Whitening', 'Clear Aligners'],
+    marquee: ['Dental Implants', 'Smile Design', 'Porcelain Veneers', 'Zirconia Crowns', 'Teeth Whitening'],
     intro: {
       eyebrow: 'Welcome to Q Dent',
       title: 'Every smile is a carefully designed signature.',
@@ -204,7 +204,7 @@ const en: Dictionary = {
   treatments: {
     meta: {
       title: 'Treatments | Q Dent Ölüdeniz',
-      description: 'Information on dental implants, smile design, porcelain veneers, zirconia crowns, teeth whitening, clear aligners, root canal and gum treatment.',
+      description: 'Information on dental implants, smile design, porcelain veneers, zirconia crowns, teeth whitening, root canal and gum treatment.',
     },
     hero: {
       eyebrow: 'Treatments',
@@ -325,25 +325,6 @@ const en: Dictionary = {
         faq: [
           { q: 'Will my teeth feel sensitive?', a: 'Mild, temporary sensitivity can occur and usually fades within 24–48 hours.' },
           { q: 'How long do the results last?', a: 'This depends on your diet and care habits; your dentist will recommend how to maintain the result.' },
-        ],
-      },
-      'clear-aligners': {
-        name: 'Clear Aligners',
-        short: 'Straightening teeth with clear aligners instead of wires and brackets.',
-        intro: [
-          'Clear aligner treatment gradually straightens your teeth with a series of custom-made transparent aligners that are changed at set intervals.',
-          'Because they are removable, you take them out to eat and to brush.',
-        ],
-        benefits: [
-          'Less noticeable thanks to their transparent material',
-          'Removable for eating and brushing',
-          'Treatment steps planned digitally',
-          'No wires or brackets',
-        ],
-        facts: { duration: '6–18 months', visits: 'Regular check-ups' },
-        faq: [
-          { q: 'How many hours a day do I wear them?', a: 'For treatment to progress as planned, aligners are usually worn 20–22 hours a day.' },
-          { q: 'How often are check-ups?', a: 'Your dentist sets the check-up intervals according to your treatment plan.' },
         ],
       },
       'root-canal-treatment': {

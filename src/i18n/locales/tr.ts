@@ -61,7 +61,7 @@ const tr: Dictionary = {
       secondaryCta: 'Tedavileri Keşfedin',
       experienceBadge: 'yıllık deneyim',
     },
-    marquee: ['Diş İmplantı', 'Gülüş Tasarımı', 'Porselen Veneer', 'Zirkonyum Kaplama', 'Diş Beyazlatma', 'Şeffaf Plak'],
+    marquee: ['Diş İmplantı', 'Gülüş Tasarımı', 'Porselen Veneer', 'Zirkonyum Kaplama', 'Diş Beyazlatma'],
     intro: {
       eyebrow: 'Q Dent’e hoş geldiniz',
       title: 'Her gülüş, özenle tasarlanmış bir imzadır.',
@@ -212,7 +212,7 @@ const tr: Dictionary = {
   treatments: {
     meta: {
       title: 'Tedaviler | Q Dent Ölüdeniz',
-      description: 'İmplant, gülüş tasarımı, porselen veneer, zirkonyum, diş beyazlatma, şeffaf plak, kanal ve diş eti tedavileri hakkında bilgi.',
+      description: 'İmplant, gülüş tasarımı, porselen veneer, zirkonyum, diş beyazlatma, kanal ve diş eti tedavileri hakkında bilgi.',
     },
     hero: {
       eyebrow: 'Tedaviler',
@@ -333,25 +333,6 @@ const tr: Dictionary = {
         faq: [
           { q: 'Hassasiyet olur mu?', a: 'Geçici ve hafif hassasiyet görülebilir; genellikle 24–48 saat içinde kaybolur.' },
           { q: 'Sonuç ne kadar kalıcı?', a: 'Kalıcılık süresi beslenme ve bakım alışkanlıklarına göre değişir; hekiminiz bakım önerilerinde bulunur.' },
-        ],
-      },
-      'clear-aligners': {
-        name: 'Şeffaf Plak',
-        short: 'Tel ve braket yerine şeffaf plaklarla diş hizalama.',
-        intro: [
-          'Şeffaf plak tedavisi, dişleri kişiye özel üretilen ve belirli aralıklarla değiştirilen şeffaf plaklarla kademeli olarak hizalar.',
-          'Plaklar çıkarılabilir olduğu için yemek yerken ve diş fırçalarken çıkarılır.',
-        ],
-        benefits: [
-          'Şeffaf yapısı nedeniyle dışarıdan az fark edilmesi',
-          'Yemek ve fırçalama için çıkarılabilmesi',
-          'Tedavi adımlarının dijital olarak planlanması',
-          'Tel ve braket kullanılmaması',
-        ],
-        facts: { duration: '6–18 ay', visits: 'Düzenli kontroller' },
-        faq: [
-          { q: 'Günde kaç saat takmam gerekir?', a: 'Tedavinin planlandığı gibi ilerlemesi için genellikle günde 20–22 saat kullanılması önerilir.' },
-          { q: 'Kontroller ne sıklıkla yapılır?', a: 'Kontrol aralıkları tedavi planınıza göre hekiminiz tarafından belirlenir.' },
         ],
       },
       'root-canal-treatment': {

@@ -53,7 +53,7 @@ const de: Dictionary = {
       secondaryCta: 'Behandlungen ansehen',
       experienceBadge: 'Jahre Erfahrung',
     },
-    marquee: ['Zahnimplantate', 'Smile Design', 'Veneers', 'Zirkonkronen', 'Bleaching', 'Aligner'],
+    marquee: ['Zahnimplantate', 'Smile Design', 'Veneers', 'Zirkonkronen', 'Bleaching'],
     intro: {
       eyebrow: 'Willkommen bei Q Dent',
       title: 'Jedes Lächeln ist eine sorgfältig gestaltete Handschrift.',
@@ -204,7 +204,7 @@ const de: Dictionary = {
   treatments: {
     meta: {
       title: 'Behandlungen | Q Dent Ölüdeniz',
-      description: 'Informationen zu Zahnimplantaten, Smile Design, Veneers, Zirkonkronen, Bleaching, Alignern, Wurzel- und Zahnfleischbehandlung.',
+      description: 'Informationen zu Zahnimplantaten, Smile Design, Veneers, Zirkonkronen, Bleaching, Wurzel- und Zahnfleischbehandlung.',
     },
     hero: {
       eyebrow: 'Behandlungen',
@@ -325,25 +325,6 @@ const de: Dictionary = {
         faq: [
           { q: 'Werden die Zähne empfindlich?', a: 'Eine leichte, vorübergehende Empfindlichkeit ist möglich und klingt meist innerhalb von 24–48 Stunden ab.' },
           { q: 'Wie lange hält das Ergebnis?', a: 'Das hängt von Ernährung und Pflege ab; wir empfehlen Ihnen passende Pflegemaßnahmen.' },
-        ],
-      },
-      'clear-aligners': {
-        name: 'Aligner',
-        short: 'Zahnkorrektur mit transparenten Schienen statt Drähten und Brackets.',
-        intro: [
-          'Bei der Aligner-Therapie werden die Zähne schrittweise mit individuell gefertigten, transparenten Schienen ausgerichtet, die in festen Abständen gewechselt werden.',
-          'Da sie herausnehmbar sind, nehmen Sie sie zum Essen und Zähneputzen heraus.',
-        ],
-        benefits: [
-          'Dank transparentem Material wenig auffällig',
-          'Zum Essen und Putzen herausnehmbar',
-          'Digital geplante Behandlungsschritte',
-          'Keine Drähte oder Brackets',
-        ],
-        facts: { duration: '6–18 Monate', visits: 'Regelmäßige Kontrollen' },
-        faq: [
-          { q: 'Wie viele Stunden am Tag trage ich sie?', a: 'Damit die Behandlung wie geplant verläuft, werden Aligner in der Regel 20–22 Stunden täglich getragen.' },
-          { q: 'Wie oft finden Kontrollen statt?', a: 'Die Abstände werden entsprechend Ihrem Behandlungsplan festgelegt.' },
         ],
       },
       'root-canal-treatment': {

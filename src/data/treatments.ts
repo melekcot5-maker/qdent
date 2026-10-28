@@ -28,7 +28,6 @@ export const treatmentSlugs = [
   'porcelain-veneers',
   'zirconia-crowns',
   'teeth-whitening',
-  'clear-aligners',
   'root-canal-treatment',
   'gum-treatment',
 ] as const;
@@ -98,7 +97,6 @@ export const treatments: TreatmentMeta[] = [
     result: { before: zirconiaBefore, after: zirconiaAfter, consent: true, dentist: 'dilara', publishedOn: PUBLISHED },
   },
   { slug: 'teeth-whitening', icon: 'sparkle', photo: treatmentRoom2 },
-  { slug: 'clear-aligners', icon: 'aligner', photo: digitalScan },
   { slug: 'root-canal-treatment', icon: 'root', photo: xrayRoom },
   { slug: 'gum-treatment', icon: 'gum', photo: treatmentRoom },
 ];

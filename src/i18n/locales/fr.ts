@@ -53,7 +53,7 @@ const fr: Dictionary = {
       secondaryCta: 'Découvrir les soins',
       experienceBadge: 'ans d’expérience',
     },
-    marquee: ['Implants dentaires', 'Smile Design', 'Facettes', 'Couronnes zircone', 'Blanchiment', 'Aligneurs'],
+    marquee: ['Implants dentaires', 'Smile Design', 'Facettes', 'Couronnes zircone', 'Blanchiment'],
     intro: {
       eyebrow: 'Bienvenue chez Q Dent',
       title: 'Chaque sourire est une signature soigneusement dessinée.',
@@ -204,7 +204,7 @@ const fr: Dictionary = {
   treatments: {
     meta: {
       title: 'Soins | Q Dent Ölüdeniz',
-      description: 'Informations sur les implants dentaires, le smile design, les facettes, les couronnes zircone, le blanchiment, les aligneurs, les traitements de canal et des gencives.',
+      description: 'Informations sur les implants dentaires, le smile design, les facettes, les couronnes zircone, le blanchiment, les traitements de canal et des gencives.',
     },
     hero: {
       eyebrow: 'Soins',
@@ -325,25 +325,6 @@ const fr: Dictionary = {
         faq: [
           { q: 'Mes dents seront-elles sensibles ?', a: 'Une sensibilité légère et passagère peut apparaître ; elle disparaît en général sous 24 à 48 heures.' },
           { q: 'Combien de temps dure le résultat ?', a: 'Cela dépend de votre alimentation et de vos habitudes d’entretien ; nous vous conseillons sur l’entretien adapté.' },
-        ],
-      },
-      'clear-aligners': {
-        name: 'Aligneurs transparents',
-        short: 'Aligner les dents avec des gouttières transparentes plutôt qu’avec des fils et des bagues.',
-        intro: [
-          'Le traitement par aligneurs aligne progressivement les dents grâce à une série de gouttières transparentes sur mesure, changées à intervalles réguliers.',
-          'Amovibles, elles se retirent pour manger et se brosser les dents.',
-        ],
-        benefits: [
-          'Discrets grâce à leur matériau transparent',
-          'Amovibles pour manger et se brosser les dents',
-          'Étapes du traitement planifiées numériquement',
-          'Ni fils ni bagues',
-        ],
-        facts: { duration: '6–18 mois', visits: 'Contrôles réguliers' },
-        faq: [
-          { q: 'Combien d’heures par jour dois-je les porter ?', a: 'Pour que le traitement avance comme prévu, les aligneurs se portent en général 20 à 22 heures par jour.' },
-          { q: 'À quelle fréquence ont lieu les contrôles ?', a: 'Les intervalles sont fixés selon votre plan de traitement.' },
         ],
       },
       'root-canal-treatment': {
