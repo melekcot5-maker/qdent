@@ -5,7 +5,7 @@
  * Kaynak: Google İşletme kaydı (Ölüdeniz Dental) ve qclinicturkey.com — 2026-10-23.
  */
 import type { ImageMetadata } from 'astro';
-import dilaraPhoto from '@/assets/images/team/dilara-nur-kilinc.jpg';
+import dilaraPhoto from '@/assets/images/team/dilara-nur-kilinc-gokdere.jpg';
 import elifPhoto from '@/assets/images/team/elif-demirtas.jpg';
 import mervePhoto from '@/assets/images/team/merve-eylum-cakin.jpg';
 import melekPhoto from '@/assets/images/team/melek-cot.jpg';
@@ -80,7 +80,7 @@ export const site = {
 
   /** Hakkımızda sayfasında bu sırayla gösterilir: önce hekimler, sonra klinik ekibi. */
   team: [
-    { id: 'dilara', name: 'Dt. Dilara Nur Kılınç', role: 'dentist', photo: dilaraPhoto },
+    { id: 'dilara', name: 'Dt. Dilara Nur Kılınç Gökdere', role: 'dentist', photo: dilaraPhoto },
     { id: 'elif', name: 'Dt. Elif Demirtaş', role: 'dentist', photo: elifPhoto },
     { id: 'recep', name: 'Recep Aykut', role: 'manager' },
     { id: 'merve', name: 'Merve Eylüm Çakın', role: 'assistant', photo: mervePhoto },

@@ -14,6 +14,12 @@ import porcelainBefore from '@/assets/images/results/porcelain-before.jpg';
 import porcelainAfter from '@/assets/images/results/porcelain-after.jpg';
 import zirconiaBefore from '@/assets/images/results/zirconia-before.jpg';
 import zirconiaAfter from '@/assets/images/results/zirconia-after.jpg';
+import whiteningBefore from '@/assets/images/results/whitening-before.jpg';
+import whiteningAfter from '@/assets/images/results/whitening-after.jpg';
+import smileDesignBefore from '@/assets/images/results/smile-design-before.jpg';
+import smileDesignAfter from '@/assets/images/results/smile-design-after.jpg';
+import gumBefore from '@/assets/images/results/gum-before.jpg';
+import gumAfter from '@/assets/images/results/gum-after.jpg';
 import bondingBefore from '@/assets/images/results/bonding-before.jpg';
 import bondingAfter from '@/assets/images/results/bonding-after.jpg';
 import treatmentRoom from '@/assets/images/clinic/treatment-room.jpg';
@@ -70,7 +76,7 @@ export interface TreatmentMeta {
   result?: BeforeAfterCase;
 }
 
-// Onam formları klinikte dosyada; dört vakayı da Dt. Dilara Nur Kılınç yaptı (2026-10-28'de teyit edildi).
+// Onam formları klinikte dosyada; beş vakayı da Dt. Dilara Nur Kılınç Gökdere yaptı (2026-10-28'de teyit edildi).
 // İşlem tarihi hasta dosyasından gelince her vakaya `treatedOn` eklenecek. Tarih uydurulmaz: yönetmelik
 // gerçek işlem tarihini istiyor, denetimde hasta kaydıyla karşılaştırılabilir.
 const PUBLISHED = '2026-10-28';
@@ -83,7 +89,13 @@ export const treatments: TreatmentMeta[] = [
     photo: xrayRoom,
     result: { before: implantBefore, after: implantAfter, consent: true, dentist: 'dilara', publishedOn: PUBLISHED },
   },
-  { slug: 'smile-design', icon: 'smile', photo: digitalScan },
+  {
+    slug: 'smile-design',
+    icon: 'smile',
+    photo: digitalScan,
+    // Hekim ve işlem tarihi bildirilmedi: `dentist` ve `treatedOn` eklenecek.
+    result: { before: smileDesignBefore, after: smileDesignAfter, consent: true, publishedOn: PUBLISHED },
+  },
   {
     slug: 'porcelain-veneers',
     icon: 'veneer',
@@ -96,9 +108,20 @@ export const treatments: TreatmentMeta[] = [
     photo: treatmentUnit,
     result: { before: zirconiaBefore, after: zirconiaAfter, consent: true, dentist: 'dilara', publishedOn: PUBLISHED },
   },
-  { slug: 'teeth-whitening', icon: 'sparkle', photo: treatmentRoom2 },
+  {
+    slug: 'teeth-whitening',
+    icon: 'sparkle',
+    photo: treatmentRoom2,
+    result: { before: whiteningBefore, after: whiteningAfter, consent: true, dentist: 'dilara', publishedOn: PUBLISHED },
+  },
   { slug: 'root-canal-treatment', icon: 'root', photo: xrayRoom },
-  { slug: 'gum-treatment', icon: 'gum', photo: treatmentRoom },
+  {
+    slug: 'gum-treatment',
+    icon: 'gum',
+    photo: treatmentRoom,
+    // Hekim ve işlem tarihi bildirilmedi: `dentist` ve `treatedOn` eklenecek.
+    result: { before: gumBefore, after: gumAfter, consent: true, publishedOn: PUBLISHED },
+  },
 ];
 
 /** Ayrı tedavi sayfası olmayan galeri vakaları; adları sözlükte `gallery.extraCases` altında */
