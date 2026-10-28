@@ -30,6 +30,17 @@ const chips = featured.flatMap((slug) => getTreatment(slug) ?? []);
 ---
 
 <section class="hero">
+  <!-- Yalnızca mobilde: kemer fotoğrafın dışında kalan koyu zemini süsleyen ince çizgi motifleri -->
+  <div class="hero__deco" aria-hidden="true">
+    <span class="deco deco--icon deco--implant"><Icon name="implant" size={26} /></span>
+    <span class="deco deco--icon deco--brush"><Icon name="toothbrush" size={28} /></span>
+    <span class="deco deco--icon deco--t1"><Icon name="veneer" size={30} /></span>
+    <span class="deco deco--icon deco--t2"><Icon name="sparkle" size={32} /></span>
+    <span class="deco deco--spark deco--s1"><Icon name="sparkles" size={13} /></span>
+    <span class="deco deco--spark deco--s2"><Icon name="sparkles" size={12} /></span>
+    <span class="deco deco--text deco--text-l" lang="en">Quality Dental Center</span>
+    <span class="deco deco--text deco--text-r">Ölüdeniz · Fethiye</span>
+  </div>
   <!-- Paralaks kaydırırken kenar boşluğu görünmesin diye arka plan bölümden biraz taşar -->
   <div class="hero__bg" data-parallax="0.1" aria-hidden="true">
     <Image src={entrance} alt="" widths={[768, 1280, 1600, 2048]} sizes="100vw" loading="eager" fetchpriority="high" />
@@ -50,8 +61,8 @@ const chips = featured.flatMap((slug) => getTreatment(slug) ?? []);
 
       <p class="lead hero__lead" data-hero style="--h: 4">{h.lead}</p>
 
-      <!-- Bu butonlar görünürken mobildeki sabit Ara/WhatsApp butonları gizlenir (main.ts → initFloatHide) -->
-      <div class="hero__actions" data-hero data-float-hide style="--h: 5">
+      <!-- Mobilde gizli: Ara/WhatsApp orada sağ/sol altta sabit durur (FloatingActions) -->
+      <div class="hero__actions" data-hero style="--h: 5">
         <a href={links.whatsapp(t.common.whatsappMessage)} class="btn btn--primary" target="_blank" rel="noopener">
           <Icon name="whatsapp" size={18} />
           {h.primaryCta}
@@ -114,6 +125,10 @@ const chips = featured.flatMap((slug) => getTreatment(slug) ?? []);
     padding-bottom: 6rem;
     background: var(--brand-950);
     color: var(--on-dark);
+  }
+
+  .hero__deco {
+    display: none;
   }
 
   .hero__bg {
@@ -377,7 +392,8 @@ const chips = featured.flatMap((slug) => getTreatment(slug) ?? []);
     :global(html.js) .hero__bg :global(img),
     :global(html.js) [data-hero],
     :global(html.js) [data-hero-line],
-    .seal__ring {
+    .seal__ring,
+    .deco {
       animation: none;
     }
   }
@@ -385,12 +401,12 @@ const chips = featured.flatMap((slug) => getTreatment(slug) ?? []);
   /* ---------- Duyarlı ---------- */
   /*
    * Dar ekranda yazı fotoğrafın tamamını kaplıyor, giriş koyu tonun altında kayboluyordu.
-   * Burada fotoğraf üstte açık kalır, yazı ona binen yuvarlak köşeli lacivert panele geçer,
-   * mühür de fotoğrafla panelin sınırına oturur.
+   * Burada fotoğraf üstte açık kalır, yazı ona binen yuvarlak köşeli açık (fildişi) panele geçer;
+   * mühür fotoğrafla panelin sınırına oturur. Panel yalnızca içeriği kadar yer kaplar:
+   * tek satır buton ve ince mühür sayesinde fotoğraf ekranın büyük kısmını alır.
    *
-   * Giriş, altındaki tedavi şeridi (Marquee) ilk ekranda görünecek kadar kısa tutulur: panel
-   * içeriği kadar yer kaplar, kalan yüksekliği fotoğraf doldurur. Şeridin yüksekliği değişirse
-   * --marquee-h de güncellenmeli.
+   * Giriş, altındaki tedavi şeridi (Marquee) ilk ekranda görünecek kadar kısa tutulur.
+   * Şeridin yüksekliği değişirse --marquee-h de güncellenmeli.
    */
   @media (max-width: 860px) {
     .hero {
@@ -399,38 +415,181 @@ const chips = featured.flatMap((slug) => getTreatment(slug) ?? []);
       grid-template-rows: minmax(10rem, 1fr) auto;
       align-items: stretch;
       min-height: calc(100svh - var(--marquee-h));
-      padding: 0 0 var(--space-6);
+      padding: 0 0 var(--space-4);
+      background: var(--ivory);
+      color: var(--ink);
     }
 
-    /* Fotoğraf ilk satırı doldurur ve panelin yuvarlak köşelerinin altına uzanır;
-       paralaks onu aşağı ittiğinde üstte boşluk kalmasın diye biraz yukarıdan başlar */
+    /*
+     * Fotoğraf kemer (arch) biçiminde, lacivertten fildişine inen bir zeminin üstünde durur:
+     * menü koyu zeminde okunur, aşağıda kemer panele eriyerek karışır. Zemin (.hero__shade) fotoğrafın
+     * (.hero__bg) altında kalsın diye z-index'leri mobilde yer değiştirir. İkisi de ilk satırı doldurur
+     * ve panelin altına uzanır.
+     */
     .hero__bg,
     .hero__shade {
       position: relative;
       inset: auto;
       grid-area: 1 / 1;
-      margin-bottom: calc(-1 * var(--radius-xl));
+      margin-bottom: -4rem;
+    }
+
+    .hero__shade {
+      z-index: -2;
+      background:
+        radial-gradient(80% 26% at 50% 14%, rgba(76, 195, 224, 0.28), transparent 72%),
+        radial-gradient(60% 22% at 100% 46%, rgba(217, 195, 163, 0.28), transparent 70%),
+        linear-gradient(180deg, var(--brand-950) 0, var(--brand-900) 26%, #3a8fae 58%, var(--ivory) 86%);
     }
 
     .hero__bg {
-      margin-top: -48px;
+      z-index: -1;
+      overflow: hidden;
+      margin: calc(var(--header-h) + 0.5rem) 1.9rem -4rem;
+      border-radius: 999px 999px 0 0;
+      box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6);
+      /* Paralaks (main.ts) fotoğrafı çerçeve çizgisine göre kaydırıp aralığı bozar; mobilde kapalı */
+      translate: none !important;
     }
 
     /* Fotoğrafın doğal yüksekliği kısa ekranlarda satırı büyütüp şeridi aşağı itmesin */
     .hero__bg :global(img) {
       position: absolute;
       inset: 0;
+      object-position: 50% 42%;
     }
 
-    /* Yalnızca üstte menü için koyuluk; çiçekler ve kapı kendi renginde görünür */
-    .hero__shade {
-      background: linear-gradient(
-        180deg,
-        rgba(5, 34, 50, 0.72) 0,
-        rgba(5, 34, 50, 0.18) calc(var(--header-h) + 3rem),
-        rgba(5, 34, 50, 0.05) calc(var(--header-h) + 6rem),
-        rgba(5, 34, 50, 0.4) 100%
-      );
+    /* Kemerin içinde sıcak ışık ve hafif koyu kenar: fotoğraf daha sinematik durur */
+    .hero__bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(70% 30% at 85% 14%, rgba(255, 224, 168, 0.34), transparent 72%),
+        linear-gradient(180deg, rgba(5, 34, 50, 0.22), transparent 30%);
+      pointer-events: none;
+    }
+
+    /* Kemeri saran ince şampanya çizgisi; aşağıda panelle birlikte kaybolur */
+    .hero__shade::after {
+      content: '';
+      position: absolute;
+      inset: calc(var(--header-h) + 0.5rem - 8px) calc(1.9rem - 8px) 2rem;
+      border: 1px solid rgba(217, 195, 163, 0.75);
+      border-radius: 999px 999px 0 0;
+      pointer-events: none;
+      -webkit-mask-image: linear-gradient(180deg, #000 0, #000 55%, transparent 88%);
+      mask-image: linear-gradient(180deg, #000 0, #000 55%, transparent 88%);
+    }
+
+    /*
+     * Kemerin iki yanındaki koyu zemin boş kalmasın diye ince şampanya çizgili diş, implant ve
+     * diş fırçası motifleri, ışıltılar ve kenarlarda dikey marka yazısı. Fotoğrafın altında kalırlar
+     * (.hero__bg z-index -1, bu katman da -1 ama DOM'da önce gelir).
+     */
+    .hero__deco {
+      --top: var(--header-h);
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      display: block;
+      overflow: hidden;
+      pointer-events: none;
+      color: var(--champagne-soft);
+    }
+
+    .deco {
+      position: absolute;
+      display: block;
+    }
+
+    .deco :global(.icon) {
+      display: block;
+      stroke-width: 1.1;
+    }
+
+    .deco--icon {
+      opacity: 0.9;
+      animation: deco-float 7s ease-in-out infinite alternate;
+    }
+
+    .deco--t1 {
+      left: 0.8rem;
+      top: calc(var(--top) + 4.7rem);
+      rotate: -14deg;
+    }
+
+    .deco--t2 {
+      right: 0.85rem;
+      top: calc(var(--top) + 2.4rem);
+      rotate: 12deg;
+      animation-delay: -3s;
+    }
+
+    .deco--spark {
+      opacity: 0.8;
+      animation: deco-twinkle 3.6s ease-in-out infinite;
+    }
+
+    .deco--s1 {
+      left: 3.5rem;
+      top: calc(var(--top) + 2.7rem);
+    }
+
+    .deco--s2 {
+      right: 0.9rem;
+      top: calc(var(--top) + 6.3rem);
+      animation-delay: -1.8s;
+    }
+
+    .deco--implant {
+      left: 1rem;
+      top: calc(var(--top) + 0.6rem);
+      rotate: -12deg;
+      animation-delay: -5s;
+    }
+
+    .deco--brush {
+      right: 3.8rem;
+      top: calc(var(--top) + 0.3rem);
+      animation-delay: -1.5s;
+    }
+
+    /* Kenarlarda dikey marka yazısı; kemerin çizgisi ile ekran kenarı arasındaki dar şeride oturur */
+    .deco--text {
+      top: calc(var(--top) + 7rem);
+      width: 0.9rem;
+      writing-mode: vertical-rl;
+      font-size: 0.5rem;
+      font-weight: 700;
+      letter-spacing: 0.34em;
+      line-height: 0.9rem;
+      white-space: nowrap;
+      text-transform: uppercase;
+      text-align: center;
+      opacity: 0.78;
+    }
+
+    .deco--text-l {
+      left: 0.3rem;
+      rotate: 180deg;
+    }
+
+    .deco--text-r {
+      right: 0.3rem;
+    }
+
+    @keyframes deco-float {
+      to {
+        translate: 0 -6px;
+      }
+    }
+
+    @keyframes deco-twinkle {
+      50% {
+        opacity: 0.25;
+        scale: 0.8;
+      }
     }
 
     .hero__inner {
@@ -438,21 +597,31 @@ const chips = featured.flatMap((slug) => getTreatment(slug) ?? []);
       z-index: 0;
       grid-template-columns: minmax(0, 1fr);
       /* Panelin üstüne taşan mührün alt yarısı için yer */
-      padding-top: 3.5rem;
+      padding-top: 2.75rem;
     }
 
+    /*
+     * Panel keskin bir kenarla değil, fotoğrafın içine eriyerek başlar: üstte şeffaf, aşağı doğru
+     * buzlu cam ve fildişi. Bulanıklık da aynı maskeyle yavaşça belirir; çizgi ya da sert geçiş görünmez.
+     */
     .hero__inner::before {
       content: '';
       position: absolute;
-      inset: 0;
+      inset: -5rem 0 0;
       z-index: -1;
-      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
       background:
-        radial-gradient(90% 50% at 0% 0%, rgba(76, 195, 224, 0.14), transparent 70%),
-        var(--brand-950);
-      box-shadow:
-        inset 0 1px 0 rgba(217, 195, 163, 0.35),
-        0 -24px 48px -24px rgba(0, 0, 0, 0.45);
+        radial-gradient(70% 40% at 100% 38%, rgba(76, 195, 224, 0.14), transparent 70%),
+        linear-gradient(
+          180deg,
+          rgba(250, 248, 244, 0) 0,
+          rgba(250, 248, 244, 0.55) 3.2rem,
+          rgba(250, 248, 244, 0.9) 5.8rem,
+          var(--ivory) 8.5rem
+        );
+      backdrop-filter: blur(14px) saturate(130%);
+      -webkit-backdrop-filter: blur(14px) saturate(130%);
+      -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 4.5rem);
+      mask-image: linear-gradient(180deg, transparent 0, #000 4.5rem);
     }
 
     /* `translate` giriş animasyonunun transform'uyla çakışmaz */
@@ -461,38 +630,52 @@ const chips = featured.flatMap((slug) => getTreatment(slug) ?? []);
       top: 0;
       right: var(--gutter);
       translate: 0 -50%;
-      gap: 0.8rem;
-      padding: 0.4rem 1.15rem 0.4rem 0.4rem;
+      gap: 0.7rem;
+      padding: 0.3rem 1.1rem 0.3rem 0.3rem;
+      border-color: rgba(255, 255, 255, 0.7);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.5));
+      box-shadow: 0 14px 30px -16px rgba(5, 34, 50, 0.55);
     }
 
+    /* Mobilde dönen yazı yerine yalın logo: mühür tek bakışta okunsun */
     .seal {
-      width: 76px;
+      width: 44px;
+      box-shadow: none;
     }
 
-    .seal__ring text {
-      font-size: 15px;
+    .seal__ring {
+      display: none;
     }
 
     .seal__core {
-      width: 40px;
+      width: 100%;
+      background: var(--ivory);
+      box-shadow: inset 0 0 0 1px rgba(184, 151, 107, 0.55);
     }
 
     .seal__core :global(img) {
-      width: 21px;
+      width: 24px;
     }
 
     .seal__stat {
-      gap: 0.25rem;
-      padding-left: 0.8rem;
+      gap: 0.2rem;
+      padding-left: 0.7rem;
+      border-left-color: rgba(184, 151, 107, 0.55);
     }
 
     .seal__stat strong {
-      font-size: 2.2rem;
+      font-size: 1.65rem;
+      color: var(--brand-900);
+    }
+
+    .seal__stat strong span {
+      color: var(--champagne);
     }
 
     .seal__label {
-      font-size: 0.6rem;
-      letter-spacing: 0.18em;
+      font-size: 0.56rem;
+      letter-spacing: 0.16em;
+      color: var(--ink-mute);
     }
 
     .hero__copy {
@@ -500,31 +683,52 @@ const chips = featured.flatMap((slug) => getTreatment(slug) ?? []);
       grid-template-columns: minmax(0, 1fr);
     }
 
+    .hero__copy > .eyebrow {
+      color: var(--brand-700);
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+    }
+
+    .hero__title {
+      font-size: clamp(1.95rem, 8.4vw, 2.7rem);
+      color: var(--ink);
+    }
+
+    .hero__title em {
+      background-image: linear-gradient(100deg, var(--brand-700), var(--brand-500) 55%, var(--champagne));
+    }
+
     .hero__lead {
       font-size: var(--text-sm);
       line-height: 1.65;
+      color: var(--ink-soft);
     }
 
-    /* Aynı tedavi adları hemen alttaki şeritte kayıyor; ilk ekranda iki kez görünmesin */
+    /* Tedavi adları hemen alttaki şeritte kayıyor; ilk ekranda tekrar etmesin */
     .hero__treatments {
+      display: none;
+    }
+
+    /* İletişim butonları mobilde sağ/sol altta sabit durur (FloatingActions); girişte tekrar yer kaplamasın */
+    .hero__actions {
       display: none;
     }
   }
 
-  @media (max-width: 480px) {
-    /* Marka adı menüdeki logoda ve mühürde zaten var; satır ikiye bölünmesin */
+  @media (max-width: 520px) {
     .hero__brand {
+      /* Marka adı menüdeki logoda zaten var; satır ikiye bölünmesin */
       display: none;
     }
+  }
 
-    .hero__actions {
-      display: grid;
-      gap: 0.6rem;
-      width: 100%;
-    }
-
-    .hero__actions .btn {
-      min-height: 48px;
+  /*
+   * Kısa ekranda (ör. iPhone'da adres çubuğu açıkken) kemerin düz kenarı kısalır; dikey yazı panelin
+   * solmasına girip yarım okunuyordu. Köşelerdeki motifler kalır, yalnızca yazı gizlenir.
+   */
+  @media (max-width: 860px) and (max-height: 780px) {
+    .deco--text {
+      display: none;
     }
   }
 </style>

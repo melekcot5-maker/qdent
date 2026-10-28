@@ -113,16 +113,35 @@ const t = getDictionary(Astro.props.lang);
       display: inline-flex;
     }
 
+    /* Ara solda, WhatsApp sağda: iki küçük, şeffaf geçişli cam buton. Girişte ayrıca büyük buton yok, hep görünürler */
     .float__btn {
-      height: 56px;
-      min-width: 56px;
+      bottom: max(1rem, env(safe-area-inset-bottom));
+      height: 48px;
+      min-width: 48px;
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      backdrop-filter: blur(14px) saturate(160%);
+      -webkit-backdrop-filter: blur(14px) saturate(160%);
+      box-shadow:
+        0 12px 26px -14px rgba(5, 34, 50, 0.55),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
     }
 
-    /* Ana sayfa girişindeki iletişim butonları ekrandayken üstlerine binmesinler (main.ts → initFloatHide) */
-    :global(html.float-hidden) .float__btn {
-      opacity: 0;
-      transform: translateY(16px);
-      pointer-events: none;
+    .float__btn :global(.icon) {
+      width: 22px;
+      height: 22px;
+    }
+
+    .float__btn--wa {
+      right: max(1rem, env(safe-area-inset-right));
+      padding: 0;
+      background: linear-gradient(135deg, rgba(42, 196, 108, 0.92), rgba(22, 132, 72, 0.82));
+    }
+
+    .float__btn--call {
+      left: max(1rem, env(safe-area-inset-left));
+      border-color: rgba(255, 255, 255, 0.8);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.5));
+      color: var(--brand-700);
     }
   }
 
