@@ -51,7 +51,7 @@ export interface BeforeAfterCase {
   consent?: boolean;
   /** İşlemi yapan hekimin `site.team` kimliği */
   dentist?: string;
-  /** İşlemin (son seansın) tarihi, YYYY-MM-DD */
+  /** İşlemin (son seansın) tarihi: YYYY-MM-DD, gün bilinmiyorsa YYYY-MM. Hasta dosyasından alınır, tahmin edilmez. */
   treatedOn?: string;
   /** Görselin sitede ilk yayımlandığı tarih, YYYY-MM-DD */
   publishedOn?: string;
@@ -71,8 +71,9 @@ export interface TreatmentMeta {
   result?: BeforeAfterCase;
 }
 
-// Onam formları klinikte dosyada (2026-10-28'de teyit edildi). Hekim ve işlem tarihi gelince
-// her vakaya `dentist: 'dilara' | 'elif'` ve `treatedOn: 'YYYY-MM-DD'` eklenecek.
+// Onam formları klinikte dosyada; dört vakayı da Dt. Dilara Nur Kılınç yaptı (2026-10-28'de teyit edildi).
+// İşlem tarihi hasta dosyasından gelince her vakaya `treatedOn` eklenecek. Tarih uydurulmaz: yönetmelik
+// gerçek işlem tarihini istiyor, denetimde hasta kaydıyla karşılaştırılabilir.
 const PUBLISHED = '2026-10-28';
 
 export const treatments: TreatmentMeta[] = [
@@ -81,20 +82,20 @@ export const treatments: TreatmentMeta[] = [
     slug: 'dental-implants',
     icon: 'implant',
     photo: xrayRoom,
-    result: { before: implantBefore, after: implantAfter, consent: true, publishedOn: PUBLISHED },
+    result: { before: implantBefore, after: implantAfter, consent: true, dentist: 'dilara', publishedOn: PUBLISHED },
   },
   { slug: 'smile-design', icon: 'smile', photo: digitalScan },
   {
     slug: 'porcelain-veneers',
     icon: 'veneer',
     photo: treatmentRoom,
-    result: { before: porcelainBefore, after: porcelainAfter, consent: true, publishedOn: PUBLISHED },
+    result: { before: porcelainBefore, after: porcelainAfter, consent: true, dentist: 'dilara', publishedOn: PUBLISHED },
   },
   {
     slug: 'zirconia-crowns',
     icon: 'crown',
     photo: treatmentUnit,
-    result: { before: zirconiaBefore, after: zirconiaAfter, consent: true, publishedOn: PUBLISHED },
+    result: { before: zirconiaBefore, after: zirconiaAfter, consent: true, dentist: 'dilara', publishedOn: PUBLISHED },
   },
   { slug: 'teeth-whitening', icon: 'sparkle', photo: treatmentRoom2 },
   { slug: 'clear-aligners', icon: 'aligner', photo: digitalScan },
@@ -104,7 +105,7 @@ export const treatments: TreatmentMeta[] = [
 
 /** Ayrı tedavi sayfası olmayan galeri vakaları; adları sözlükte `gallery.extraCases` altında */
 export const extraCases: { key: 'bonding'; result: BeforeAfterCase }[] = [
-  { key: 'bonding', result: { before: bondingBefore, after: bondingAfter, consent: true, publishedOn: PUBLISHED } },
+  { key: 'bonding', result: { before: bondingBefore, after: bondingAfter, consent: true, dentist: 'dilara', publishedOn: PUBLISHED } },
 ];
 
 // Yayımlanan vakada yönetmeliğin istediği hekim / işlem tarihi eksikse unutulmasın diye derlemede uyar

@@ -67,6 +67,13 @@ const words = getDictionary(Astro.props.lang).home.marquee;
     color: var(--champagne);
   }
 
+  /* Mobilde girişin hemen altında ilk ekrana sığsın (Hero.astro → --marquee-h) */
+  @media (max-width: 860px) {
+    .marquee {
+      padding-block: 1.25rem;
+    }
+  }
+
   @keyframes marquee {
     to {
       transform: translateX(-50%);

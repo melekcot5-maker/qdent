@@ -47,6 +47,7 @@ const t = getDictionary(Astro.props.lang);
     color: #fff;
     box-shadow: 0 18px 40px -16px rgba(5, 34, 50, 0.55);
     transition:
+      opacity var(--dur) var(--ease-out),
       transform var(--dur) var(--ease-out),
       box-shadow var(--dur) var(--ease-out);
   }
@@ -115,6 +116,13 @@ const t = getDictionary(Astro.props.lang);
     .float__btn {
       height: 56px;
       min-width: 56px;
+    }
+
+    /* Ana sayfa girişindeki iletişim butonları ekrandayken üstlerine binmesinler (main.ts → initFloatHide) */
+    :global(html.float-hidden) .float__btn {
+      opacity: 0;
+      transform: translateY(16px);
+      pointer-events: none;
     }
   }
 

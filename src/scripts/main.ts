@@ -116,6 +116,18 @@ function initParallax() {
   );
 }
 
+/** Aynı iletişim butonları ekrandayken (data-float-hide) sabit butonları gizle; üst üste binmesinler. */
+function initFloatHide() {
+  const items = document.querySelectorAll<HTMLElement>('[data-float-hide]');
+  if (!items.length || !('IntersectionObserver' in window)) return;
+  const visible = new Set<Element>();
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => (entry.isIntersecting ? visible.add(entry.target) : visible.delete(entry.target)));
+    root.classList.toggle('float-hidden', visible.size > 0);
+  });
+  items.forEach((el) => observer.observe(el));
+}
+
 /** Kartlarda imleci izleyen ışık. */
 function initGlow() {
   if (!window.matchMedia('(hover: hover)').matches) return;
@@ -133,5 +145,6 @@ initMobileMenu();
 initLanguage();
 initReveal();
 initParallax();
+initFloatHide();
 initGlow();
 initConsent();

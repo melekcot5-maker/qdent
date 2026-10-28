@@ -2,6 +2,7 @@
 /**
  * Ana sayfa girişi: kliniğin girişi tam genişlik arka planda, üzerinde soldan sağa açılan lacivert
  * geçiş; menü bu sayfada en üstteyken beyaz görünür (index.astro → BaseLayout darkHero).
+ * Mobilde fotoğraf üstte açık kalır, yazı onun üzerine binen lacivert panele geçer.
  */
 import { Image } from 'astro:assets';
 // Mankenli stok fotoğraf yerine kliniğin kendi girişi: yönetmelik yanıltıcı görsel kullanımını yasaklıyor
@@ -38,7 +39,7 @@ const chips = featured.flatMap((slug) => getTreatment(slug) ?? []);
   <div class="container hero__inner">
     <div class="hero__copy">
       <!-- Marka adı İngilizce işaretlenir; aksi halde Türkçe büyük harf dönüşümü "QUALİTY" yazar -->
-      <p class="eyebrow" data-hero style="--h: 0"><span><span lang="en">Quality Dental Center</span> · {h.eyebrow}</span></p>
+      <p class="eyebrow" data-hero style="--h: 0"><span><span class="hero__brand" lang="en">Quality Dental Center · </span>{h.eyebrow}</span></p>
 
       <h1 class="hero__title">
         <span class="hero__line"><span data-hero-line style="--h: 1">{h.titleTop}</span></span>
@@ -49,7 +50,8 @@ const chips = featured.flatMap((slug) => getTreatment(slug) ?? []);
 
       <p class="lead hero__lead" data-hero style="--h: 4">{h.lead}</p>
 
-      <div class="hero__actions" data-hero style="--h: 5">
+      <!-- Bu butonlar görünürken mobildeki sabit Ara/WhatsApp butonları gizlenir (main.ts → initFloatHide) -->
+      <div class="hero__actions" data-hero data-float-hide style="--h: 5">
         <a href={links.whatsapp(t.common.whatsappMessage)} class="btn btn--primary" target="_blank" rel="noopener">
           <Icon name="whatsapp" size={18} />
           {h.primaryCta}
@@ -381,38 +383,148 @@ const chips = featured.flatMap((slug) => getTreatment(slug) ?? []);
   }
 
   /* ---------- Duyarlı ---------- */
+  /*
+   * Dar ekranda yazı fotoğrafın tamamını kaplıyor, giriş koyu tonun altında kayboluyordu.
+   * Burada fotoğraf üstte açık kalır, yazı ona binen yuvarlak köşeli lacivert panele geçer,
+   * mühür de fotoğrafla panelin sınırına oturur.
+   *
+   * Giriş, altındaki tedavi şeridi (Marquee) ilk ekranda görünecek kadar kısa tutulur: panel
+   * içeriği kadar yer kaplar, kalan yüksekliği fotoğraf doldurur. Şeridin yüksekliği değişirse
+   * --marquee-h de güncellenmeli.
+   */
   @media (max-width: 860px) {
     .hero {
-      min-height: 88svh;
-      padding-bottom: 4rem;
+      --marquee-h: 5.75rem;
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: minmax(10rem, 1fr) auto;
+      align-items: stretch;
+      min-height: calc(100svh - var(--marquee-h));
+      padding: 0 0 var(--space-6);
+    }
+
+    /* Fotoğraf ilk satırı doldurur ve panelin yuvarlak köşelerinin altına uzanır;
+       paralaks onu aşağı ittiğinde üstte boşluk kalmasın diye biraz yukarıdan başlar */
+    .hero__bg,
+    .hero__shade {
+      position: relative;
+      inset: auto;
+      grid-area: 1 / 1;
+      margin-bottom: calc(-1 * var(--radius-xl));
+    }
+
+    .hero__bg {
+      margin-top: -48px;
+    }
+
+    /* Fotoğrafın doğal yüksekliği kısa ekranlarda satırı büyütüp şeridi aşağı itmesin */
+    .hero__bg :global(img) {
+      position: absolute;
+      inset: 0;
+    }
+
+    /* Yalnızca üstte menü için koyuluk; çiçekler ve kapı kendi renginde görünür */
+    .hero__shade {
+      background: linear-gradient(
+        180deg,
+        rgba(5, 34, 50, 0.72) 0,
+        rgba(5, 34, 50, 0.18) calc(var(--header-h) + 3rem),
+        rgba(5, 34, 50, 0.05) calc(var(--header-h) + 6rem),
+        rgba(5, 34, 50, 0.4) 100%
+      );
     }
 
     .hero__inner {
+      grid-area: 2 / 1;
+      z-index: 0;
+      grid-template-columns: minmax(0, 1fr);
+      /* Panelin üstüne taşan mührün alt yarısı için yer */
+      padding-top: 3.5rem;
+    }
+
+    .hero__inner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      background:
+        radial-gradient(90% 50% at 0% 0%, rgba(76, 195, 224, 0.14), transparent 70%),
+        var(--brand-950);
+      box-shadow:
+        inset 0 1px 0 rgba(217, 195, 163, 0.35),
+        0 -24px 48px -24px rgba(0, 0, 0, 0.45);
+    }
+
+    /* `translate` giriş animasyonunun transform'uyla çakışmaz */
+    .hero__seal {
+      position: absolute;
+      top: 0;
+      right: var(--gutter);
+      translate: 0 -50%;
+      gap: 0.8rem;
+      padding: 0.4rem 1.15rem 0.4rem 0.4rem;
+    }
+
+    .seal {
+      width: 76px;
+    }
+
+    .seal__ring text {
+      font-size: 15px;
+    }
+
+    .seal__core {
+      width: 40px;
+    }
+
+    .seal__core :global(img) {
+      width: 21px;
+    }
+
+    .seal__stat {
+      gap: 0.25rem;
+      padding-left: 0.8rem;
+    }
+
+    .seal__stat strong {
+      font-size: 2.2rem;
+    }
+
+    .seal__label {
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+    }
+
+    .hero__copy {
+      gap: var(--space-3);
       grid-template-columns: minmax(0, 1fr);
     }
 
-    /* Dar ekranda yazı tüm genişliği kapladığı için ton yukarıdan aşağıya koyulaşır */
-    .hero__shade {
-      background: linear-gradient(180deg, rgba(5, 34, 50, 0.7) 0%, rgba(5, 34, 50, 0.78) 40%, rgba(5, 34, 50, 0.93) 100%);
+    .hero__lead {
+      font-size: var(--text-sm);
+      line-height: 1.65;
     }
 
-    .hero__seal {
+    /* Aynı tedavi adları hemen alttaki şeritte kayıyor; ilk ekranda iki kez görünmesin */
+    .hero__treatments {
       display: none;
     }
   }
 
   @media (max-width: 480px) {
-    .hero__copy > .eyebrow {
-      letter-spacing: 0.14em;
-    }
-
-    .hero__copy > .eyebrow::before {
+    /* Marka adı menüdeki logoda ve mühürde zaten var; satır ikiye bölünmesin */
+    .hero__brand {
       display: none;
     }
 
     .hero__actions {
       display: grid;
+      gap: 0.6rem;
       width: 100%;
+    }
+
+    .hero__actions .btn {
+      min-height: 48px;
     }
   }
 </style>

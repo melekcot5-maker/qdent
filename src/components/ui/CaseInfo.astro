@@ -16,8 +16,9 @@ const { lang, result } = Astro.props;
 const g = getDictionary(lang).gallery;
 // Hekim ve işlem tarihi henüz girilmediyse o satır gösterilmez (eksikler derlemede uyarı olarak yazdırılır)
 const dentist = result.dentist && (site.team.find((m) => m.id === result.dentist)?.name ?? result.dentist);
+// Tarihler gün yazılmadan ay ve yıl olarak gösterilir; işlem tarihi "2024-03" biçiminde de girilebilir
 const date = (iso: string) =>
-  new Intl.DateTimeFormat(localeMeta[lang].htmlLang, { dateStyle: 'long', timeZone: site.timeZone }).format(new Date(iso));
+  new Intl.DateTimeFormat(localeMeta[lang].htmlLang, { year: 'numeric', month: 'long', timeZone: 'UTC' }).format(new Date(iso));
 ---
 
 <div class="case-info">
